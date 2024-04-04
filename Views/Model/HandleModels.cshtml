@@ -1,0 +1,46 @@
+﻿@model ModelViewModel
+
+<h1>Handle selection of hats</h1>
+<div>
+@* 	ViewBag here
+ *@	<h2>Current hat models:</h2>
+	<btn class="btn btn-primary">Edit</btn> <btn class="btn btn-primary btn-danger">Delete</btn>
+
+	<div>
+		<form method="post" asp-action="AddModel">
+			<div class="form-group row">
+				<div class="col-sm-2">
+					<label>Model name: </label>
+				</div>
+				<div class="col-sm-4">
+					<input asp-for="ModelName" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2">
+					<label>Description: </label>
+				</div>
+				<div class="col-sm-4">
+					<input asp-for="Description" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2">
+					<label>Picture: </label>
+				</div>
+				<div class="col-sm-4">
+					<input asp-for="Picture" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="col-sm-2">
+					<label>Product code: </label>
+				</div>
+				<div class="col-sm-4">
+					<input asp-for="ProductCode" class="form-control" />
+				</div>
+			</div>
+		</form>
+	</div>
+
+</div>
