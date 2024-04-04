@@ -11,17 +11,6 @@ namespace App.Controllers
   {
     public async Task<IActionResult> Index()
     {
-      var movie = new Movie { Title = "The Matrix" };
-      var actor = new Actor { Name = "Keanu Reeves" };
-      
-      await movie.SaveAsync();
-      await actor.SaveAsync();
-
-      await movie.Actors.AddAsync(actor);
-      await actor.Movies.AddAsync(movie);
-
-      ViewBag.Movies = (await DB.Find<Movie>().ExecuteCursorAsync()).ToEnumerable();
-
       return View();
     }
 
