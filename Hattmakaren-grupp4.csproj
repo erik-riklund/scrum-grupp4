@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Hattmakaren_grupp4</RootNamespace>
+    <RootNamespace>App</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

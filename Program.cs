@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace App
 {
   public class Program
@@ -9,10 +11,11 @@ namespace App
 
       // 2. Add services (dependencies) to the application
       builder.Services.AddControllersWithViews(); // Adds services for controllers and views (the MVC pattern)
+      builder.Services.AddHttpContextAccessor();
 
       // 3. Establish the database connection and create the database context.
       var database = new DatabaseService(builder.Configuration.GetSection("MongoDB").Get<DatabaseSettings>());
-      
+
       await database.InitAsync();
       builder.Services.AddSingleton(database);
 
