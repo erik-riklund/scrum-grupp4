@@ -1,46 +1,58 @@
 ﻿@model ModelViewModel
 
-<h1>Handle selection of hats</h1>
-<div>
-@* 	ViewBag here
- *@	<h2>Current hat models:</h2>
-	<btn class="btn btn-primary">Edit</btn> <btn class="btn btn-primary btn-danger">Delete</btn>
-
-	<div>
-		<form method="post" asp-action="AddModel">
-			<div class="form-group row">
-				<div class="col-sm-2">
-					<label>Model name: </label>
-				</div>
-				<div class="col-sm-4">
-					<input asp-for="ModelName" class="form-control" />
-				</div>
-			</div>
-			<div class="form-group row">
-				<div class="col-sm-2">
-					<label>Description: </label>
-				</div>
-				<div class="col-sm-4">
-					<input asp-for="Description" class="form-control" />
-				</div>
-			</div>
-			<div class="form-group row">
-				<div class="col-sm-2">
-					<label>Picture: </label>
-				</div>
-				<div class="col-sm-4">
-					<input asp-for="Picture" class="form-control" />
-				</div>
-			</div>
-			<div class="form-group row">
-				<div class="col-sm-2">
-					<label>Product code: </label>
-				</div>
-				<div class="col-sm-4">
-					<input asp-for="ProductCode" class="form-control" />
-				</div>
-			</div>
-		</form>
-	</div>
-
+<h1 style="text-align: center;">HANDLE SELECTION OF HATS</h1>
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Current models</h2>
+            @if(ViewBag.CurrentModels != null)
+                {
+                    @foreach(var currentModel in ViewBag.CurrentModels)
+                    {
+                        <h2>@currentModel.ModelName</h2>
+                    }
+                }
+            <button class="btn btn-primary">Edit</button> <button class="btn btn-primary btn-danger">Delete</button>
+        </div>
+        <div class="col-md-6">
+            <h2>Add new model</h2>
+            <form method="post" asp-action="AddNewModel">
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label>Model name: </label>
+                    </div>
+                    <div class="col-sm-4" style="margin-bottom: 5px;">
+                        <input asp-for="ModelName" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label>Description: </label>
+                    </div>
+                    <div class="col-sm-4" style="margin-bottom: 5px;">
+                        <input asp-for="Description" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label>Picture: </label>
+                    </div>
+                    <div class="col-sm-4" style="margin-bottom: 5px;">
+                        <input asp-for="Picture" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label>Product code: </label>
+                    </div>
+                    <div class="col-sm-4" style="margin-bottom: 5px;">
+                        <input asp-for="ProductCode" class="form-control" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" asp-controller="Model" asp-action="AddNewModel">Add new model</button>
+            </form>
+        </div>
+    </div>
 </div>
