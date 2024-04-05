@@ -10,14 +10,18 @@ namespace App
       var builder = WebApplication.CreateBuilder(args);
 
       // 2. Add services (dependencies) to the application
-      builder.Services.AddControllersWithViews(); // Adds services for controllers and views (the MVC pattern)
-      builder.Services.AddHttpContextAccessor();
+      builder.Services.AddControllersWithViews();
+      builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+      // builder.Services.AddHttpContextAccessor();
 
       // 3. Establish the database connection and create the database context.
-      var database = new DatabaseService(builder.Configuration.GetSection("MongoDB").Get<DatabaseSettings>());
-
+      var database = new DatabaseService(
+        builder.Configuration.GetSection("MongoDB").Get<DatabaseSettings>()!
+      );
       await database.InitAsync();
+
       builder.Services.AddSingleton(database);
+      builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
       // 4. Build the web application
       var app = builder.Build();
@@ -36,8 +40,9 @@ namespace App
       // 5c. Routing
       app.UseRouting(); // Adds middleware to handle URL routing 
 
-      // 5d. Authorization
-      app.UseAuthorization(); // Adds middleware to handle user authorization
+      // 5d. Authentication/Authorization
+      app.UseAuthentication();
+      app.UseAuthorization();
 
       // 5e. Defines the default routing pattern
       app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
