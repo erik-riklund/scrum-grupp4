@@ -13,12 +13,14 @@ namespace App.Controllers
 			//ViewBag.CurrentModels = Query.FetchAll<Model>();
 			var cursor = await DB.Find<Model>().ExecuteCursorAsync();
 			ViewBag.CurrentModels = await cursor.ToListAsync();
+			var cursor2 = await DB.Find<Material>().ExecuteCursorAsync();
+            ViewBag.CurrentMaterials = await cursor2.ToListAsync();
 
 			return View();
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel)
+		public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel, string[] SelectedMaterials)
 		{
 			if (modelViewModel.ModelName != null)
 			{
@@ -29,8 +31,30 @@ namespace App.Controllers
 					Picture = modelViewModel.Picture,
 					ProductCode = modelViewModel.ProductCode
 				};
-	
-				await model.SaveAsync();
+
+                if (SelectedMaterials != null && SelectedMaterials.Length > 0)
+                {
+                    var chosenMaterials = new List<Material>();
+                    
+					
+
+                    foreach (var materialId in SelectedMaterials)
+                    {
+                        var material = await Query.FetchOneById<Material>(materialId);
+						chosenMaterials.Add(material);
+                        
+                    }
+
+                    await model.SaveAsync();
+
+                    foreach (var material in chosenMaterials) 
+					{
+						
+						await model.Materials.AddAsync(material);
+					}
+                }
+
+                
 	
 				return RedirectToAction("HandleModels", "Model");
 			}

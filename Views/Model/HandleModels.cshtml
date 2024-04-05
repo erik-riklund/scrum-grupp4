@@ -31,7 +31,8 @@
                                         <ul>
                                             @foreach (var material in currentModel.Materials)
                                             {
-                                                <li>@material.Name</li>
+                                                <li style="list-style: none;">@material.Name</li>
+                                               
                                             }
                                         </ul>
                                     </td>
@@ -56,7 +57,7 @@
         </div>
         <div class="col-md-5">
             <h2>Add new model</h2>
-            <form method="post" asp-action="AddNewModel">
+            <form method="post" asp-action="AddNewModel" onsubmit="document.getElementById('selectedMaterials').value = getSelectedMaterials().join(',')">
                 <div class="form-group row">
                     <div class="col-sm-2" style="margin-right: 15px;">
                         <label>Model name: </label>
@@ -89,11 +90,41 @@
                     <div class="col-sm-4" style="margin-bottom: 10px;">
                         <input asp-for="ProductCode" class="form-control" />
                     </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Material(s): </label>
+                    </div>
+                    <ul>
+
+                        @foreach (var material in ViewBag.CurrentMaterials)
+                        {
+
+                            <li style="list-style: none;">
+                                @material.Name <input type="checkbox" id="material-@material.ID" name="MaterialID" value="@material.ID" />
+                            </li>
+                        }
+                    </ul>
+                   
                 </div>
                 <br />
-                <button type="submit" class="btn btn-primary" asp-controller="Model" asp-action="AddNewModel">Add new
-                    model</button>
+                <input type="hidden" id="selectedMaterials" name="SelectedMaterials" />
+                <button type="submit" class="btn btn-primary" asp-controller="Model" asp-action="AddNewModel">Add new model</button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    function getSelectedMaterials() {
+        var selectedMaterials = [];
+        var checkboxes = document.querySelectorAll('input[name="MaterialID"]');
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                selectedMaterials.push(checkbox.value);
+            }
+        });
+        return selectedMaterials;
+    }
+</script>
