@@ -11,9 +11,9 @@ namespace App.Services
   public class Authenticator(IHttpContextAccessor context) : IAuthenticator
   {
 
-    public async Task<bool> SignInAsync(string username, string password)
+    public async Task<bool> SignInAsync(string email, string password)
     {
-      if (await ValidateCredentials(username, password) is string ID)
+      if (await ValidateCredentials(email, password) is string ID)
       {
         var claims = new List<Claim>{new ("ID", ID)};
 
@@ -36,10 +36,10 @@ namespace App.Services
       await context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 
-    private static async Task<string?> ValidateCredentials(string username, string password)
+    private static async Task<string?> ValidateCredentials(string email, string password)
     {
       string passwordHash = password.GetMD5();
-      var user = await Query.FetchOne<User>(user => user.UserName == username && user.Password == passwordHash);
+      var user = await Query.FetchOne<User>(user => user.Email == email && user.Password == passwordHash);
 
       return user?.ID;
     }
