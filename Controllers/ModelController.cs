@@ -20,17 +20,24 @@ namespace App.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel)
 		{
-			Model model = new Model
+			if (modelViewModel.ModelName != null)
 			{
-				ModelName = modelViewModel.ModelName,
-				Description = modelViewModel.Description,
-				Picture = modelViewModel.Picture,
-				ProductCode = modelViewModel.ProductCode
-			};
-
-			await model.SaveAsync();
-
-			return RedirectToAction("HandleModels", "Model");
+				Model model = new Model
+				{
+					ModelName = modelViewModel.ModelName,
+					Description = modelViewModel.Description,
+					Picture = modelViewModel.Picture,
+					ProductCode = modelViewModel.ProductCode
+				};
+	
+				await model.SaveAsync();
+	
+				return RedirectToAction("HandleModels", "Model");
+			}
+			else
+			{
+				MessageBox.Show("You must enter a model name!", "Popup");
+			}
 		}
 
 		[HttpPost]
