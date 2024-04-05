@@ -10,8 +10,6 @@ namespace App.Services
 {
   public class Authenticator(IHttpContextAccessor context) : IAuthenticator
   {
-    private HttpContext Context { get; set; } = context.HttpContext
-      ?? throw new ArgumentNullException(nameof(context));
 
     public async Task<bool> SignInAsync(string username, string password)
     {
@@ -35,7 +33,7 @@ namespace App.Services
 
     public async Task SignOutAsync()
     {
-      await Context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+      await context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 
     private static async Task<string?> ValidateCredentials(string username, string password)
