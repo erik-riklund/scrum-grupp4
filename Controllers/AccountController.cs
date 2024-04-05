@@ -19,6 +19,11 @@ namespace App.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult RegisterAdmin()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, String returnUrl)
@@ -90,12 +95,43 @@ namespace App.Controllers
 
             }
 
-            // If validation passes, process the data
-            // For example, save the user to the database
 
             return RedirectToAction("Index", "Home");
         }
-        
+
+        // HJÄLP ERIK!! Hur gör jag med roleName?
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterAdmin(RegisterAdminViewModel model)
+        {
+            
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    
+                    ModelState.AddModelError(string.Empty, error.ErrorMessage);
+                }
+               
+                return View(model);
+            }
+            try
+            {
+                var roleName = new Role { Name=model.RoleName };
+                var user = new User { FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.Phonenumber, Email = model.Email, Roles = roleName, Password = model.Password.GetMD5() };
+                await user.SaveAsync();
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 
 }
