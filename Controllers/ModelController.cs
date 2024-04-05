@@ -36,7 +36,8 @@ namespace App.Controllers
 			}
 			else
 			{
-				MessageBox.Show("You must enter a model name!", "Popup");
+				 string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
+        		return Content(script, "text/html");
 			}
 		}
 
