@@ -40,7 +40,7 @@ namespace App.Controllers
     [Guardian]
     public async Task<IActionResult> Protected()
     {
-      ViewBag.Name = (await activeUser.GetUser())?.UserName ?? "Namn saknas";
+      ViewBag.Name = (await activeUser.GetUserAsync())?.UserName ?? "Namn saknas";
 
       return View();
     }

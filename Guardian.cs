@@ -43,7 +43,10 @@ namespace App
         }
       }
 
-      context.Result = new RedirectResult("/Auth");
+      string returnTo = context.HttpContext.Request.Path.ToString();
+      string encodedReturnTo = Uri.EscapeDataString(returnTo);
+
+      context.Result = new RedirectResult($"/Account/Login?returnUrl={encodedReturnTo}");
     }
   }
 }
