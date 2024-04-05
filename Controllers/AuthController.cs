@@ -1,11 +1,12 @@
 ﻿using System.Security.Claims;
+using App.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {
-  public class AuthController(IHttpContextAccessor context) : Controller
+  public class AuthController(IHttpContextAccessor context, Authenticator authenticator, SessionManager activeUser) : Controller
   {
     public IActionResult Index()
     {
@@ -14,22 +15,12 @@ namespace App.Controllers
 
     public async Task<IActionResult> Login()
     {
-      var claims = new List<Claim>
+      if (await authenticator.SignInAsync("Gopher","test"))
       {
-        new (ClaimTypes.Name, "Gopher"),
-        new ("FullName", "Erik Riklund"),
-        new (ClaimTypes.Role, "User")
-      };
+        return RedirectToAction("Protected");
+      }
 
-      var identity = new ClaimsIdentity(
-        claims, CookieAuthenticationDefaults.AuthenticationScheme
-      );
-
-      await context.HttpContext!.SignInAsync(
-        CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity)
-      );
-
-      return RedirectToAction("Protected");
+      return RedirectToAction("Auth");
     }
 
     public IActionResult LoginAdmin()
@@ -47,13 +38,14 @@ namespace App.Controllers
     }
 
     [Guardian]
-    public IActionResult Protected()
+    public async Task<IActionResult> Protected()
     {
-      ViewBag.Name = context.HttpContext!.User.Identity?.Name;
+      ViewBag.Name = (await activeUser.GetUser())?.UserName ?? "Namn saknas";
 
       return View();
     }
 
+    [Guardian(Roles = "Admin")]
     public IActionResult Admin()
     {
       return View();
