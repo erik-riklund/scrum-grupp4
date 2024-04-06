@@ -12,8 +12,9 @@ namespace App.Controllers
 		{
 			var cursor = await DB.Find<Model>().ExecuteCursorAsync();
 			ViewBag.CurrentModels = await cursor.ToListAsync();
+
 			var cursor2 = await DB.Find<Material>().ExecuteCursorAsync();
-            ViewBag.CurrentMaterials = await cursor2.ToListAsync();
+			ViewBag.CurrentMaterials = await cursor2.ToListAsync();
 
 			return View();
 		}
@@ -31,30 +32,30 @@ namespace App.Controllers
 					ProductCode = modelViewModel.ProductCode
 				};
 
-                if (SelectedMaterials != null && SelectedMaterials.Length > 0)
-                {
-                    var chosenMaterials = new List<Material>();
-                    
-                    foreach (var materialId in SelectedMaterials)
-                    {
-                        var material = await Query.FetchOneById<Material>(materialId);
+				if (SelectedMaterials != null && SelectedMaterials.Length > 0)
+				{
+					var chosenMaterials = new List<Material>();
+
+					foreach (var materialId in SelectedMaterials)
+					{
+						var material = await Query.FetchOneById<Material>(materialId);
 						chosenMaterials.Add(material);
-                    }
+					}
 
-                    await model.SaveAsync();
+					await model.SaveAsync();
 
-                    foreach (var material in chosenMaterials) 
+					foreach (var material in chosenMaterials)
 					{
 						await model.Materials.AddAsync(material);
 					}
-                }
+				}
 
 				return RedirectToAction("HandleModels", "Model");
 			}
 			else
 			{
 				string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
-        		
+
 				return Content(script, "text/html");
 			}
 		}
