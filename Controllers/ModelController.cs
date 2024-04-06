@@ -10,7 +10,6 @@ namespace App.Controllers
 	{
 		public async Task<IActionResult> HandleModels()
 		{
-			//ViewBag.CurrentModels = Query.FetchAll<Model>();
 			var cursor = await DB.Find<Model>().ExecuteCursorAsync();
 			ViewBag.CurrentModels = await cursor.ToListAsync();
 			var cursor2 = await DB.Find<Material>().ExecuteCursorAsync();
@@ -36,32 +35,27 @@ namespace App.Controllers
                 {
                     var chosenMaterials = new List<Material>();
                     
-					
-
                     foreach (var materialId in SelectedMaterials)
                     {
                         var material = await Query.FetchOneById<Material>(materialId);
 						chosenMaterials.Add(material);
-                        
                     }
 
                     await model.SaveAsync();
 
                     foreach (var material in chosenMaterials) 
 					{
-						
 						await model.Materials.AddAsync(material);
 					}
                 }
 
-                
-	
 				return RedirectToAction("HandleModels", "Model");
 			}
 			else
 			{
-				 string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
-        		return Content(script, "text/html");
+				string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
+        		
+				return Content(script, "text/html");
 			}
 		}
 
