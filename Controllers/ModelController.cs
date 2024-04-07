@@ -39,7 +39,11 @@ namespace App.Controllers
 					foreach (var materialId in SelectedMaterials)
 					{
 						var material = await Query.FetchOneById<Material>(materialId);
-						chosenMaterials.Add(material);
+						
+						if (material != null)
+						{
+							chosenMaterials.Add(material);
+						}
 					}
 
 					await model.SaveAsync();
