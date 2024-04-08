@@ -1,0 +1,123 @@
+﻿@* @{
+    ViewData["Title"] = "Register";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/Register-style.css">
+</head>
+<body>
+    <img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
+    <div class="container">
+        <div class="register-box">
+            <h2 class="text-center mb-4">Register</h2>
+            <form>
+                <div class="form-group">
+                    <label for="registerEmail">Email address</label>
+                    <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" class="form-control" id="registerPassword" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+            </form>
+            <p class="text-center mt-3">Already have an account? <a href="~/Login">Log in here</a></p>
+        </div>
+    </div>
+</body>
+</html>
+
+ *@
+
+@* @{
+    ViewData["Title"] = "Register";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/Register.css">
+</head>
+<body>
+    <img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
+    <div class="container">
+        <div class="login-box">
+            <!-- Använder samma CSS-klass för enhetlig design -->
+            <h2 class="text-center mb-4">Register</h2>
+            <form>
+                <div class="form-group">
+                    <label for="registerEmail">Email address</label>
+                    <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" class="form-control" id="registerPassword" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+            </form>
+            <p class="text-center mt-3">Already have an account? <a href="Login">Log in here</a></p>
+        </div>
+    </div>
+</body>
+</html> *@ 
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/Register.css">
+</head>
+<body>
+    <img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
+    <div class="container">
+        <div class="login-box">
+            <!-- Använder samma CSS-klass för enhetlig design -->
+            <h2 class="text-center mb-4">Register</h2>
+            <form>
+                <div class="form-group">
+                    <label for="registerFirstName">First Name</label>
+                    <input type="text" class="form-control" id="registerFirstName" placeholder="Enter first name">
+                </div>
+                <div class="form-group">
+                    <label for="registerLastName">Last Name</label>
+                    <input type="text" class="form-control" id="registerLastName" placeholder="Enter last name">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email address</label>
+                    <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="registerPhoneNumber">Phone Number</label>
+                    <input type="tel" class="form-control" id="registerPhoneNumber" placeholder="Enter phone number">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" class="form-control" id="registerPassword" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+            </form>
+            <p class="text-center mt-3">Already have an account? <a href="Login">Log in here</a></p>
+        </div>
+    </div>
+</body>
+</html>
+
+
