@@ -1,4 +1,4 @@
-using App.Entities;
+﻿using App.Entities;
 using App.Interfaces;
 using MD5Hash;
 using Microsoft.AspNetCore.Authentication;
