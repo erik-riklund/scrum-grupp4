@@ -20,7 +20,7 @@ namespace App.Controllers
 		}
 
 		[HttpPost]
-        public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel, List<string> SelectedMaterials) // Ändra parameter från array till List<>
+        public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel, List<string> SelectedMaterials)
         {
             if (modelViewModel.ModelName != null)
             {
@@ -32,7 +32,7 @@ namespace App.Controllers
                     ProductCode = modelViewModel.ProductCode
                 };
 
-                if (SelectedMaterials != null && SelectedMaterials.Count > 0) // Ändra från SelectedMaterials.Length till SelectedMaterials.Count
+                if (SelectedMaterials != null && SelectedMaterials.Count > 0)
                 {
                     var chosenMaterials = new List<Material>();
 
