@@ -23,7 +23,7 @@
                             @foreach (var currentModel in ViewBag.CurrentModels)
                             {
                                 <tr>
-                                    <td><img src="~/Pictures/HattarBild.jpg" alt="Model Thumbnail" width="45" height="45"></td>
+                                    <td><img src="@Model.ImagePath" alt="Model Thumbnail" width="45" height="45"></td>
                                     <td>@currentModel.ModelName</td>
                                     <td>@currentModel.Description</td>
                                     <td>@currentModel.ProductCode</td>

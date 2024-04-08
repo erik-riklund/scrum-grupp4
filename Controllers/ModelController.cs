@@ -28,7 +28,7 @@ namespace App.Controllers
 				{
 					ModelName = modelViewModel.ModelName,
 					Description = modelViewModel.Description,
-					Picture = modelViewModel.Picture,
+					ImagePath = modelViewModel.ImagePath,
 					ProductCode = modelViewModel.ProductCode
 				};
 
@@ -75,12 +75,12 @@ namespace App.Controllers
 				{
 					ModelName = model.ModelName,
 					Description = model.Description,
-					Picture = model.Picture,
+					ImagePath = model.ImagePath,
 					ProductCode = model.ProductCode
 				};
 
 				ViewBag.ModelID = model.ID;
-
+					
 				var linkedMaterialIds = model.Materials.Select(m => m.ID).ToList();
 
 				ViewBag.LinkedMaterials = model.Materials;
@@ -106,7 +106,7 @@ namespace App.Controllers
 			{
 				model.ModelName = modelViewModel.ModelName;
 				model.Description = modelViewModel.Description;
-				model.Picture = modelViewModel.Picture;
+				model.ImagePath = modelViewModel.ImagePath;
 				model.ProductCode = modelViewModel.ProductCode;
 
 				// Rensa befintliga material kopplade till modellen
