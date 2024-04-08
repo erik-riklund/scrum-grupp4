@@ -37,10 +37,23 @@ namespace App.Services
 
     private static async Task<string?> ValidateCredentials(string email, string password)
     {
-      string passwordHash = password.GetMD5();
-      var user = await Query.FetchOne<User>(user => user.Email == email && user.Password == passwordHash);
+      try
+      {
+        string passwordHash = password.GetMD5(EncodingType.UTF8);
+        
+        var user = await Query.FetchOne<User>(
+          user => user.Email == email && user.Password == passwordHash
+        );
 
-      return user?.ID;
+        return user?.ID;
+      }
+      
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex.Message);
+
+        return null;
+      }
     }
   }
 }

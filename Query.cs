@@ -17,7 +17,8 @@ namespace App
     /// <param name="expression">LINQ expression specifying the match criteria.</param>
     /// <param name="limit">Limit the number of entities returned as part of the result.</param>
     /// <returns>IEnumerable that can be iterated once.</returns>
-    public static async Task<IEnumerable<IEntity>> FetchMany<TEntity>(Expression<Func<TEntity, bool>> expression, int limit = 99999) where TEntity : Entity
+    public static async Task<IEnumerable<IEntity>> FetchMany<TEntity>(
+      Expression<Func<TEntity, bool>> expression, int limit = 99999) where TEntity : Entity
     {
       return await DB.Find<TEntity>().Limit(limit).ManyAsync(expression);
     }
