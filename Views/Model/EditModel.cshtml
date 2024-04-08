@@ -1,40 +1,78 @@
 @model ModelViewModel
 
+<h1 style="text-align: center;">EDIT MODEL</h1>
+<br />
+<br />
 <form method="post" asp-action="SaveEdit">
-    <div class="form-group row">
-        <div class="col-sm-2" style="margin-right: 15px;">
-            <label>Model name: </label>
-        </div>
-        <div class="col-sm-4" style="margin-bottom: 10px;">
-            <input asp-for="ModelName" class="form-control" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h2>SELECTED MODEL: @Model.ModelName</h2>
+                <div class="form-group">
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="margin-right: 15px;">
+                            <label>Model name: </label>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 10px;">
+                            <input asp-for="ModelName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="margin-right: 15px;">
+                            <label>Description: </label>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 10px;">
+                            <input asp-for="Description" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="margin-right: 15px;">
+                            <label>Picture: </label>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 10px;">
+                            <input asp-for="Picture" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="margin-right: 15px;">
+                            <label>Product code: </label>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 10px;">
+                            <input asp-for="ProductCode" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="col-md-5">
+                <h2>CURRENT MATERIAL</h2>
+                @if (ViewBag.LinkedMaterials != null)
+                {
+                    @foreach (var materials in ViewBag.LinkedMaterials)
+                    {
+                        <p>@materials.Name</p>
+                    }
+                }
+                else
+                {
+                    <p>No materials found.</p>
+                }
+                <br />
+                <h2>AVAILABLE MATERIAL</h2>
+                @if (ViewBag.OtherMaterials != null)
+                {
+                    @foreach (var material in ViewBag.OtherMaterials)
+                    {
+                        <p>@material.Name</p>
+                    }
+                }
+                else
+                {
+                    <p>No materials found.</p>
+                }
+            </div>
         </div>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-2" style="margin-right: 15px;">
-            <label>Description: </label>
-        </div>
-        <div class="col-sm-4" style="margin-bottom: 10px;">
-            <input asp-for="Description" class="form-control" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-2" style="margin-right: 15px;">
-            <label>Picture: </label>
-        </div>
-        <div class="col-sm-4" style="margin-bottom: 10px;">
-            <input asp-for="Picture" class="form-control" />
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-2" style="margin-right: 15px;">
-            <label>Product code: </label>
-        </div>
-        <div class="col-sm-4" style="margin-bottom: 10px;">
-            <input asp-for="ProductCode" class="form-control" />
-        </div>
-    </div>
-    <br />
-    <input type="hidden" name="ModelId" value="@ViewBag.ModelID" />
     <button type="submit" class="btn btn-primary btn-success" asp-controller="Model" asp-action="SaveEdit">Save
         changes</button>
 </form>
