@@ -23,7 +23,14 @@
                             @foreach (var currentModel in ViewBag.CurrentModels)
                             {
                                 <tr>
+                                    if  (@currentModel.ImagePath == null)
+                                    {
+                                    <td><img src="~/Pictures/GenericHat.png" alt="Model Thumbnail" width="45" height="45"></td>
+                                    }
+                                    else 
+                                    {
                                     <td><img src="@Model.ImagePath" alt="Model Thumbnail" width="45" height="45"></td>
+                                    }
                                     <td>@currentModel.ModelName</td>
                                     <td>@currentModel.Description</td>
                                     <td>@currentModel.ProductCode</td>
@@ -80,7 +87,7 @@
                         <label>Picture: </label>
                     </div>
                     <div class="col-sm-4" style="margin-bottom: 10px;">
-                        <input asp-for="Picture" class="form-control" />
+                        <input asp-for="ImagePath" class="form-control" />
                     </div>
                 </div>
                 <div class="form-group row">

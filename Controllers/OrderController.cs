@@ -95,7 +95,7 @@ namespace App.Controllers
             {
                 var imagehandler = new Imagehandler();
                 await imagehandler.UpploadImage(sov.Picture);
-                model.Picture = sov.Picture.FileName;
+                model.ImagePath = sov.Picture.FileName;
 
             }
 
