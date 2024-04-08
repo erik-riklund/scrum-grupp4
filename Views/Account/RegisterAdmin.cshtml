@@ -1,7 +1,7 @@
 ﻿@{
   ViewData["Title"] = "Register";
 }
-@model RegisterViewModel
+@model RegisterAdminViewModel
 
 <img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
 <div class="container">
@@ -24,22 +24,6 @@
       <div class="form-group">
         <label for="registerPhoneNumber">Phone Number</label>
         <input asp-for=Phonenumber type="tel" class="form-control" id="registerPhoneNumber" placeholder="Enter phone number">
-      </div>
-      <div class="form-group">
-        <label for="registerStreetAddress">StreetAddress</label>
-        <input asp-for=StreetAddress type="text" class="form-control" id="registerStreetAdress" placeholder="Enter Streetadress">
-      </div>
-      <div class="form-group">
-        <label for="registerZipCode">ZipCode</label>
-        <input asp-for=ZipCode type="text" class="form-control" id="registerZipCode" placeholder="Enter Zipcode">
-      </div>
-      <div class="form-group">
-        <label for="registerCity">City</label>
-        <input asp-for=City type="text" class="form-control" id="registerCity" placeholder="Enter City">
-      </div>
-      <div class="form-group">
-        <label for="registerCountry">Country</label>
-        <input asp-for=Country type="text" class="form-control" id="registerCity" placeholder="Enter City">
       </div>
       <div class="form-group">
         <label for="registerPassword">Password</label>

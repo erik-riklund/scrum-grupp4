@@ -1,21 +1,20 @@
-﻿using System.Security.Claims;
-using App.Entities;
+﻿using App.Entities;
 using App.Interfaces;
 using MD5Hash;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using MongoDB.Entities;
+using System.Security.Claims;
 
 namespace App.Services
 {
   public class Authenticator(IHttpContextAccessor context) : IAuthenticator
   {
 
-    public async Task<bool> SignInAsync(string username, string password)
+    public async Task<bool> SignInAsync(string email, string password)
     {
-      if (await ValidateCredentials(username, password) is string ID)
+      if (await ValidateCredentials(email, password) is string ID)
       {
-        var claims = new List<Claim>{new ("ID", ID)};
+        var claims = new List<Claim> { new("ID", ID) };
 
         var identity = new ClaimsIdentity(
           claims, CookieAuthenticationDefaults.AuthenticationScheme
@@ -36,12 +35,25 @@ namespace App.Services
       await context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 
-    private static async Task<string?> ValidateCredentials(string username, string password)
+    private static async Task<string?> ValidateCredentials(string email, string password)
     {
-      string passwordHash = password.GetMD5();
-      var user = await Query.FetchOne<User>(user => user.UserName == username && user.Password == passwordHash);
+      try
+      {
+        string passwordHash = password.GetMD5(EncodingType.UTF8);
+        
+        var user = await Query.FetchOne<User>(
+          user => user.Email == email && user.Password == passwordHash
+        );
 
-      return user?.ID;
+        return user?.ID;
+      }
+      
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex.Message);
+
+        return null;
+      }
     }
   }
 }

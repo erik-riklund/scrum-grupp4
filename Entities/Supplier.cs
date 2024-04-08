@@ -12,9 +12,9 @@ namespace App.Entities
 
 		public Address Address { get; set; }
 
-		[OwnerSide]
-		public Many<Material, Supplier> Materials { get; set; }
+    [OwnerSide]
+    public Many<Material, Supplier> Materials { get; set; }
 
 		public Supplier() => this.InitOneToMany(() => Materials);
-    }
+  }
 }

@@ -12,16 +12,16 @@ namespace App.Entities
 		
 		public string ProductCode { get; set; }
 
-		[OwnerSide]
-		public Many<Material, Model> Materials { get; set; }
+    [OwnerSide]
+    public Many<Material, Model> Materials { get; set; }
 
-		[OwnerSide]
-		public Many<Hat, Model> Hats { get; set; }
+    [OwnerSide]
+    public Many<Hat, Model> Hats { get; set; }
 
-		public Model()
-		{
-			this.InitManyToMany(() => Materials, material => material.Models);
-			this.InitOneToMany(() => Hats);
-		}
+    public Model()
+    {
+      this.InitManyToMany(() => Materials, material => material.Models);
+      this.InitOneToMany(() => Hats);
     }
+  }
 }
