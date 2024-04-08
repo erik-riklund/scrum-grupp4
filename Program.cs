@@ -1,3 +1,4 @@
+using App.Interfaces;
 using App.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -23,8 +24,8 @@ namespace App
 
       builder.Services.AddSingleton(database);
       builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-      builder.Services.AddSingleton<Authenticator>();
-      builder.Services.AddScoped<SessionManager>();
+      builder.Services.AddSingleton<IAuthenticator, Authenticator>();
+      builder.Services.AddScoped<ISessionManager, SessionManager>();
 
       // 4. Build the web application
       var app = builder.Build();
