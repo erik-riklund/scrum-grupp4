@@ -10,9 +10,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace App.Controllers
 {
     [Guardian]
-    public class OrderController (SessionManager sessionManager) : Controller 
+    public class OrderController(SessionManager sessionManager) : Controller
     {
-      
+
         public async Task<IActionResult> OrderForm()
         {
             var models = await Query.FetchAll<Model>();
@@ -22,7 +22,7 @@ namespace App.Controllers
             return View(ovm);
         }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> SendForm(OrderViewModel orderViewModel)
         {
@@ -55,7 +55,7 @@ namespace App.Controllers
 
             return View(orderViewModel);
         }
-       
+
         [HttpGet]
         public async Task<IActionResult> SpecialOrderForm()
         {
@@ -140,36 +140,43 @@ namespace App.Controllers
 
         [HttpGet]
 
-        public IActionResult PrintOrder ()
-        {
-            return View();
-                
-         }
-
-        [HttpPost]
-
         public async Task<IActionResult> PrintOrder(string orderNumber)
         {
-            try {
-                var order = await Query.FetchOneById<App.Entities.Order>(orderNumber);
+            var order = await Query.FetchOneById<App.Entities.Order>(orderNumber);
+            ViewBag.OrderNumber = orderNumber;
 
-                if (order == null)
-                {
-                    ModelState.AddModelError("", "The ordernumber does not exist");
-                    return View();
-                }
-                var customer = await Query.FetchOne<App.Entities.User>(user => user.Orders.Any(order => order.ID == orderNumber));
-            }
-            catch (Exception ex) 
-            {
-             Debug.WriteLine(ex);
-            }
-            
+            return View();
 
         }
+
+        //[HttpPost]
+
+        //public async Task<IActionResult> PrintOrder(string orderNumber)
+        //{
+        //    try
+        //    {
+        //        var order = await Query.FetchOneById<App.Entities.Order>(orderNumber);
+        //        ViewBag.OrderNumber = orderNumber;
+
+        //        if (order == null)
+        //        {
+        //            ModelState.AddModelError("", "The ordernumber does not exist");
+        //            return View();
+        //        }
+        //        var customer = await Query.FetchOne<App.Entities.User>(user => user.Orders.Any(order => order.ID == orderNumber));
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex);
+        //    }
+
+
+        //}
     }
-
-
 }
+
+
+
 
 

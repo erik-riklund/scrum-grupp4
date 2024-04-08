@@ -5,7 +5,7 @@
         public string OrderNumber { get; set; }
         public int PackageWeight { get; set; }
 
-        public int PackageCount { get; set; }
+        public int PackageQuantity { get; set; }
 
         public int PackageSize { get; set; }
 

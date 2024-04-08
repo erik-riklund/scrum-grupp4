@@ -1,6 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
 @model PrintOrderViewModel
+
+<img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
+<div class="container">
+    <div class="login-box">
+        <!-- Använder samma CSS-klass för enhetlig design -->
+        <h2 class="text-center mb-4">Register</h2>
+        <form method="post">
+            <div class="form-group">
+                <label for="OrderNumber">Id for the order</label>
+                <input asp-for="OrderNumber" type="text" class="form-control" id="OrderNumber" placeholder="@ViewBag.OrderNumber" readonly>
+            </div>
+            <div class="form-group">
+                <label for="PackageWeigh">Weigh of package</label>
+                <input asp-for="PackageWeight" type="text" class="form-control" id="PackageWeigh" placeholder="Enter the weigh of package">
+            </div>
+            <div class="form-group">
+                <label for="PackageQuantity">Quantity of package</label>
+                <input asp-for="PackageQuantity" type="text" class="form-control" id="PackageQuantity" placeholder="Enter quantiy of package">
+            </div>
+            <div class="form-group">
+                <label for="PackageSize">Size of package</label>
+                <input asp-for=PackageSize type="text" class="form-control" id="PackageSize" placeholder="Enter the size of package">
+            </div>
+            <div class="form-group">
+                <label for="PackageContent">Whats the content of the package</label>
+                <input asp-for=PackageContent type="text" class="form-control" id="PackageContent" placeholder="Enter the content of the package">
+            </div>
+            <div class="form-group">
+                <label for="ShippingCompany">Which shippingcompany will you use</label>
+                <input asp-for=ShippingCompany type="text" class="form-control" id="ShippingCompany" placeholder="Enter the shippingcompany">
+            </div>
+            <div class="form-group">
+                <label for="Payment">Enter who's paying for the shipping</label>
+                <div>
+                    <input asp-for="Payment" type="radio" id="PaymentCompany" value="Company" name="paymentType" />
+                    <label for="PaymentCompany">The company</label>
+                </div>
+                <div>
+                    <input asp-for="Payment" type="radio" id="PaymentCustomer" value="Customer" name="paymentType" />
+                    <label for="PaymentCustomer">Customer</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </form>
+    </div>
+</div>
