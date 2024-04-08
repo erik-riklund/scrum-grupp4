@@ -1,4 +1,5 @@
-﻿using App.Entities;
+﻿using App.Interfaces;
+using App.Entities;
 using App.Models;
 using App.Services;
 using MD5Hash;
@@ -8,7 +9,7 @@ using System.Diagnostics;
 
 namespace App.Controllers
 {
-  public class AccountController(Authenticator authenticator) : Controller
+  public class AccountController(IAuthenticator authenticator) : Controller
   {
     [HttpGet]
     public IActionResult Login()
