@@ -8,6 +8,13 @@ namespace App.Controllers
 {
 	public class ModelController : Controller
 	{
+		private readonly Imagehandler _imageHandler;
+
+		public ModelController(Imagehandler imageHandler)
+		{
+			_imageHandler = imageHandler;
+		}
+
 		public async Task<IActionResult> HandleModels()
 		{
 			var cursor = await DB.Find<Model>().ExecuteCursorAsync();
@@ -20,8 +27,14 @@ namespace App.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel, List<string> SelectedMaterials)
+		public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel, List<string> SelectedMaterials, IFormFile imageFile)
 		{
+			if (imageFile != null)
+			{
+				await _imageHandler.UpploadImage(imageFile);
+				modelViewModel.ImagePath = imageFile.FileName;
+			}
+
 			if (modelViewModel.ModelName != null)
 			{
 				Model model = new Model
@@ -80,7 +93,7 @@ namespace App.Controllers
 				};
 
 				ViewBag.ModelID = model.ID;
-					
+
 				var linkedMaterialIds = model.Materials.Select(m => m.ID).ToList();
 
 				ViewBag.LinkedMaterials = model.Materials;
