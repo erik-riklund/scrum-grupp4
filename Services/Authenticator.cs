@@ -14,7 +14,7 @@ namespace App.Services
     {
       if (await ValidateCredentials(email, password) is string ID)
       {
-        var claims = new List<Claim>{new ("ID", ID)};
+        var claims = new List<Claim> { new("ID", ID) };
 
         var identity = new ClaimsIdentity(
           claims, CookieAuthenticationDefaults.AuthenticationScheme
@@ -47,7 +47,7 @@ namespace App.Services
 
         return user?.ID;
       }
-
+      
       catch (Exception ex)
       {
         Console.WriteLine(ex.Message);
