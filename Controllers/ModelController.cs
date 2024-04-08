@@ -98,7 +98,7 @@ namespace App.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> SaveEdit(string modelID, ModelViewModel modelViewModel)
+		public async Task<IActionResult> SaveEdit(string modelID, ModelViewModel modelViewModel, List<string> SelectedMaterials)
 		{
 			var model = await Query.FetchOneById<Model>(modelID);
 
@@ -108,9 +108,27 @@ namespace App.Controllers
 				model.Description = modelViewModel.Description;
 				model.Picture = modelViewModel.Picture;
 				model.ProductCode = modelViewModel.ProductCode;
+
+				// Rensa befintliga material kopplade till modellen
+				await model.Materials.RemoveAsync(model.Materials);
+
+				// Lägg till de material som är markerade i de ikryssade checkboxarna
+				if (SelectedMaterials != null && SelectedMaterials.Count > 0)
+				{
+					var chosenMaterials = await DB.Find<Material>().Match(m => SelectedMaterials.Contains(m.ID)).ExecuteAsync();
+
+					foreach (var material in chosenMaterials)
+					{
+						await model.Materials.AddAsync(material);
+					}
+				}
+
 				await model.SaveAsync();
 
-				return RedirectToAction("HandleModels", "Model");
+				// return RedirectToAction("HandleModels", "Model");
+
+				var redirectUrl = Url.Action("HandleModels", "Model");
+				return Redirect(redirectUrl);
 			}
 
 			return NotFound();
