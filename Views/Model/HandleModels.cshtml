@@ -97,16 +97,13 @@
                         <label>Material(s): </label>
                     </div>
                     <ul>
-
                         @foreach (var material in ViewBag.CurrentMaterials)
                         {
-
                             <li style="list-style: none;">
-                                @material.Name <input type="checkbox" id="material-@material.ID" name="MaterialID" value="@material.ID" />
+                            @material.Name <input type="checkbox" id="material-@material.ID" name="SelectedMaterials" value="@material.ID" /> <!-- Använd "SelectedMaterials" istället för "MaterialID" -->
                             </li>
                         }
                     </ul>
-                   
                 </div>
                 <br />
                 <input type="hidden" id="selectedMaterials" name="SelectedMaterials" />
@@ -115,16 +112,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function getSelectedMaterials() {
-        var selectedMaterials = [];
-        var checkboxes = document.querySelectorAll('input[name="MaterialID"]');
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                selectedMaterials.push(checkbox.value);
-            }
-        });
-        return selectedMaterials;
-    }
-</script>

@@ -20,49 +20,49 @@ namespace App.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel, string[] SelectedMaterials)
-		{
-			if (modelViewModel.ModelName != null)
-			{
-				Model model = new Model
-				{
-					ModelName = modelViewModel.ModelName,
-					Description = modelViewModel.Description,
-					Picture = modelViewModel.Picture,
-					ProductCode = modelViewModel.ProductCode
-				};
+        public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel, List<string> SelectedMaterials) // Ändra parameter från array till List<>
+        {
+            if (modelViewModel.ModelName != null)
+            {
+                Model model = new Model
+                {
+                    ModelName = modelViewModel.ModelName,
+                    Description = modelViewModel.Description,
+                    Picture = modelViewModel.Picture,
+                    ProductCode = modelViewModel.ProductCode
+                };
 
-				if (SelectedMaterials != null && SelectedMaterials.Length > 0)
-				{
-					var chosenMaterials = new List<Material>();
+                if (SelectedMaterials != null && SelectedMaterials.Count > 0) // Ändra från SelectedMaterials.Length till SelectedMaterials.Count
+                {
+                    var chosenMaterials = new List<Material>();
 
-					foreach (var materialId in SelectedMaterials)
-					{
-						var material = await Query.FetchOneById<Material>(materialId);
-						
-						if (material != null)
-						{
-							chosenMaterials.Add(material);
-						}
-					}
+                    foreach (var materialId in SelectedMaterials)
+                    {
+                        var material = await Query.FetchOneById<Material>(materialId);
 
-					await model.SaveAsync();
+                        if (material != null)
+                        {
+                            chosenMaterials.Add(material);
+                        }
+                    }
 
-					foreach (var material in chosenMaterials)
-					{
-						await model.Materials.AddAsync(material);
-					}
-				}
+                    await model.SaveAsync();
 
-				return RedirectToAction("HandleModels", "Model");
-			}
-			else
-			{
-				string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
+                    foreach (var material in chosenMaterials)
+                    {
+                        await model.Materials.AddAsync(material);
+                    }
+                }
 
-				return Content(script, "text/html");
-			}
-		}
+                return RedirectToAction("HandleModels", "Model");
+            }
+            else
+            {
+                string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
+
+                return Content(script, "text/html");
+            }
+        }
 
 		[HttpPost]
 		public async Task<IActionResult> EditModel(string modelID)
