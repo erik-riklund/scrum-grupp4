@@ -17,11 +17,15 @@ namespace App.Entities
 
     public Address Address { get; set; }
 
+    public Many<Order, User> Orders { get; set; } = null!;
+
     public Many<Role, User> Roles { get; set; } = null!;
 
     public User()
-    {
-      this.InitOneToMany(() => Roles);
+        {
+            this.InitOneToMany(() => Roles);
+            this.InitOneToMany(() => Orders);
+
+        }
     }
-  }
 }

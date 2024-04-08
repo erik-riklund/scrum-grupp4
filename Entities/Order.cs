@@ -10,6 +10,8 @@ namespace App.Entities
     public string Status { get; set; }
     public double OrderSum { get; set; }
 
+    public Address Address { get; set; }
+
     [OwnerSide]
     public Many<Hat, Order> Hats { get; set; }
 
