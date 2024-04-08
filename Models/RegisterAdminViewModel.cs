@@ -18,6 +18,5 @@ namespace App.Models
         [Required, Compare("Password")]
         public string RepeatPassword { get; set; }
 
-        public string RoleName { get; set; }
     }
 }
