@@ -1,52 +1,41 @@
 ﻿@{
-    ViewData["Title"] = "Register";
+  ViewData["Title"] = "Register";
 }
 @model RegisterAdminViewModel
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/css/Register.css">
-</head>
-<body>
-    <img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
-    <div class="container">
-        <div class="login-box">
-            <!-- Använder samma CSS-klass för enhetlig design -->
-            <h2 class="text-center mb-4">Register</h2>
-            <form method="post">
-                <div class="form-group">
-                    <label for="registerFirstName">First Name</label>
-                    <input asp-for="FirstName" type="text" class="form-control" id="registerFirstName" placeholder="Enter first name">
-                </div>
-                <div class="form-group">
-                    <label for="registerLastName">Last Name</label>
-                    <input asp-for="LastName" type="text" class="form-control" id="registerLastName" placeholder="Enter last name">
-                </div>
-                <div class="form-group">
-                    <label for="registerEmail">Email address</label>
-                    <input asp-for="Email" type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="registerPhoneNumber">Phone Number</label>
-                    <input asp-for=Phonenumber type="tel" class="form-control" id="registerPhoneNumber" placeholder="Enter phone number">
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword">Password</label>
-                    <input asp-for=Password type="password" class="form-control" id="registerPassword" placeholder="Password">
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input asp-for=RepeatPassword type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Register</button>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            </form>
-            <p class="text-center mt-3">Already have an account? <a href="Login">Log in here</a></p>
-        </div>
-    </div>
-</body>
-</html>
+<img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
+<div class="container">
+  <div class="login-box">
+    <!-- Använder samma CSS-klass för enhetlig design -->
+    <h2 class="text-center mb-4">Register</h2>
+    <form method="post">
+      <div class="form-group">
+        <label for="registerFirstName">First Name</label>
+        <input asp-for="FirstName" type="text" class="form-control" id="registerFirstName" placeholder="Enter first name">
+      </div>
+      <div class="form-group">
+        <label for="registerLastName">Last Name</label>
+        <input asp-for="LastName" type="text" class="form-control" id="registerLastName" placeholder="Enter last name">
+      </div>
+      <div class="form-group">
+        <label for="registerEmail">Email address</label>
+        <input asp-for="Email" type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="registerPhoneNumber">Phone Number</label>
+        <input asp-for=Phonenumber type="tel" class="form-control" id="registerPhoneNumber" placeholder="Enter phone number">
+      </div>
+      <div class="form-group">
+        <label for="registerPassword">Password</label>
+        <input asp-for=Password type="password" class="form-control" id="registerPassword" placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input asp-for=RepeatPassword type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Register</button>
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    </form>
+    <p class="text-center mt-3">Already have an account? <a href="Login">Log in here</a></p>
+  </div>
+</div>

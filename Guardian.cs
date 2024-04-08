@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Authentication;
-using MongoDB.Entities;
-using System.Diagnostics;
-using App.Entities;
 using MongoDB.Driver.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 
 namespace App
 {

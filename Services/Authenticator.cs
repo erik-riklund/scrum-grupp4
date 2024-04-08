@@ -1,10 +1,9 @@
-﻿using System.Security.Claims;
-using App.Entities;
+﻿using App.Entities;
 using App.Interfaces;
 using MD5Hash;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using MongoDB.Entities;
+using System.Security.Claims;
 
 namespace App.Services
 {
@@ -15,7 +14,7 @@ namespace App.Services
     {
       if (await ValidateCredentials(email, password) is string ID)
       {
-        var claims = new List<Claim>{new ("ID", ID)};
+        var claims = new List<Claim> { new("ID", ID) };
 
         var identity = new ClaimsIdentity(
           claims, CookieAuthenticationDefaults.AuthenticationScheme
