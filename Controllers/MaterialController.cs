@@ -16,19 +16,19 @@ namespace App.Controllers
 			await material.SaveAsync();
 		}
 
-		public async Task<Material> AdjustInventory(Material material, double amount)
-		{
-			if (material.CurrentAmount + amount >= 0)
-			{
-				material.CurrentAmount += amount;
+		//public async Task<Material> AdjustInventory(Material material, double amount)
+		//{
+		//	if (material.CurrentAmount + amount >= 0)
+		//	{
+		//		material.CurrentAmount += amount;
 
-				await material.SaveAsync();
-			}
+		//		await material.SaveAsync();
+		//	}
 
 			//else
 			//{
 			//	return View();
 			//}
-		}
+		
 	}
 }
