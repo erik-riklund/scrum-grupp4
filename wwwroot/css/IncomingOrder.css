@@ -1,0 +1,45 @@
+﻿/* Styles for the order container */
+.order-container {
+    display: flex;
+}
+
+/* Styles for the order list */
+.order-list {
+    margin-right: 20px;
+}
+
+    /* Styles for the table in the unapproved orders list */
+    .order-list table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    /* Styles for table headers */
+    .order-list th {
+        background-color: #f2f2f2;
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    /* Styles for table data */
+    .order-list td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+    }
+
+/* Styles for the approve button */
+.approve-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Styles for the approved status */
+.approved {
+    color: green;
+    font-weight: bold;
+}

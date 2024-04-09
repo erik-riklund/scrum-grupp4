@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Driver;
 using MongoDB.Entities;
+using MongoDB.Driver.Linq;
+using System.Linq;
 using System.Reflection;
 
 namespace App.Controllers
@@ -147,16 +149,24 @@ namespace App.Controllers
         }
         public async Task<IActionResult> ListOrders()
         {
-            // Hämta alla beställningar från databasen
-            List<App.Entities.Order> orders = await DB.Queryable<App.Entities.Order>().ToListAsync();
+            // Hämta alla ogodkända ordrar
+            var unapprovedOrders = await DB.Queryable<App.Entities.Order>()
+                                            .Where(o => !o.IsApproved)
+                                            .ToListAsync();
 
-            return View("IncommingOrder", orders);
+            // Hämta alla godkända ordrar
+            var approvedOrders = await DB.Queryable<App.Entities.Order>()
+                                            .Where(o => o.IsApproved)
+                                            .ToListAsync();
+
+            // Skicka både ogodkända och godkända ordrar till vyn
+            return View("IncomingOrder", unapprovedOrders.Concat(approvedOrders));
         }
 
         [HttpPost]
         public async Task<IActionResult> ApproveOrder(string orderId)
         {
-            // Hitta ordern baserat på ID
+            // Hitta och uppdatera ordern baserat på ID
             var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
 
             if (order == null)
@@ -168,7 +178,22 @@ namespace App.Controllers
             order.IsApproved = true;
             await order.SaveAsync();
 
-            return RedirectToAction("ListOrders");
+            // Hämta alla ogodkända ordrar
+            var unapprovedOrders = await DB.Queryable<App.Entities.Order>()
+                                            .Where(o => !o.IsApproved)
+                                            .ToListAsync();
+
+            // Hämta alla godkända ordrar
+            var approvedOrders = await DB.Queryable<App.Entities.Order>()
+                                          .Where(o => o.IsApproved)
+                                          .ToListAsync();
+
+            // Skicka både listorna till vyn
+            ViewBag.UnapprovedOrders = unapprovedOrders;
+            ViewBag.ApprovedOrders = approvedOrders;
+
+            // Återvänd till samma vy med den uppdaterade data
+            return View("IncomingOrder", unapprovedOrders.Concat(approvedOrders));
         }
     }
 }

@@ -1,33 +1,59 @@
 ﻿@model IEnumerable<App.Entities.Order>
 
-<h1>All orders</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <link rel="stylesheet" href="/css/IncomingOrder.css">
+</head>
+<body>
+    <h1>All Orders</h1>
 
-<table>
-    <tr>
-        <th>Status</th>
-        <th>Order Sum</th>
-        <th>Action</th>
-    </tr>
-    @foreach (var order in Model)
-    {
-        <tr>
-            <td>@order.Status</td>
-            <td>@order.OrderSum</td>
-            <td>
-                @if (!order.IsApproved)
+    <div class="order-container">
+        <!-- Lista för ogodkända ordrar -->
+        <div class="order-list">
+            <h2>Unapproved Orders</h2>
+            <table>
+                <tr>
+                    <th>Status</th>
+                    <th>Order Sum</th>
+                    <th>Action</th>
+                </tr>
+                @foreach (var order in Model.Where(o => !o.IsApproved))
                 {
-                    <form asp-controller="Order" asp-action="ApproveOrder" method="post">
-                        <input type="hidden" name="orderId" value="@order.ID" />
-                        <button type="submit">Godkänn</button>
-                    </form>
+                    <tr>
+                        <td>@order.Status</td>
+                        <td>@order.OrderSum</td>
+                        <td>
+                            @if (!order.IsApproved)
+                            {
+                                <form asp-controller="Order" asp-action="ApproveOrder" method="post">
+                                    <input type="hidden" name="orderId" value="@order.ID" />
+                                    <button type="submit" class="approve-button">Approve</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="approved">Approved</span>
+                            }
+                        </td>
+                    </tr>
                 }
-                else
+            </table>
+        </div>
+
+        <!-- Lista för godkända ordrar -->
+        <div class="order-list">
+            <h2>Approved Orders</h2>
+            <ul>
+                @foreach (var order in Model.Where(o => o.IsApproved))
                 {
-                    <span>Approve</span>
+                    <li>@order.Status - @order.OrderSum</li>
                 }
-            </td>
-        </tr>
-    }
-</table>
-
-
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
