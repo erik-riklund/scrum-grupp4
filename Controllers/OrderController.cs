@@ -11,10 +11,10 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace App.Controllers
 {
-  [Guardian]
-  public class OrderController(ISessionManager sessionManager) : Controller
-  {
-
+    [Guardian]
+    public class OrderController(ISessionManager sessionManager) : Controller
+    {
+   
     public async Task<IActionResult> OrderForm()
     {
       var models = await Query.FetchAll<Model>();
@@ -223,6 +223,7 @@ namespace App.Controllers
                 await order.SaveAsync();
 
                 await order.Shippings.AddAsync(shipping);
+                PrintController.GeneratePDFShipping(model, order, customer);
             }
       catch (Exception ex)
       {
@@ -238,5 +239,7 @@ namespace App.Controllers
         {
         
         }
-  }
+
+       
+    }
 }
