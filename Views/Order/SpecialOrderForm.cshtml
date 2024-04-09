@@ -1,0 +1,56 @@
+﻿@model SpecialOrderViewModel
+
+<form asp-action="SpecialOrderForm" method="post" enctype="multipart/form-data">
+    <h1>Customize your hat here :</h1>
+    <br />
+
+    <div class="form-group">
+        <label asp-for="Size">Size: </label>
+        <p>Please enter how big head you have here in cm</p>
+        <textarea asp-for="Size" class="form-control"></textarea>
+        <span asp-validation-for="Size" class="text-danger"></span>
+    </div>
+    <br />
+
+    <div class="form-group">
+        <label asp-for="Description">Description: </label>
+
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <br /> 
+    <div class="form-group">
+        <p>Select material: </p>
+        @foreach (var material in ViewBag.Material)
+        {
+            <input type="checkbox" class="form-check-input" value="@material.ID" id="material-@material.ID" name="selectedMaterials">
+            @material.Name
+        }
+    </div>
+    
+
+    <div>
+        <label for="formFile" class="form-label mt-4">Please insert an image as an example:</label>
+        <input asp-for="Picture" class="form-control" type="file" id="formFile">
+    </div>
+    <br />
+
+  
+    <button type="submit" class="btn btn-primary">Submit</button>
+ 
+
+    <br />
+
+</form>
+
+@* <script>
+    function updateSelectedValues(checkbox) {
+        var selectedMaterials = [];
+        var checkboxes = document.querySelectorAll('.form-check-input:checked');
+        checkboxes.forEach(function (checkbox) {
+            selectedMaterials.push(checkbox.value);
+        });
+        document.getElementById('selectedMaterials').value = JSON.stringify(selectedMaterials);
+    }
+</script> *@
