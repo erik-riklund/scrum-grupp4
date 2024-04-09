@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Entities;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace App.Controllers
 {
@@ -68,13 +69,13 @@ namespace App.Controllers
             return View(new TestViewModel());
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostBild(TestViewModel tvn)
-        {
-            var imagehandler = new Imagehandler();
-            await imagehandler.UpploadImage(tvn.File);
-            return RedirectToAction("TestBild", "Order");
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> PostBild(TestViewModel tvn)
+        //{
+        //    var imagehandler = new Imagehandler();
+        //    await imagehandler.UpploadImage(tvn.File);
+        //    return RedirectToAction("TestBild", "Order");
+        //}
 
         [HttpPost]
         public async Task<IActionResult> SpecialOrderForm(SpecialOrderViewModel sov, List<string> selectedMaterials)
@@ -96,12 +97,15 @@ namespace App.Controllers
                     Description = sov.Description
 
                 };
+                
+                await model.SaveAsync();
 
                 if (sov.Picture != null)
                 {
                     var imagehandler = new Imagehandler();
-                    await imagehandler.UpploadImage(sov.Picture);
-                    model.Picture = sov.Picture.FileName;
+                    var path = imagehandler.GetPath(sov.Picture, model.ID);
+                    await imagehandler.UpploadImage(sov.Picture, path);
+                    model.Picture = path;
 
                 }
 
