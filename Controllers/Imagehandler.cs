@@ -7,7 +7,7 @@ namespace App.Controllers
 {
     public class Imagehandler
     {
-       public async Task UpploadImage(IFormFile file, string path)
+        public async Task UploadImage(IFormFile file, string path)
         {
             if (file != null && file.Length > 0)
             {
@@ -25,7 +25,4 @@ namespace App.Controllers
             return path;
         }
     }
-
-    
-
 }
