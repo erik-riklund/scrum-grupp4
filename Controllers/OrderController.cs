@@ -106,7 +106,6 @@ namespace App.Controllers
                     var path = imagehandler.GetPath(sov.Picture, model.ID);
                     await imagehandler.UpploadImage(sov.Picture, path);
                     model.Picture = path;
-
                 }
 
                 await model.SaveAsync();
@@ -142,15 +141,13 @@ namespace App.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
+            
             var materials = await Query.FetchAll<Material>();
             ViewBag.Material = materials;
+            
             return View(sov);
-
-
         }
     }
-
-
 }
 
 
