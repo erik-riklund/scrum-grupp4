@@ -2,6 +2,7 @@
 using App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MongoDB.Driver;
 using MongoDB.Entities;
 
 namespace App.Controllers
@@ -128,6 +129,31 @@ namespace App.Controllers
 
             return RedirectToAction("Index", "Home");
 
+        }
+        public async Task<IActionResult> ListOrders()
+        {
+            // Hämta alla beställningar från databasen
+            List<App.Entities.Order> orders = await DB.Queryable<App.Entities.Order>().ToListAsync();
+
+            return View("IncommingOrder", orders);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveOrder(string orderId)
+        {
+            // Hitta ordern baserat på ID
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Markera ordern som godkänd
+            order.IsApproved = true;
+            await order.SaveAsync();
+
+            return RedirectToAction("ListOrders");
         }
     }
 

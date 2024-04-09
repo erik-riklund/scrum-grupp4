@@ -1,0 +1,33 @@
+﻿@model IEnumerable<App.Entities.Order>
+
+<h1>All orders</h1>
+
+<table>
+    <tr>
+        <th>Status</th>
+        <th>Order Sum</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>@order.Status</td>
+            <td>@order.OrderSum</td>
+            <td>
+                @if (!order.IsApproved)
+                {
+                    <form asp-controller="Order" asp-action="ApproveOrder" method="post">
+                        <input type="hidden" name="orderId" value="@order.ID" />
+                        <button type="submit">Godkänn</button>
+                    </form>
+                }
+                else
+                {
+                    <span>Approve</span>
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+
