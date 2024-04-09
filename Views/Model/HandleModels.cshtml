@@ -23,7 +23,7 @@
                             @foreach (var currentModel in ViewBag.CurrentModels)
                             {
                                 <tr>
-                                    @if (currentModel.ImagePath == null)
+                                    @if (currentModel.ImagePath == null || currentModel.ImagePath == "")
                                     {
                                         <td><img src="~/Images/GenericHat.png" alt="Model Thumbnail" width="45" height="45"></td>
                                     }

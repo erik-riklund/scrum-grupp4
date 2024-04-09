@@ -111,18 +111,20 @@ namespace App.Controllers
 		{
 			var model = await Query.FetchOneById<Model>(modelID);
 
+			model.ImagePath = "";
+
 			if (imageFile != null)
 			{
 				var imageHandler = new Imagehandler();
 				await imageHandler.UpploadImage(imageFile);
 				modelViewModel.ImagePath = imageFile.FileName;
+				model.ImagePath = modelViewModel.ImagePath;
 			}
 
 			if (model != null)
 			{
 				model.ModelName = modelViewModel.ModelName;
 				model.Description = modelViewModel.Description;
-				model.ImagePath = modelViewModel.ImagePath;
 				model.ProductCode = modelViewModel.ProductCode;
 
 				await model.Materials.RemoveAsync(model.Materials);
