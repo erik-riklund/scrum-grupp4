@@ -8,13 +8,6 @@ namespace App.Controllers
 {
 	public class ModelController : Controller
 	{
-		private readonly Imagehandler _imageHandler;
-
-		public ModelController(Imagehandler imageHandler)
-		{
-			_imageHandler = imageHandler;
-		}
-
 		public async Task<IActionResult> HandleModels()
 		{
 			var cursor = await DB.Find<Model>().ExecuteCursorAsync();
@@ -31,7 +24,8 @@ namespace App.Controllers
 		{
 			if (imageFile != null)
 			{
-				await _imageHandler.UpploadImage(imageFile);
+				var imageHandler = new Imagehandler();
+				await imageHandler.UpploadImage(imageFile);
 				modelViewModel.ImagePath = imageFile.FileName;
 			}
 

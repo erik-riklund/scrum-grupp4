@@ -25,11 +25,11 @@
                                 <tr>
                                     @if (currentModel.ImagePath == null)
                                     {
-                                        <td><img src="~/Pictures/GenericHat.png" alt="Model Thumbnail" width="45" height="45"></td>
+                                        <td><img src="~/Images/GenericHat.png" alt="Model Thumbnail" width="45" height="45"></td>
                                     }
                                     else
                                     {
-                                        <td><img src="~/Pictures/@currentModel.ImagePath" alt="Model Thumbnail" width="45" height="45"></td>
+                                        <td><img src="~/Images/@currentModel.ImagePath" alt="Model Thumbnail" width="45" height="45"></td>
                                     }
                                     <td>@currentModel.ModelName</td>
                                     <td>@currentModel.Description</td>
@@ -118,6 +118,10 @@
                 <label>Upload Image: </label>
             </div>
             <div class="col-sm-4" style="margin-bottom: 10px;">
+                <br />
+                <br />
+                <br />
+                <br />
                 <input type="file" name="imageFile" class="form-control-file" />
             </div>
                 </div>
