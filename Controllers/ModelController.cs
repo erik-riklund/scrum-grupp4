@@ -22,20 +22,12 @@ namespace App.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddNewModel(ModelViewModel modelViewModel, List<string> SelectedMaterials, IFormFile imageFile)
 		{
-			if (imageFile != null)
-			{
-				var imageHandler = new Imagehandler();
-				await imageHandler.UpploadImage(imageFile);
-				modelViewModel.ImagePath = imageFile.FileName;
-			}
-
 			if (modelViewModel.ModelName != null)
 			{
 				Model model = new Model
 				{
 					ModelName = modelViewModel.ModelName,
 					Description = modelViewModel.Description,
-					ImagePath = modelViewModel.ImagePath,
 					ProductCode = modelViewModel.ProductCode
 				};
 
@@ -60,6 +52,17 @@ namespace App.Controllers
 						await model.Materials.AddAsync(material);
 					}
 				}
+
+				if (imageFile != null)
+				{
+					var imageHandler = new Imagehandler();
+					var path = imageHandler.GetPath(imageFile, model.ID);
+					await imageHandler.UploadImage(imageFile, path);
+					modelViewModel.ImagePath = imageFile.FileName;
+					model.ImagePath = modelViewModel.ImagePath;
+				}
+
+				await model.SaveAsync();
 
 				return RedirectToAction("HandleModels", "Model");
 			}
@@ -111,13 +114,6 @@ namespace App.Controllers
 		{
 			var model = await Query.FetchOneById<Model>(modelID);
 
-			if (imageFile != null)
-			{
-				var imageHandler = new Imagehandler();
-				await imageHandler.UpploadImage(imageFile);
-				modelViewModel.ImagePath = imageFile.FileName;
-			}
-
 			if (model != null)
 			{
 				model.ModelName = modelViewModel.ModelName;
@@ -137,6 +133,16 @@ namespace App.Controllers
 					}
 				}
 
+				await model.SaveAsync();
+
+				if (imageFile != null)
+				{
+					var imageHandler = new Imagehandler();
+					var path = imageHandler.GetPath(imageFile, model.ID);
+					await imageHandler.UploadImage(imageFile, path);
+					modelViewModel.ImagePath = imageFile.FileName;
+					model.ImagePath = modelViewModel.ImagePath;
+				}
 				await model.SaveAsync();
 
 				return RedirectToAction("HandleModels", "Model");
