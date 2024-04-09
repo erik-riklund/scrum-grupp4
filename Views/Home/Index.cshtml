@@ -2,9 +2,40 @@
   ViewData["Title"] = "Home Page";
 }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery View</title>
+    <link rel="stylesheet" href="~/css/Gallery.css">
+</head>
+<body>
 <div class="text-center">
   <h1 class="display-4">Welcome</h1>
-  <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+  <div class="gallery">
+  <div class="hat">
+    <img src="~/Pictures/HattarBild2.jpg" alt="Bild på läderhatt">
+    <div class="info">
+      <h2>Läderhatt</h2>
+      <p>En vacker hatt av största kvalité.</p>
+    </div>
+  </div>
+  <div class="hat">
+    <img src="~/Pictures/HattarBild.jpg" alt="Bild på doktorhatt">
+    <div class="info">
+      <h2>Doktorhatt</h2>
+      <p>En klassisk doktorhatt för eleganta tillfällen.</p>
+    </div>
+  </div>
+  <div class="hat">
+    <img src="~/Pictures/HattarBild3.jpg" alt="Bild på stråhatt">
+    <div class="info">
+      <h2>Stråhatt</h2>
+      <p>En sval och stilfull hatt för sommardagar.</p>
+    </div>
+  </div>
 </div>
-
-<div class="text-center"></div>
+</div>
+</body>
+</html>
