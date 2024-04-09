@@ -15,9 +15,8 @@ namespace App.Services
       return null;
     }
 
-    public bool IsAuthenticated() => context.HttpContext?.User.Identity?.IsAuthenticated == true;
+    public bool IsLoggedIn() => context.HttpContext?.User.Identity?.IsAuthenticated == true;
 
-    public async Task<bool> HasRoleAsync(string roleName) =>
-      (await GetUserAsync())?.Roles.Where(role => role.Name.Equals(roleName)).Any() == true;
+    public bool IsAdmin() => IsLoggedIn() && (context.HttpContext?.User.Claims.Any(claim => claim.Type == "ROLE" && claim.Value == "Admin") ?? false);
   }
 }
