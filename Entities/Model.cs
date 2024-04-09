@@ -2,12 +2,15 @@
 
 namespace App.Entities
 {
-  public class Model : Entity
-  {
-    public string ModelName { get; set; }
-    public string Description { get; set; }
-    public string Picture { get; set; }
-    public string ProductCode { get; set; }
+	public class Model : Entity
+	{
+		public string ModelName { get; set; }
+
+		public string Description { get; set; }
+
+		public string ImagePath { get; set; }
+		
+		public string ProductCode { get; set; }
 
     [OwnerSide]
     public Many<Material, Model> Materials { get; set; }

@@ -97,11 +97,11 @@ namespace App.Controllers
 
                 };
 
-                if (sov.Picture != null)
-                {
-                    var imagehandler = new Imagehandler();
-                    await imagehandler.UpploadImage(sov.Picture);
-                    model.Picture = sov.Picture.FileName;
+            if (sov.Picture != null)
+            {
+                var imagehandler = new Imagehandler();
+                await imagehandler.UpploadImage(sov.Picture);
+                model.ImagePath = sov.Picture.FileName;
 
                 }
 
@@ -138,15 +138,13 @@ namespace App.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
+            
             var materials = await Query.FetchAll<Material>();
             ViewBag.Material = materials;
+            
             return View(sov);
-
-
         }
     }
-
-
 }
 
 
