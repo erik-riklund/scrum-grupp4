@@ -19,7 +19,6 @@ namespace App.Controllers
             return View(ovm);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> OrderForm(OrderViewModel orderViewModel)
         {
@@ -33,7 +32,6 @@ namespace App.Controllers
                     ModelID = orderViewModel.ModelID
 
                 };
-
 
                 await hat.SaveAsync();
                 var model = await Query.FetchOneById<Model>(orderViewModel.ModelID);
@@ -62,20 +60,6 @@ namespace App.Controllers
             ViewBag.Material = material;
             return View(son);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> TestBild()
-        {
-            return View(new TestViewModel());
-        }
-
-        //[HttpPost]
-        //public async Task<IActionResult> PostBild(TestViewModel tvn)
-        //{
-        //    var imagehandler = new Imagehandler();
-        //    await imagehandler.UpploadImage(tvn.File);
-        //    return RedirectToAction("TestBild", "Order");
-        //}
 
         [HttpPost]
         public async Task<IActionResult> SpecialOrderForm(SpecialOrderViewModel sov, List<string> selectedMaterials)
