@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Driver;
 using MongoDB.Entities;
+using System.Reflection;
 
 namespace App.Controllers
 {
@@ -13,14 +14,14 @@ namespace App.Controllers
         {
             var models = await Query.FetchAll<Model>();
             OrderViewModel ovm = new OrderViewModel();
-            List<SelectListItem> modeller = models.Select(x => new SelectListItem { Text = x.ModelName, Value = x.ID }).ToList();
+            List<SelectListItem> modeller = models.Where(x => x.ModelName != "Specialhat").Select(x => new SelectListItem { Text = x.ModelName, Value = x.ID }).ToList();
             ViewBag.Models = modeller;
             return View(ovm);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> SendForm(OrderViewModel orderViewModel)
+        public async Task<IActionResult> OrderForm(OrderViewModel orderViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -47,7 +48,9 @@ namespace App.Controllers
 
                 return RedirectToAction("Index", "Home");
             }
-
+            var models = await Query.FetchAll<Model>();
+            List<SelectListItem> modeller = models.Where(x => x.ModelName != "Specialhat").Select(x => new SelectListItem { Text = x.ModelName, Value = x.ID }).ToList();
+            ViewBag.Models = modeller;
             return View(orderViewModel);
         }
 
@@ -75,60 +78,72 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostSpecialOrder(SpecialOrderViewModel sov)
+        public async Task<IActionResult> SpecialOrderForm(SpecialOrderViewModel sov, List<string> selectedMaterials)
         {
-            var hat = new Hat
+            if(ModelState.IsValid)
             {
-                Size = sov.Size
-            };
+                var hat = new Hat
+                {
+                    Size = sov.Size,
+                    Description = sov.Description
+                };
 
 
-            await hat.SaveAsync();
+                await hat.SaveAsync();
 
-            var model = new Model
-            {
-                ModelName = "Specialhat",
-                Description = sov.Description
+                var model = new Model
+                {
+                    ModelName = "Specialhat",
+                    Description = sov.Description
 
-            };
+                };
 
             if (sov.Picture != null)
             {
                 var imagehandler = new Imagehandler();
                 await imagehandler.UpploadImage(sov.Picture);
-                model.Picture = sov.Picture.FileName;
+                model.ImagePath = sov.Picture.FileName;
 
-            }
-
-            await model.SaveAsync();
-            await model.Hats.AddAsync(hat);
-
-            if (sov.Materials != null)
-            {
-                foreach (var materialID in sov.Materials)
-                {
-                    var material = await Query.FetchOneById<Material>(materialID);
-                    await model.Materials.AddAsync(material);
-                    await material.Models.AddAsync(model);
                 }
 
+                await model.SaveAsync();
+                await model.Hats.AddAsync(hat);
 
+                if (selectedMaterials != null && selectedMaterials.Count > 0)
+                {
+                    foreach (var materialID in selectedMaterials)
+                    {
+                        var material = await Query.FetchOneById<Material>(materialID);
+                        if (material != null)
+                        {
+                            await model.Materials.AddAsync(material);
+                            await material.Models.AddAsync(model);
+                        }
+
+                    }
+
+
+                }
+
+                hat.ModelID = model.ID;
+                await hat.SaveAsync();
+
+                var order = new App.Entities.Order
+                {
+                    IsApproved = false,
+                    Status = "SpecialPending"
+
+                };
+                await order.SaveAsync();
+                await order.Hats.AddAsync(hat);
+
+                return RedirectToAction("Index", "Home");
             }
-
-            hat.ModelID = model.ID;
-            await hat.SaveAsync();
-
-            var order = new App.Entities.Order
-            {
-                IsApproved = false,
-                Status = "SpecialPending"
-
-            };
-            await order.SaveAsync();
-            await order.Hats.AddAsync(hat);
-
-            return RedirectToAction("Index", "Home");
-
+            
+            var materials = await Query.FetchAll<Material>();
+            ViewBag.Material = materials;
+            
+            return View(sov);
         }
         public async Task<IActionResult> ListOrders()
         {
@@ -156,8 +171,6 @@ namespace App.Controllers
             return RedirectToAction("ListOrders");
         }
     }
-
-
 }
 
 

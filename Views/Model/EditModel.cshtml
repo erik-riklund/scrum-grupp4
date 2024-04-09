@@ -1,0 +1,93 @@
+@model ModelViewModel
+
+<h1 style="text-align: center;">EDIT MODEL</h1>
+<br />
+<br />
+<form method="post" asp-action="SaveEdit">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h2>SELECTED MODEL</h2>
+                <br />
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        @if (ViewBag.CurrentModel.ImagePath == null)
+                                    {
+                                        <td><img src="~/Images/GenericHat.png" alt="Model Thumbnail" width="45" height="45"></td>
+                                    }
+                                    else
+                                    {
+                                        <td><img src="~/Images/@ViewBag.currentModel.ImagePath" alt="Model Thumbnail" width="45" height="45"></td>
+                                    }
+                        <label>Change picture: </label>
+                    </div>
+                    <div class="col-sm-4" style="margin-bottom: 10px;">
+                        <input type="file" name="imageFile" class="form-control-file" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="margin-right: 15px;">
+                            <label>Change model name: </label>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 10px;">
+                            <input asp-for="ModelName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="margin-right: 15px;">
+                            <label>Change description: </label>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 10px;">
+                            <input asp-for="Description" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2" style="margin-right: 15px;">
+                            <label>Change product code: </label>
+                        </div>
+                        <div class="col-sm-4" style="margin-bottom: 10px;">
+                            <input asp-for="ProductCode" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="col-md-5">
+                <h2>CURRENT MATERIAL</h2>
+                @if (ViewBag.LinkedMaterials != null)
+                {
+                    @foreach (var materials in ViewBag.LinkedMaterials)
+                    {
+                        <input type="checkbox" id="material-@materials.ID" name="SelectedMaterials" value="@materials.ID"
+                            checked="true" />
+                        @materials.Name
+                        <br />
+                    }
+                }
+                else
+                {
+                    <p>No materials found.</p>
+                }
+                <br />
+                <h2>AVAILABLE MATERIAL</h2>
+                @if (ViewBag.OtherMaterials != null)
+                {
+                    @foreach (var material in ViewBag.OtherMaterials)
+                    {
+                        <input type="checkbox" id="material-@material.ID" name="SelectedMaterials" value="@material.ID" />
+                        @material.Name
+                        <br />
+                    }
+                }
+                else
+                {
+                    <p>No materials found.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="ModelId" value="@ViewBag.ModelID" />
+    <button type="submit" class="btn btn-primary btn-success" asp-controller="Model" asp-action="SaveEdit">Save
+        changes</button>
+</form>
