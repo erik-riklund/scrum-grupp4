@@ -36,9 +36,9 @@ namespace App
     /// <returns>TEntity, or null if no entity match the ID.</returns>
     public static async Task<TEntity?> FetchOne<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : Entity
     {
-      var result = await DB.Find<TEntity>().Limit(1).ManyAsync(expression);
+      var result = await DB.Find<TEntity>().ManyAsync(expression);
 
-      return result[0] ?? null;
+      return result.Count > 0 ? result.First() : null;
     }
   }
 }

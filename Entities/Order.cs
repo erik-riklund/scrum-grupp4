@@ -13,8 +13,15 @@ namespace App.Entities
     public Address Address { get; set; }
 
     [OwnerSide]
+    public Many<Shipping, Order> Shippings { get; set; }
+
+    [OwnerSide]
     public Many<Hat, Order> Hats { get; set; }
 
-    public Order() => this.InitOneToMany(() => Hats);
+    public Order()
+    {
+      this.InitOneToMany(() => Hats);
+      this.InitOneToMany(() => Shippings);
+    }
   }
 }

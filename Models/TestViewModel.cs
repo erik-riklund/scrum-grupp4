@@ -1,7 +1,7 @@
 ﻿namespace App.Models
 {
-    public class TestViewModel
-    {
-        public IFormFile File { get; set; }
-    }
+  public class TestViewModel
+  {
+    public IFormFile File { get; set; }
+  }
 }

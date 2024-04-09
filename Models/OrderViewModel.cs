@@ -1,14 +1,11 @@
-﻿using App.Entities;
-using System.Transactions;
-
-namespace App.Models
+﻿namespace App.Models
 {
-    public class OrderViewModel
-    {
-        public double Size { get; set; }
-        public string ModelID { get; set; }
+  public class OrderViewModel
+  {
+    public double Size { get; set; }
+    public string ModelID { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-    }
+  }
 }

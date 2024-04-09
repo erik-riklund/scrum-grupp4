@@ -40,14 +40,14 @@ namespace App.Services
       try
       {
         string passwordHash = password.GetMD5(EncodingType.UTF8);
-        
+
         var user = await Query.FetchOne<User>(
-          user => user.Email == email && user.Password == passwordHash
+          user => user.Email.Equals(email) && user.Password.Equals(passwordHash)
         );
 
         return user?.ID;
       }
-      
+
       catch (Exception ex)
       {
         Console.WriteLine(ex.Message);

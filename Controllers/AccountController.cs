@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using App.Interfaces;
 using App.Models;
 using App.Services;
 using MD5Hash;
@@ -8,7 +9,7 @@ using System.Diagnostics;
 
 namespace App.Controllers
 {
-  public class AccountController(Authenticator authenticator) : Controller
+  public class AccountController(IAuthenticator authenticator) : Controller
   {
     [HttpGet]
     public IActionResult Login()
@@ -26,7 +27,7 @@ namespace App.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model, String returnUrl)
+    public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
     {
       try
       {
@@ -34,12 +35,14 @@ namespace App.Controllers
         {
           var username = model.userName;
           var password = model.password;
+
           if (await authenticator.SignInAsync(username, password))
           {
             if (returnUrl != null)
             {
               return Redirect(returnUrl);
             }
+
             return RedirectToAction("Index", "Home");
           }
         }
