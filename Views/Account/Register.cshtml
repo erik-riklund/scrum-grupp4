@@ -3,6 +3,8 @@
 }
 @model RegisterViewModel
 
+<link rel="stylesheet" href="~/css/Register.css">
+
 <img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
 <div class="container">
   <div class="login-box">
@@ -11,7 +13,8 @@
     <form method="post">
       <div class="form-group">
         <label for="registerFirstName">First Name</label>
-        <input asp-for="FirstName" type="text" class="form-control" id="registerFirstName" placeholder="Enter first name">
+        <input asp-for="FirstName" type="text" class="form-control" id="registerFirstName"
+          placeholder="Enter first name">
       </div>
       <div class="form-group">
         <label for="registerLastName">Last Name</label>
@@ -19,15 +22,18 @@
       </div>
       <div class="form-group">
         <label for="registerEmail">Email address</label>
-        <input asp-for="Email" type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email">
+        <input asp-for="Email" type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp"
+          placeholder="Enter email">
       </div>
       <div class="form-group">
         <label for="registerPhoneNumber">Phone Number</label>
-        <input asp-for=Phonenumber type="tel" class="form-control" id="registerPhoneNumber" placeholder="Enter phone number">
+        <input asp-for=Phonenumber type="tel" class="form-control" id="registerPhoneNumber"
+          placeholder="Enter phone number">
       </div>
       <div class="form-group">
         <label for="registerStreetAddress">StreetAddress</label>
-        <input asp-for=StreetAddress type="text" class="form-control" id="registerStreetAdress" placeholder="Enter Streetadress">
+        <input asp-for=StreetAddress type="text" class="form-control" id="registerStreetAdress"
+          placeholder="Enter Streetadress">
       </div>
       <div class="form-group">
         <label for="registerZipCode">ZipCode</label>
@@ -47,7 +53,8 @@
       </div>
       <div class="form-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input asp-for=RepeatPassword type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
+        <input asp-for=RepeatPassword type="password" class="form-control" id="confirmPassword"
+          placeholder="Confirm password">
       </div>
       <button type="submit" class="btn btn-primary btn-block">Register</button>
       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
