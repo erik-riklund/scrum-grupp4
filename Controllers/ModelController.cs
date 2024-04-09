@@ -1,6 +1,7 @@
 ﻿using App.Entities;
 using App.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using MongoDB.Driver;
 using MongoDB.Entities;
 
@@ -114,6 +115,8 @@ namespace App.Controllers
 		{
 			var model = await Query.FetchOneById<Model>(modelID);
 
+			var originalPath = model.ImagePath;
+
 			if (model != null)
 			{
 				model.ModelName = modelViewModel.ModelName;
@@ -142,8 +145,13 @@ namespace App.Controllers
 					await imageHandler.UploadImage(imageFile, path);
 					modelViewModel.ImagePath = imageFile.FileName;
 					model.ImagePath = path;
+					await model.SaveAsync();
 				}
-				await model.SaveAsync();
+				else
+				{
+					model.ImagePath = originalPath;
+					await model.SaveAsync();
+				}
 
 				return RedirectToAction("HandleModels", "Model");
 			}
