@@ -88,6 +88,8 @@ namespace App.Controllers
 
 				ViewBag.ModelID = model.ID;
 
+				ViewBag.CurrentModel = model;
+
 				var linkedMaterialIds = model.Materials.Select(m => m.ID).ToList();
 
 				ViewBag.LinkedMaterials = model.Materials;
@@ -105,9 +107,16 @@ namespace App.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> SaveEdit(string modelID, ModelViewModel modelViewModel, List<string> SelectedMaterials)
+		public async Task<IActionResult> SaveEdit(string modelID, ModelViewModel modelViewModel, List<string> SelectedMaterials, IFormFile imageFile)
 		{
 			var model = await Query.FetchOneById<Model>(modelID);
+
+			if (imageFile != null)
+			{
+				var imageHandler = new Imagehandler();
+				await imageHandler.UpploadImage(imageFile);
+				modelViewModel.ImagePath = imageFile.FileName;
+			}
 
 			if (model != null)
 			{
@@ -116,10 +125,8 @@ namespace App.Controllers
 				model.ImagePath = modelViewModel.ImagePath;
 				model.ProductCode = modelViewModel.ProductCode;
 
-				// Rensa befintliga material kopplade till modellen
 				await model.Materials.RemoveAsync(model.Materials);
 
-				// Lägg till de material som är markerade i de ikryssade checkboxarna
 				if (SelectedMaterials != null && SelectedMaterials.Count > 0)
 				{
 					var chosenMaterials = await DB.Find<Material>().Match(m => SelectedMaterials.Contains(m.ID)).ExecuteAsync();
@@ -132,10 +139,7 @@ namespace App.Controllers
 
 				await model.SaveAsync();
 
-				// return RedirectToAction("HandleModels", "Model");
-
-				var redirectUrl = Url.Action("HandleModels", "Model");
-				return Redirect(redirectUrl);
+				return RedirectToAction("HandleModels", "Model");
 			}
 
 			return NotFound();
