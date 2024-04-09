@@ -141,7 +141,7 @@ namespace App.Controllers
 					var path = imageHandler.GetPath(imageFile, model.ID);
 					await imageHandler.UploadImage(imageFile, path);
 					modelViewModel.ImagePath = imageFile.FileName;
-					model.ImagePath = modelViewModel.ImagePath;
+					model.ImagePath = path;
 				}
 				await model.SaveAsync();
 
