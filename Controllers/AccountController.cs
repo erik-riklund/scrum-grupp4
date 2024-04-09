@@ -1,7 +1,6 @@
-﻿using App.Interfaces;
-using App.Entities;
+﻿using App.Entities;
+using App.Interfaces;
 using App.Models;
-using App.Services;
 using MD5Hash;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Entities;
@@ -27,7 +26,7 @@ namespace App.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model, String returnUrl)
+    public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
     {
       try
       {
@@ -41,6 +40,7 @@ namespace App.Controllers
             {
               return Redirect(returnUrl);
             }
+
             return RedirectToAction("Index", "Home");
           }
         }
