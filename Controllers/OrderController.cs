@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Entities;
 using System.Diagnostics;
+using MongoDB.Driver.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace App.Controllers
@@ -38,18 +39,19 @@ namespace App.Controllers
 
         };
 
+        var customer = await sessionManager.GetUserAsync();
 
         await hat.SaveAsync();
         var model = await Query.FetchOneById<Model>(orderViewModel.ModelID);
         await model.Hats.AddAsync(hat);
-        var order = new App.Entities.Order
-        {
-          IsApproved = false,
-          Status = "Pending"
+                var order = new App.Entities.Order
+                {
+                    IsApproved = false,
+                    Status = "Pending",
+                  CustomerId = customer.ID
         };
         await order.SaveAsync();
         await order.Hats.AddAsync(hat);
-        var customer = await sessionManager.GetUserAsync();
         await customer.Orders.AddAsync(order);
         return RedirectToAction("Index", "Home");
       }
@@ -124,15 +126,16 @@ namespace App.Controllers
       hat.ModelID = model.ID;
       await hat.SaveAsync();
 
-      var order = new App.Entities.Order
-      {
-        IsApproved = false,
-        Status = "SpecialPending"
+            var customer = await sessionManager.GetUserAsync();
 
+            var order = new App.Entities.Order
+            {
+                IsApproved = false,
+                Status = "SpecialPending",
+        CustomerId = customer.ID
       };
       await order.SaveAsync();
       await order.Hats.AddAsync(hat);
-      var customer = await sessionManager.GetUserAsync();
       await customer.Orders.AddAsync(order);
 
       return RedirectToAction("Index", "Home");
@@ -182,15 +185,14 @@ namespace App.Controllers
           return View(model);
         }
 
-        var order = await Query.FetchOne<App.Entities.Order>(
-          order => order.ID == model.OrderNumber
-        );
+       var order = await Query.FetchOne<App.Entities.Order>(
+           order => order.ID == model.OrderNumber
+          );
 
-        var customer = await Query.FetchOne<App.Entities.User>(
-          user => user.Orders.Contains(order)
-        );
+       var customer = await Query.FetchOneById<App.Entities.User>(order.CustomerId
+                );
 
-        if (customer == null)
+                if (customer == null)
         {
           Debug.WriteLine($"Ingen kund, ordernr: {model.OrderNumber}");
           ModelState.AddModelError(string.Empty, "Failed to load the customer data, try again.");
@@ -198,31 +200,30 @@ namespace App.Controllers
           return View(model);
         }
 
-        //var order = customer.Orders.Where(order => order.ID.Equals(model.OrderNumber)).First();
+                //var order = customer.Orders.Where(order => order.ID.Equals(model.OrderNumber)).First();
 
-        //if (order == null)
-        //{
-        //  Debug.WriteLine("Ingen order");
-        //}
+                if (order == null)
+                {
+                    Debug.WriteLine("Ingen order");
+                }
 
-        //var shipping = new Shipping
-        //{
-        //  PackageWeight = model.PackageWeight,
-        //  PackageContent = model.PackageContent,
-        //  PackageQuantity = model.PackageQuantity,
-        //  PackageSize = model.PackageSize,
-        //  ShippingCompany = model.ShippingCompany,
-        //  Payment = model.Payment
-        //};
+                var shipping = new Shipping
+                {
+                    PackageWeight = model.PackageWeight,
+                    PackageContent = model.PackageContent,
+                    PackageQuantity = model.PackageQuantity,
+                    PackageSize = model.PackageSize,
+                    ShippingCompany = model.ShippingCompany,
+                    Payment = model.Payment
+                };
 
-        //Debug.WriteLine(shipping.PackageQuantity);
-        //Debug.WriteLine(shipping.Payment);
+               
 
-        //await shipping.SaveAsync();
-        //await order.SaveAsync();
+                await shipping.SaveAsync();
+                await order.SaveAsync();
 
-        //await order.Shippings.AddAsync(shipping);
-      }
+                await order.Shippings.AddAsync(shipping);
+            }
       catch (Exception ex)
       {
         Debug.WriteLine(ex);
@@ -232,5 +233,10 @@ namespace App.Controllers
 
       return View();
     }
+
+        private void BarcodeGeneretor(string orderNumber)
+        {
+        
+        }
   }
 }

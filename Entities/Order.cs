@@ -12,6 +12,8 @@ namespace App.Entities
 
     public Address Address { get; set; }
 
+    public string CustomerId { get; set; }
+
     [OwnerSide]
     public Many<Shipping, Order> Shippings { get; set; }
 
