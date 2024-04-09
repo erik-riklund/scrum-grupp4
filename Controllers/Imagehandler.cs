@@ -11,7 +11,8 @@ namespace App.Controllers
         {
             if (file != null && file.Length > 0)
             {
-                using var fileStream = new FileStream(path, FileMode.Create);
+                var newpath = "wwwroot" + path.Substring(2);
+                using var fileStream = new FileStream(newpath, FileMode.Create);
                 await file.CopyToAsync(fileStream);
             }
         }
@@ -21,7 +22,7 @@ namespace App.Controllers
             string filename = file.FileName;
             int index = filename.LastIndexOf(".");
             string format = filename.Substring(index);
-            string path = "wwwroot/Images/" + id + format;
+            string path = "../Images/" + id + format;
             return path;
         }
     }
