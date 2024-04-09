@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Models;
+using Microsoft.AspNetCore.Mvc;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System.IO;
 using System.Reflection.Metadata;
 
 
-namespace App.Models
+namespace App.Controllers
 {
     public class PrintController : Controller
     {
@@ -35,7 +36,7 @@ namespace App.Models
         //    // Close the document
         //    document.Close();
         //}
-        public static MemoryStream GeneratePDFShipping(PrintOrderViewModel model, App.Entities.Order order, App.Entities.User user)
+        public static MemoryStream GeneratePDFShipping(PrintOrderViewModel model, Entities.Order order, Entities.User user)
         {
             // Create a new PDF document
             PdfDocument document = new PdfDocument();
@@ -85,7 +86,7 @@ namespace App.Models
         protected FileContentResult DownloadPDF(MemoryStream pdfStream)
         {
             // Skicka PDF-dokumentet till klienten för nedladdning
-           
+
 
             return new FileContentResult(pdfStream.ToArray(), "application/pdf")
             {
