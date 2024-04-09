@@ -7,16 +7,25 @@ namespace App.Controllers
 {
     public class Imagehandler
     {
-       public async Task UpploadImage(IFormFile file)
+       public async Task UpploadImage(IFormFile file, string path)
         {
             if (file != null && file.Length > 0)
             {
-                var filename = Path.GetFileName(file.FileName);
-                var path = "wwwroot/Images/" + filename;
                 using var fileStream = new FileStream(path, FileMode.Create);
                 await file.CopyToAsync(fileStream);
             }
         }
+
+        public string GetPath(IFormFile file, string id)
+        {
+            string filename = file.FileName;
+            int index = filename.LastIndexOf(".");
+            string format = filename.Substring(index);
+            string path = "wwwroot/Images/" + id + format;
+            return path;
+        }
     }
+
+    
 
 }
