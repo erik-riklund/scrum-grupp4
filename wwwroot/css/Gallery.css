@@ -1,0 +1,92 @@
+﻿/*body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;*/ /* Vit bakgrund */
+/*}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);*/ /* Tre produkter på varje rad */
+    /*gap: 20px;
+    justify-content: space-around;
+}
+
+.hat {
+    padding: 20px;
+    background-color: #ffffff;*/ /* Vit bakgrund för hattboxen */
+    /*border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+    .hat img {
+        width: 100%;*/ /* Bilderna fyller hela bredden av förälderelementet */
+        /*height: auto;*/ /* Behåller bildens proportioner */
+        /*max-height: 200px;*/ /* Justera höjden efter önskad storlek */
+        /*border-radius: 5px;
+    }
+
+.info {
+    margin-top: 10px;
+}
+
+    .info h2 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+
+    .info p {
+        font-size: 1rem;
+        margin: 5px 0;
+    }*/
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5; /* Vit bakgrund */
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tre produkter på varje rad */
+    gap: 20px;
+    justify-content: space-around;
+}
+
+.hat {
+    padding: 20px;
+    background-color: #ffffff; /* Vit bakgrund för hattboxen */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    text-align: center; /* Centrera all text */
+    cursor: pointer; /* Gör hela rutan till en knapp */
+}
+
+    .hat:hover {
+        transform: scale(1.05); /* Förstorningseffekt vid hovring */
+    }
+
+    .hat img {
+        width: 100%; /* Bilderna fyller hela bredden av förälderelementet */
+        height: auto; /* Behåller bildens proportioner */
+        max-height: 200px; /* Justera höjden efter önskad storlek */
+        border-radius: 5px;
+    }
+
+.info {
+    margin-top: 10px;
+}
+
+    .info h2 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+
+    .info p {
+        font-size: 1rem;
+        margin: 5px 0;
+    }
+
