@@ -6,10 +6,9 @@ namespace App.Controllers
 {
     public partial class MaterialController : Controller
     {
-        public IActionResult Index()
+        public async Task AddToInventory(Material material)
         {
-            return View();
+            await material.SaveAsync();
         }
-
-    }	
+    }
 }
