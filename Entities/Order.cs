@@ -2,13 +2,17 @@
 
 namespace App.Entities
 {
-  public class Order : Entity
-  {
-    public DateTime EstimatedDeliveryDate { get; set; }
-    public DateTime DeliveryDate { get; set; }
-    public bool IsApproved { get; set; }
-    public string Status { get; set; }
-    public double OrderSum { get; set; }
+	public class Order : Entity
+	{
+		public DateTime EstimatedDeliveryDate { get; set; }
+
+		public DateTime DeliveryDate { get; set; }
+
+		public bool IsApproved { get; set; }
+
+		public string Status { get; set; }
+		
+		public double OrderSum { get; set; }
 
     public Address Address { get; set; }
 

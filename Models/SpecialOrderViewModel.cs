@@ -1,11 +1,16 @@
-﻿namespace App.Models
-{
-  public class SpecialOrderViewModel
-  {
-    public string Description { get; set; }
-    public double Size { get; set; }
-    public List<string> Materials { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
-    public IFormFile Picture { get; set; }
-  }
+namespace App.Models
+{
+    public class SpecialOrderViewModel
+    {
+        [Required(ErrorMessage= "Please enter a description for your hat")]
+        public string Description { get; set; }
+        [Required(ErrorMessage= "You need to enter your headsize")]
+        [Range(40, 80, ErrorMessage = "Your head headsize must be between 40 and 80 cm.")]
+        public double Size { get; set; }
+        //public List<string> Materials { get; set; }
+        
+        public IFormFile? Picture { get; set; }
+    }
 }

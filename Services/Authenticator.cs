@@ -3,6 +3,7 @@ using App.Interfaces;
 using MD5Hash;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace App.Services
@@ -12,9 +13,14 @@ namespace App.Services
 
     public async Task<bool> SignInAsync(string email, string password)
     {
-      if (await ValidateCredentials(email, password) is string ID)
+      if (await ValidateCredentials(email, password) is User user)
       {
-        var claims = new List<Claim> { new("ID", ID) };
+        var claims = new List<Claim> {
+          new("ID", user.ID),
+          new("ROLE", user.Roles.Any(role => role.Name.Equals("Admin")) ? "Admin":"Customer")
+        };
+
+        Debug.WriteLine(user.Roles.Any(role => role.Name.Equals("Admin")) ? "Y" : "N");
 
         var identity = new ClaimsIdentity(
           claims, CookieAuthenticationDefaults.AuthenticationScheme
@@ -35,17 +41,15 @@ namespace App.Services
       await context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
 
-    private static async Task<string?> ValidateCredentials(string email, string password)
+    private static async Task<User?> ValidateCredentials(string email, string password)
     {
       try
       {
         string passwordHash = password.GetMD5(EncodingType.UTF8);
 
-        var user = await Query.FetchOne<User>(
+        return await Query.FetchOne<User>(
           user => user.Email.Equals(email) && user.Password.Equals(passwordHash)
         );
-
-        return user?.ID;
       }
 
       catch (Exception ex)

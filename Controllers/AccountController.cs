@@ -1,7 +1,6 @@
 ﻿using App.Entities;
 using App.Interfaces;
 using App.Models;
-using App.Services;
 using MD5Hash;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Entities;
