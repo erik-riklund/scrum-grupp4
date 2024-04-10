@@ -2,6 +2,7 @@
 using App.Models;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Entities;
+using App.Handlers;
 
 namespace App.Controllers
 {
@@ -41,7 +42,7 @@ namespace App.Controllers
 
                 if (sov.Picture != null)
                 {
-                    var imagehandler = new Imagehandler();
+                    var imagehandler = new ImageHandler();
                     var path = imagehandler.GetPath(sov.Picture, model.ID);
                     await imagehandler.UploadImage(sov.Picture, path);
                     model.ImagePath = path;
