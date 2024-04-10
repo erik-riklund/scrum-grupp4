@@ -15,10 +15,13 @@ namespace App.Controllers
     {
       return View();
     }
+
+    [HttpGet]
     public IActionResult Register()
     {
       return View();
     }
+    
     [HttpGet]
     public IActionResult RegisterAdmin()
     {
