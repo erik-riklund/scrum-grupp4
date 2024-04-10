@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace App.Controllers
+namespace App.Handlers
 {
-    public class Imagehandler
+    public class ImageHandler
     {
         public async Task UploadImage(IFormFile file, string path)
         {

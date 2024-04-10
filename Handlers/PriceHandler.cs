@@ -1,8 +1,8 @@
 ﻿using App.Entities;
 
-namespace App.Controllers
+namespace App.Handlers
 {
-    public class Price
+    public class PriceHandler
     {
 
         public double GetHatPrice(Dictionary<Material, double> materialsAmount)
