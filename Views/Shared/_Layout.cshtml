@@ -24,10 +24,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        @if (user.IsAdmin())
+                        {
+                            <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Model"
                                 asp-action="HandleModels">Manage Models</a>
                         </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Order"
                                 asp-action="OrderForm">Order Form</a>
@@ -36,22 +39,34 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Order"
                                 asp-action="SpecialOrderForm">Special Order Form</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account"
-                                asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account"
-                                asp-action="Register">Register</a>
-                        </li>
-                        <li class="nav-item">
+                        @if (user.IsAdmin())
+                        {
+                            <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account"
                                 asp-action="RegisterAdmin">Register Admin</a>
                         </li>
-                        <li class="nav-item">
+                        }
+                        @if (!user.IsLoggedIn())
+                        {
+                            <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account"
-                                asp-action="LogOut">Logout</a>
+                                asp-action="Login">Log in</a>
                         </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account"
+                                asp-action="LogOut">Log out</a>
+                        </li>
+                        }
+                        @if (!user.IsLoggedIn())
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account"
+                                asp-action="Register">Register</a>
+                        </li>
+                        }
                     </ul>
                 </div>
             </div>
