@@ -4,12 +4,8 @@ using MongoDB.Entities;
 
 namespace App.Controllers
 {
-    public partial class MaterialController : Controller
-    {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-    }	
+  public partial class MaterialController : Controller
+  {
+    public IActionResult Index() => View();
+  }
 }

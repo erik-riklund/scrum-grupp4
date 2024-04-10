@@ -1,13 +1,13 @@
 ﻿namespace App.Models
 {
-	public class ModelViewModel
-	{
-		public string ModelName { get; set; }
+  public class ModelViewModel
+  {
+    public string ModelName { get; set; } = null!;
 
-		public string Description { get; set; }
+    public string Description { get; set; } = null!;
 
-        public string ImagePath { get; set; }
+    public string ImagePath { get; set; } = null!;
 
-        public string ProductCode { get; set; }
-	}
+    public string ProductCode { get; set; } = null!;
+  }
 }
