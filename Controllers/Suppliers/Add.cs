@@ -7,10 +7,10 @@ using MongoDB.Entities;
 namespace App.Controllers
 {
 
-    public partial class ModelController : Controller
+    public partial class SupplierController : Controller
     {
         [HttpPost]
-        public async Task<IActionResult> AddNewSupplier(SupplierViewModel supplierViewModel, List<string> SelectedMaterials)
+        public async Task<IActionResult> AddNewSupplier(SupplierViewModel supplierViewModel)
         {
             if (supplierViewModel.SupplierName != null)
             {
@@ -29,55 +29,20 @@ namespace App.Controllers
                     Email = supplierViewModel.Email,
                     TelephoneNumber = supplierViewModel.TelephoneNumber,
                     Address = address
-            };
+                };
 
 
+                await supplier.SaveAsync();
 
-        }
-
-      
-
-                if (SelectedMaterials != null && SelectedMaterials.Count > 0)
-                {
-                    var chosenMaterials = new List<Material>();
-
-                    foreach (var materialId in SelectedMaterials)
-                    {
-                        var material = await Query.FetchOneById<Material>(materialId);
-
-                        if (material != null)
-                        {
-                            chosenMaterials.Add(material);
-                        }
-                    }
-
-                    await model.SaveAsync();
-
-                    foreach (var material in chosenMaterials)
-                    {
-                        await model.Materials.AddAsync(material);
-                    }
-                }
-
-                if (imageFile != null)
-                {
-                    var imageHandler = new ImageHandler();
-                    var path = imageHandler.GetPath(imageFile, model.ID);
-                    await imageHandler.UploadImage(imageFile, path);
-                    modelViewModel.ImagePath = imageFile.FileName;
-                    model.ImagePath = path;
-                }
-
-                await model.SaveAsync();
-
-                return RedirectToAction("HandleModels", "Model");
+                return RedirectToAction("HandleSupplier", "Supplier");
             }
-            else
+            else 
             {
-                string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
+                 string script = "<script>alert('You must enter a supplier name!'); window.location.href='/Model/HandleModels';</script>";
 
-                return Content(script, "text/html");
-            }
+                  return Content(script, "text/html");
+             }
         }
     }
-}
+ }
+   

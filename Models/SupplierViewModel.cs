@@ -4,11 +4,11 @@ namespace App.Models
 {
     public class SupplierViewModel
     {
-        public string SupplierName { get; set; } 
-        
-        public string Email { get; set; }
+        public string SupplierName { get; set; } = null!;
 
-        public string TelephoneNumber { get; set;}
+        public string Email { get; set; } = null!;
+
+        public string TelephoneNumber { get; set;} = null!;
 
         public string StreetAddress { get; set; } = null!;
 
