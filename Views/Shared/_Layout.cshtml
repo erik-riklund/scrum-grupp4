@@ -35,6 +35,13 @@
                                 </a>
                             </li>
             }
+            @if (user.IsAdmin())
+            {
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Material" asp-action="ManageMaterial">Manage
+                  Material</a>
+              </li>
+            }
             <li class="nav-item">
               <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="OrderForm">Order Form</a>
             </li>
