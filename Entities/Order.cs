@@ -4,6 +4,8 @@ namespace App.Entities
 {
   public class Order : Entity
   {
+    public string CustomerID { get; set; } = null!;
+
     public DateTime EstimatedDeliveryDate { get; set; }
 
     public DateTime DeliveryDate { get; set; }
@@ -17,6 +19,13 @@ namespace App.Entities
     [OwnerSide]
     public Many<Hat, Order> Hats { get; set; } = null!;
 
-    public Order() => this.InitOneToMany(() => Hats);
+    [OwnerSide]
+    public Many<Shipping, Order> Shippings { get; set; } = null!;
+
+    public Order()
+    {
+      this.InitOneToMany(() => Hats);
+      this.InitOneToMany(() => Shippings);
+    }
   }
 }
