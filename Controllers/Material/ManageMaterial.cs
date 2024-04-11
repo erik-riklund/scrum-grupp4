@@ -1,5 +1,6 @@
 using App.Entities;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using MongoDB.Entities;
 
 namespace App.Controllers
@@ -9,7 +10,10 @@ namespace App.Controllers
     [HttpGet]
     public async Task<IActionResult> ManageMaterial()
     {
-      return View();
+            var cursor = await DB.Find<Supplier>().ExecuteCursorAsync();
+            ViewBag.CurrentSuppliers = await cursor.ToListAsync();
+
+            return View();
     }
   }
 }
