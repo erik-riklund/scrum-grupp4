@@ -1,6 +1,6 @@
 namespace App.Models
 {
-  public class Material
+  public class MaterialViewModel
   {
     public string Name { get; set; } = null!;
 
