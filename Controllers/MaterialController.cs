@@ -1,6 +1,4 @@
-﻿using App.Entities;
-using Microsoft.AspNetCore.Mvc;
-using MongoDB.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {

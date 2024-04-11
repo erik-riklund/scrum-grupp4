@@ -11,10 +11,9 @@ namespace App.Controllers
     [HttpGet]
     public async Task<IActionResult> SpecialOrderForm()
     {
-      var material = await Query.FetchAll<Material>();
-      SpecialOrderViewModel son = new SpecialOrderViewModel();
-      ViewBag.Material = material;
-      return View(son);
+      ViewBag.Material = await Query.FetchAll<Material>();
+
+      return View(new SpecialOrderViewModel());
     }
 
     [HttpPost]
@@ -28,23 +27,21 @@ namespace App.Controllers
           Description = sov.Description
         };
 
-
         await hat.SaveAsync();
 
         var model = new Model
         {
           ModelName = "Specialhat",
           Description = sov.Description
-
         };
-
-        await model.SaveAsync();
 
         if (sov.Picture != null)
         {
           var imagehandler = new ImageHandler();
+
           var path = imagehandler.GetPath(sov.Picture, model.ID);
           await imagehandler.UploadImage(sov.Picture, path);
+          
           model.ImagePath = path;
         }
 
@@ -56,30 +53,33 @@ namespace App.Controllers
           foreach (var materialID in selectedMaterials)
           {
             var material = await Query.FetchOneById<Material>(materialID);
+            
             if (material != null)
             {
               await model.Materials.AddAsync(material);
               await material.Models.AddAsync(model);
             }
-
           }
-
-
         }
 
         hat.ModelID = model.ID;
         await hat.SaveAsync();
 
-        var order = new App.Entities.Order
+        var order = new Entities.Order
         {
           IsApproved = false,
           Status = "SpecialPending"
 
         };
+        
         await order.SaveAsync();
         await order.Hats.AddAsync(hat);
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("ConfirmSpecial","Order", new { id = order.ID });
+      }
+      else
+      {
+        // felhantering vid ogiltigt formulär..?
       }
 
       var materials = await Query.FetchAll<Material>();

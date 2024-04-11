@@ -11,10 +11,12 @@ namespace App.Controllers
     public async Task<IActionResult> OrderForm()
     {
       var models = await Query.FetchAll<Model>();
-      OrderViewModel ovm = new OrderViewModel();
-      List<SelectListItem> modeller = models.Where(x => x.ModelName != "Specialhat").Select(x => new SelectListItem { Text = x.ModelName, Value = x.ID }).ToList();
+
+      List<SelectListItem> modeller = models.Where(x => x.ModelName != "Specialhat")
+        .Select(x => new SelectListItem { Text = x.ModelName, Value = x.ID }).ToList();
+
       ViewBag.Models = modeller;
-      return View(ovm);
+      return View(new OrderViewModel());
     }
 
     [HttpPost]
@@ -22,35 +24,32 @@ namespace App.Controllers
     {
       if (ModelState.IsValid)
       {
-
-        var hat = new App.Entities.Hat
+        var hat = new Hat
         {
           Size = orderViewModel.Size,
           Description = orderViewModel.Description,
           ModelID = orderViewModel.ModelID
-
         };
 
         await hat.SaveAsync();
+
+        var customer = await session.GetUserAsync();
         var model = await Query.FetchOneById<Model>(orderViewModel.ModelID);
 
-        if (model != null)
+        if (customer != null && model != null)
         {
-          await model.Hats.AddAsync(hat);
-          var order = new App.Entities.Order
-          {
-            IsApproved = false,
-            Status = "Pending"
-          };
+          var order = new Entities.Order { IsApproved = false, Status = "Pending" };
+
           await order.SaveAsync();
           await order.Hats.AddAsync(hat);
-        }
+          await model.Hats.AddAsync(hat);
+          await customer.Orders.AddAsync(order);
 
-        return RedirectToAction("Index", "Home");
+          return RedirectToAction("Confirm","Order", new { id = order.ID });
+        }
       }
-      var models = await Query.FetchAll<Model>();
-      List<SelectListItem> modeller = models.Where(x => x.ModelName != "Specialhat").Select(x => new SelectListItem { Text = x.ModelName, Value = x.ID }).ToList();
-      ViewBag.Models = modeller;
+
+      // felhantering?
       return View(orderViewModel);
     }
   }
