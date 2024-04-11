@@ -18,6 +18,12 @@ namespace App.Entities
 
     public Many<Role, User> Roles { get; set; } = null!;
 
-    public User() => this.InitOneToMany(() => Roles);
+    public Many<Order, User> Orders { get; set; } = null!;
+
+    public User()
+    {
+      this.InitOneToMany(() => Roles);
+      this.InitOneToMany(() => Orders);
+    }
   }
 }
