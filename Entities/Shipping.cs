@@ -15,5 +15,7 @@ namespace App.Entities
     public string ShippingCompany { get; set; } = null!;
 
     public string Payment { get; set; } = null!;
+
+    public byte[] PDF {get; set; } = null!;
   }
 }
