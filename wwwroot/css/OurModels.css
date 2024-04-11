@@ -1,0 +1,50 @@
+﻿.OurModels {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: space-around;
+    margin-top: 75px;
+}
+
+.hats {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+    .hats img {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        border-radius: 5px;
+    }
+
+   
+    h1 {
+
+    }
+
+    h2 {
+
+    }
+
+    .ModelName{
+        margin-bottom: 2em;
+    }
+
+    .SeeProduct:hover {
+        padding: 20px;
+        background-color: white;
+        color: black;
+    }
+
+    .SeeProduct {
+        padding: 20px;
+        background-color: black;
+        color: white;
+    }
