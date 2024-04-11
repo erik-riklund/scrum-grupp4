@@ -1,7 +1,7 @@
 
 @model PrintOrderViewModel
 
-<img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
+@* <img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image"> *@
 <div class="container">
     <div class="login-box">
         <!-- Använder samma CSS-klass för enhetlig design -->
@@ -9,7 +9,7 @@
         <form method="post">
             <div class="form-group">
                 <label for="OrderNumber">Id for the order</label>
-                <input asp-for="OrderNumber" type="text" class="form-control" id="OrderNumber" placeholder="@ViewBag.OrderNumber" readonly>
+        <input asp-for="OrderNumber" type="text" class="form-control" id="OrderNumber" value="@ViewBag.OrderNumber" readonly>
             </div>
             <div class="form-group">
                 <label for="PackageWeigh">Weigh of package</label>
