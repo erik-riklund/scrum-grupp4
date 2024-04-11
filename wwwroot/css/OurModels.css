@@ -16,9 +16,6 @@
     cursor: pointer;
 }
 
-    .hats:hover {
-        transform: scale(1.05);
-    }
 
     .hats img {
         width: 100%;
@@ -27,14 +24,27 @@
         border-radius: 5px;
     }
 
+   
+    h1 {
+
+    }
+
     h2 {
 
     }
 
-    header {
+    .ModelName{
+        margin-bottom: 2em;
+    }
 
+    .SeeProduct:hover {
+        padding: 20px;
+        background-color: white;
+        color: black;
     }
 
     .SeeProduct {
-
+        padding: 20px;
+        background-color: black;
+        color: white;
     }

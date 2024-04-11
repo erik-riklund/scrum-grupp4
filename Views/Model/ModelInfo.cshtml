@@ -1,0 +1,15 @@
+﻿@model Model
+
+
+@* <img src="@ImagePath" alt="Picture on specific hat"> *@
+<h2>@Model.ModelName</h2>
+<p>@Model.Description</p>
+
+@if(@Model.Materials != null && @Model.Materials.Count() > 0)
+{
+    <h3>Material</h3>
+    foreach(var material in Model.Materials)
+    {
+        <p>@material.Name</p>
+    }
+}

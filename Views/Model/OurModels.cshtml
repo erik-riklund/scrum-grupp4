@@ -8,14 +8,20 @@
     <link rel="stylesheet" href="~/css/OurModels.css" asp-append-version="true" />
 </head>
 
+<h1>
+    Here you can watch our standard models
+</h1>
+<h2>
+    If you want to know more, click on the model
+</h2>
 <div class="OurModels">
     @foreach(var models in Model)
     {
     <div class="hats">
         <img src="@models.ImagePath" alt="Image of hat">
         <div class="info">
-            <h2>@models.ModelName</h2>
-            <btn class="SeeProduct">See product</btn>
+            <h2 class="ModelName">@models.ModelName</h2>
+            <a asp-action="ModelInfo" asp-controller="Model" asp-route-modelID="@models.ID" class="SeeProduct">See Product</a>
         </div>
 
     </div>
