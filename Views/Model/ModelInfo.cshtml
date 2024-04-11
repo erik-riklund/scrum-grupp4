@@ -1,15 +1,19 @@
-﻿@model Model
+﻿@model HatViewModel
 
 
-@* <img src="@ImagePath" alt="Picture on specific hat"> *@
-<h2>@Model.ModelName</h2>
-<p>@Model.Description</p>
+<img src="@Model.HatModel.ImagePath" alt="Picture on specific hat">
+<h2>@Model.HatModel.ModelName</h2>
+<p>@Model.HatModel.Description</p>
 
-@if(@Model.Materials != null && @Model.Materials.Count() > 0)
+@if(@Model.HatModel.Materials != null && @Model.HatModel.Materials.Count() > 0)
 {
     <h3>Material</h3>
-    foreach(var material in Model.Materials)
+    foreach (var material in @Model.HatModel.Materials)
     {
         <p>@material.Name</p>
     }
 }
+<form asp-action="AddToCart" asp-controller="Cart" method="post">
+
+    
+</form>

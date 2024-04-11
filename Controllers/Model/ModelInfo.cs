@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using App.Entities;
+using App.Models;
 
 namespace App.Controllers
 {
@@ -8,7 +9,8 @@ namespace App.Controllers
         public async Task<IActionResult> ModelInfo(String modelID) 
         {
             var model = await Query.FetchOneById<Model>(modelID);
-            return View(model);
+            var hvm = new HatViewModel { HatModel = model };
+            return View(hvm);
         }
     }
 }
