@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using App.Entities;
+using MongoDB.Driver;
 using MongoDB.Entities;
 using System.Linq.Expressions;
 
@@ -38,5 +39,5 @@ namespace App
     {
       return await DB.Find<TEntity>().Match(expression).ExecuteFirstAsync();
     }
-  }
+    }
 }
