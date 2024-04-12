@@ -41,53 +41,32 @@ namespace App.Controllers
             }
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> SaveEdit(string modelID, ModelViewModel modelViewModel, List<string> SelectedMaterials, IFormFile imageFile)
-        //{
-        //    var model = await Query.FetchOneById<Model>(modelID);
+        [HttpPost]
+        public async Task<IActionResult> SaveEdit(string supplierId, SupplierViewModel supplierViewModel)
+        {
+            var supplier = await Query.FetchOneById<Supplier>(supplierId);
 
-        //    if (model != null)
-        //    {
-        //        var originalPath = model.ImagePath;
+            if (supplier != null)
+            {
+                
 
-        //        model.ModelName = modelViewModel.ModelName;
-        //        model.Description = modelViewModel.Description;
-        //        model.ImagePath = modelViewModel.ImagePath;
-        //        model.ProductCode = modelViewModel.ProductCode;
+                supplier.Name = supplierViewModel.SupplierName;
+                supplier.Email = supplierViewModel.Email;
+                supplier.TelephoneNumber = supplierViewModel.TelephoneNumber;
+                supplier.Address.StreetAddress = supplierViewModel.StreetAddress;
+                supplier.Address.ZipCode = supplierViewModel.ZipCode;
+                supplier.Address.City = supplierViewModel.City;
+                supplier.Address.Country = supplierViewModel.Country;
 
-        //        await model.Materials.RemoveAsync(model.Materials);
+                
 
-        //        if (SelectedMaterials != null && SelectedMaterials.Count > 0)
-        //        {
-        //            var chosenMaterials = await DB.Find<Material>().Match(m => SelectedMaterials.Contains(m.ID)).ExecuteAsync();
+                await supplier.SaveAsync();
 
-        //            foreach (var material in chosenMaterials)
-        //            {
-        //                await model.Materials.AddAsync(material);
-        //            }
-        //        }
 
-        //        await model.SaveAsync();
+                return RedirectToAction("HandleSupplier", "Supplier");
+            }
 
-        //        if (imageFile != null)
-        //        {
-        //            var imageHandler = new ImageHandler();
-        //            var path = imageHandler.GetPath(imageFile, model.ID);
-        //            await imageHandler.UploadImage(imageFile, path);
-        //            modelViewModel.ImagePath = imageFile.FileName;
-        //            model.ImagePath = path;
-        //            await model.SaveAsync();
-        //        }
-        //        else
-        //        {
-        //            model.ImagePath = originalPath;
-        //            await model.SaveAsync();
-        //        }
-
-        //        return RedirectToAction("HandleModels", "Model");
-        //    }
-
-        //    return NotFound();
-        //}
+            return NotFound();
+        }
     }
 }
