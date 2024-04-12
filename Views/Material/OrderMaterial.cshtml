@@ -15,6 +15,12 @@
                 <input asp-for="@Model.Material.Description" type="text" id="materialDescription" class="form-control"
                     readonly>
             </div>
+            <div>
+                <label for="unitField" class="form-label mt-4">Unit:</label>
+                <input asp-for="@Model.Material.Unit" type="text" id="materialUnit" class="form-control"
+                    readonly>
+            </div>
+            <br />
             <button type="submit" class="btn btn-success btn-primary" asp-controller="Material"
                 asp-action="PlaceOrder">Place
                 order</button>
