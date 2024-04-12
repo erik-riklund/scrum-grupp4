@@ -15,6 +15,10 @@
                 <div class="description">Description: @item.Description</div>
                 <div class="price">Price: @item.Price</div>
             </div>
+            <div class="cart-buttons">
+                <a data-hatid="@item.ID" class="remove-link">Remove Product</a>
+                <button type="button" class="edit-button">Edit</button>
+            </div>
         </div>
     }
 
@@ -23,3 +27,20 @@
     </div>
 </form>
 
+@section Scripts {
+    <script>
+        // Skriptet för att hantera klick på "Remove Product" länk
+        $('.remove-link').click(function () {
+            var hatId = $(this).data('hatid'); // Hämta hatId från data-attribut
+            $.post('@Url.Action("Remove", "Cart")', { hatId: hatId })
+                .done(function (data) {
+                    // Ladda om sidan efter borttagning eller uppdatera varukorgsvisningen
+                    location.reload();
+                })
+                .fail(function () {
+                    // Hantera eventuella fel vid behov
+                    console.log('Failed to remove product');
+                });
+        });
+    </script>
+}

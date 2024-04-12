@@ -27,6 +27,7 @@ namespace App.Controllers
           Description = sov.Description
         };
 
+        hat.Price = 0;
         await hat.SaveAsync();
 
         var model = new Model
@@ -34,6 +35,7 @@ namespace App.Controllers
           ModelName = "Specialhat",
           Description = sov.Description
         };
+        await model.SaveAsync();
 
         if (sov.Picture != null)
         {
@@ -64,18 +66,24 @@ namespace App.Controllers
 
         hat.Model = model;
         await hat.SaveAsync();
+        var customer = await session.GetUserAsync();
+                if (customer.ShoppingCart == null)
+                {
+                    customer.ShoppingCart = new Cart { UserID = customer.ID };
+                    await customer.SaveAsync();
+                    await customer.ShoppingCart.SaveAsync();
 
-        var order = new Entities.Order
-        {
-          IsApproved = false,
-          Status = "SpecialPending"
+                }
 
-        };
-        
-        await order.SaveAsync();
-        await order.Hats.AddAsync(hat);
+        var shoppingCarts = await Query.FetchAll<Cart>();
+        var shoppingCart = shoppingCarts.Where(c => c.UserID == customer.ID).FirstOrDefault();
 
-        return RedirectToAction("ConfirmSpecial", "Order", new { id = order.ID });
+       await shoppingCart.Hats.AddAsync(hat);
+       shoppingCart.UpdateTotalSum();
+       await shoppingCart.SaveAsync();
+
+
+                return RedirectToAction("Index", "Home");
       }
       else
       {

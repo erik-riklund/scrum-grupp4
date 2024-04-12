@@ -47,6 +47,30 @@
     cursor: pointer;
 }
 
-    .confirm-order-button:hover {
+.confirm-order-button:hover {
         background-color: darkgreen;
     }
+
+.cart-buttons {
+    display: flex;
+}
+
+.SeeProduct {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
