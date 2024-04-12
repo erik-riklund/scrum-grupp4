@@ -16,12 +16,12 @@ namespace App.Controllers
             if(shoppingCart != null)
             {
                 
-                foreach(var hat in shoppingCart.Hats)
-                {
+                //foreach(var hat in shoppingCart.Hats)
+                //{
                     
                     //var cartViewModel = new CartViewModel { hat = hat, model = hat.Model };
-                    lista.hats.Add(hat);
-                }
+                    lista.hats = shoppingCart.Hats.ToList();
+                //}
             }
             lista.cart = shoppingCart;
 
