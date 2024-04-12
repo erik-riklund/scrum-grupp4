@@ -5,6 +5,7 @@ using MongoDB.Entities;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MongoDB.Driver.Linq;
 
 namespace App.Controllers
 {
@@ -14,13 +15,12 @@ namespace App.Controllers
         public async Task<IActionResult> OrderMaterial(string materialID)
         {
             var material = await Query.FetchOneById<Material>(materialID);
-            
-            var supplier = await Query.FetchOne<Supplier>(supplier => supplier.Materials.Contains(material));
+            var supplier = await Query.FetchOneById<Supplier>(material.SupplierID);
 
             var omvm = new OrderMaterialViewModel
             {
                 Material = material,
-                Supplier = supplier
+                Supplier = supplier,
             };
 
             return View(omvm);
