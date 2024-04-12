@@ -30,6 +30,7 @@ namespace App.Controllers
             }
 
             shoppingCart.Hats.RemoveAsync(hat);
+            hat.DeleteAsync();
 
             shoppingCart.UpdateTotalSum();
 
