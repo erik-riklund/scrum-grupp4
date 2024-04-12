@@ -46,7 +46,7 @@ namespace App.Controllers
         }
 
         await model.SaveAsync();
-        await model.Hats.AddAsync(hat);
+        // await model.Hats.AddAsync(hat);
 
         if (selectedMaterials != null && selectedMaterials.Count > 0)
         {
@@ -62,7 +62,7 @@ namespace App.Controllers
           }
         }
 
-        hat.ModelID = model.ID;
+        hat.Model = model;
         await hat.SaveAsync();
 
         var order = new Entities.Order
@@ -75,7 +75,7 @@ namespace App.Controllers
         await order.SaveAsync();
         await order.Hats.AddAsync(hat);
 
-        return RedirectToAction("ConfirmSpecial","Order", new { id = order.ID });
+        return RedirectToAction("ConfirmSpecial", "Order", new { id = order.ID });
       }
       else
       {

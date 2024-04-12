@@ -15,13 +15,13 @@ namespace App.Entities
     [OwnerSide]
     public Many<Material, Model> Materials { get; set; } = null!;
 
-    [OwnerSide]
-    public Many<Hat, Model> Hats { get; set; } = null!;
+    // [OwnerSide]
+    // public Many<Hat, Model> Hats { get; set; } = null!;
 
     public Model()
     {
       this.InitManyToMany(() => Materials, material => material.Models);
-      this.InitOneToMany(() => Hats);
+      // this.InitOneToMany(() => Hats);
     }
   }
 }

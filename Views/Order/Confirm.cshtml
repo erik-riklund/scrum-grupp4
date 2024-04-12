@@ -1,0 +1,30 @@
+@model Order
+
+<h1 style="color: rgb(4, 249, 4);">ORDER CONFIRMED</h1>
+<div>
+    <div>
+        <h4>Your order has been placed.</h4>
+        <p>Estimated delivery date: @Model.EstimatedDeliveryDate</p>
+        <p>Status: @Model.Status</p>
+        <p>Order sum: @Model.OrderSum</p>
+    </div>
+    <div>
+        @foreach (var item in @Model.Hats)
+        {
+            <div>
+                @item.Model.ModelName
+                @item.Model.Description
+                @if (item.Model.ImagePath == null || item.Model.ImagePath == "")
+                                    {
+                                        <td><img src="~/Images/GenericHat.png" alt="Model Thumbnail" width="45" height="45"></td>
+                                    }
+                                    else
+                                    {
+                                        <td><img src="~/Images/@item.Model.ImagePath" alt="Model Thumbnail" width="45" height="45"></td>
+                                    }
+                @item.Size
+                @item.Price
+            </div>
+        }
+    </div>
+</div>
