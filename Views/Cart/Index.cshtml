@@ -1,12 +1,13 @@
-﻿@model List<CartViewModel>
+﻿@model CartViewModel
 
 <h1>Shopping Cart</h1>
 
-@foreach(var item in Model)
+@foreach(var item in Model.hats)
 {
     <tr>
-        <td>@item.model.ModelName</td>
-        <td>@item.hat.Description</td>
-        <td>@item.hat.Price</td>
+        <img class="cartpicture" src="@item.Model.ImagePath">
+        <td>@item.Model.ModelName</td>
+        <td>@item.Description</td>
+        <td>@item.Price</td>
     </tr>
 }

@@ -9,19 +9,21 @@ namespace App.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            var user = await session.GetUserAsync(); 
-            var shoppingCart = user.ShoppingCart;
-            var lista = new List<CartViewModel>();
+            var user = await session.GetUserAsync();
+            var shoppingCarts = await Query.FetchAll<Cart>();
+            var shoppingCart = shoppingCarts.Where(c => c.UserID == user.ID).FirstOrDefault();
+            var lista = new CartViewModel();
             if(shoppingCart != null)
             {
+                
                 foreach(var hat in shoppingCart.Hats)
                 {
-                    var model = await Query.FetchOneById<Model>(hat.ModelID);
-                    var cartViewModel = new CartViewModel { hat = hat, model = model };
-                    lista.Add(cartViewModel);
+                    
+                    //var cartViewModel = new CartViewModel { hat = hat, model = hat.Model };
+                    lista.hats.Add(hat);
                 }
             }
-            ViewBag.Cart = shoppingCart;
+            lista.cart = shoppingCart;
 
             return View(lista); 
         }

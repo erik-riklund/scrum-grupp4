@@ -3,7 +3,7 @@ namespace App.Models
 {
     public class CartViewModel 
     {
-        public Hat hat {  get; set; }
-        public Model model { get; set; }
+        public List<Hat> hats {  get; set; }
+        public Cart cart { get; set; }
     }
 }
