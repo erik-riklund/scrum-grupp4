@@ -1,0 +1,12 @@
+﻿@model List<CartViewModel>
+
+<h1>Shopping Cart</h1>
+
+@foreach(var item in Model)
+{
+    <tr>
+        <td>@item.model.ModelName</td>
+        <td>@item.hat.Description</td>
+        <td>@item.hat.Price</td>
+    </tr>
+}
