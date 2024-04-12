@@ -35,7 +35,7 @@
                             </td>
                             <td>@currentSupplier.Email</td>
                             <td>@currentSupplier.TelephoneNumber</td>
-                            <td>@currentSupplier.Address.StreetAddress, @currentSupplier.Address.City</td>
+                            <td>@currentSupplier.Address.StreetAddress, @currentSupplier.Address.City, @currentSupplier.Address.Country</td>
                             <td>
                                 <form method="post" asp-action="EditModel">
                                     <input type="hidden" name="ModelId" value="@currentSupplier.ID" />
