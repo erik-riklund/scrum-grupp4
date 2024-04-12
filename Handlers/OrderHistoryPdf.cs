@@ -6,7 +6,7 @@ namespace App.Handlers
 {
     public class OrderHistoryPdf
     {
-        public async Task<String> PdfContent(List<Order> order, DateTime dateFrom, DateTime dateTo)
+        public static async Task<String> PdfContent(List<Entities.Order> order, DateTime dateFrom, DateTime dateTo)
         {
             string content =
                 "<div><h1>Date from: "+dateFrom+" Date to: "+dateTo+"</h1></div>"+

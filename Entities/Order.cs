@@ -18,7 +18,9 @@ namespace App.Entities
 
     public double OrderSum { get; set; }
 
-    [OwnerSide]
+    public byte[] PDF { get; set; } = null!;
+
+        [OwnerSide]
     public Many<Hat, Order> Hats { get; set; } = null!;
 
     [OwnerSide]
