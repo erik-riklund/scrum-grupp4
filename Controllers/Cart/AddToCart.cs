@@ -37,11 +37,11 @@ namespace App.Controllers
                     Price = price,
                     Size = hvm.Size,
                     Description = hvm.Description,
-                    ModelID = model.ID
+                    Model = model
                 };
 
                 await hat.SaveAsync();
-                await model.Hats.AddAsync(hat);
+                
 
                 var customer = await session.GetUserAsync();
                 if (customer.ShoppingCart == null)
@@ -55,7 +55,6 @@ namespace App.Controllers
                 var shoppingCarts = await Query.FetchAll<Cart>();
                 var shoppingCart= shoppingCarts.Where(c => c.UserID == customer.ID).FirstOrDefault();
 
-                //await shoppingCart.SaveAsync();
                 await shoppingCart.Hats.AddAsync(hat);
                 shoppingCart.UpdateTotalSum();
                 await shoppingCart.SaveAsync();
