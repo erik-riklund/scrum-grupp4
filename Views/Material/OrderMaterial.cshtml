@@ -1,47 +1,57 @@
 ﻿@model OrderMaterialViewModel
 
-<form asp-action="" method="post">
-    <h2 style="text-align: center;">ORDER MATERIAL HERE</h2>
-    <br />
-    <div>
-        <label for="supplierField" class="form-label mt-4">Material:</label>
-        <input asp-for="@Model.Material.Name" type="text" id="materialName" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="supplierField" class="form-label mt-4">Description:</label>
-        <input asp-for="@Model.Material.Description" type="text" id="materialDescription" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="supplierField" class="form-label mt-4">Supplier:</label>
-        <input asp-for="@Model.Supplier.Name" type="text" id="supplierField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="telephoneField" class="form-label mt-4">Telephone number:</label>
-        <input asp-for="@Model.Supplier.TelephoneNumber" type="text" id="telephoneField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="emailField" class="form-label mt-4">Email:</label>
-        <input asp-for="@Model.Supplier.Email" type="text" id="emailField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="addressField" class="form-label mt-4">Address:</label>
-        <input asp-for="@Model.Supplier.Address.StreetAddress" type="text" id="addressField" class="form-control"
-            readonly>
-    </div>
-    <div>
-        <label for="zipCode" class="form-label mt-4">Zip code:</label>
-        <input asp-for="@Model.Supplier.Address.ZipCode" type="text" id="zipCodeField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="cityField" class="form-label mt-4">City:</label>
-        <input asp-for="@Model.Supplier.Address.City" type="text" id="cityField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="addressField" class="form-label mt-4">Country:</label>
-        <input asp-for="@Model.Supplier.Address.Country" type="text" id="countryField" class="form-control" readonly>
-    </div>
+<h2 style="text-align: center;">ORDER MATERIAL HERE</h2>
+<br />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="" method="post">
 
-    <br />
-    <button type="submit" class="btn btn-success btn-primary" asp-controller="Material" asp-action="PlaceOrder">Place
-        order</button>
-</form>
+            <div>
+                <label for="supplierField" class="form-label mt-4">Material:</label>
+                <input asp-for="@Model.Material.Name" type="text" id="materialName" class="form-control" readonly>
+            </div>
+            <div>
+                <label for="supplierField" class="form-label mt-4">Description:</label>
+                <input asp-for="@Model.Material.Description" type="text" id="materialDescription" class="form-control"
+                    readonly>
+            </div>
+            <button type="submit" class="btn btn-success btn-primary" asp-controller="Material"
+                asp-action="PlaceOrder">Place
+                order</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div>
+            <label for="supplierField" class="form-label mt-4">Supplier:</label>
+            <input asp-for="@Model.Supplier.Name" type="text" id="supplierField" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="telephoneField" class="form-label mt-4">Telephone number:</label>
+            <input asp-for="@Model.Supplier.TelephoneNumber" type="text" id="telephoneField" class="form-control"
+                readonly>
+        </div>
+        <div>
+            <label for="emailField" class="form-label mt-4">Email:</label>
+            <input asp-for="@Model.Supplier.Email" type="text" id="emailField" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="addressField" class="form-label mt-4">Address:</label>
+            <input asp-for="@Model.Supplier.Address.StreetAddress" type="text" id="addressField" class="form-control"
+                readonly>
+        </div>
+        <div>
+            <label for="zipCode" class="form-label mt-4">Zip code:</label>
+            <input asp-for="@Model.Supplier.Address.ZipCode" type="text" id="zipCodeField" class="form-control"
+                readonly>
+        </div>
+        <div>
+            <label for="cityField" class="form-label mt-4">City:</label>
+            <input asp-for="@Model.Supplier.Address.City" type="text" id="cityField" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="addressField" class="form-label mt-4">Country:</label>
+            <input asp-for="@Model.Supplier.Address.Country" type="text" id="countryField" class="form-control"
+                readonly>
+        </div>
+    </div>
+</div>
