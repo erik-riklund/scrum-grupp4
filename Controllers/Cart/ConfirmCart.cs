@@ -7,15 +7,15 @@ namespace App.Controllers
     public partial class CartController : Controller
     {
         [HttpPost]
-        public async Task<IActionResult> ConfirmCart(List<CartViewModel> hats)
+        public async Task<IActionResult> ConfirmCart(CartViewModel hats)
         {
             var order= new Entities.Order();
             await order.SaveAsync();
             order.OrderSum = 0;
-            foreach (var item in hats)
+            foreach (var hat in hats.hats)
             {
-                await order.Hats.AddAsync(item.hat);
-                order.OrderSum += item.hat.Price;
+                await order.Hats.AddAsync(hat);
+                order.OrderSum += hat.Price;
             }
             var customer = await session.GetUserAsync();
             order.CustomerID = customer.ID;
