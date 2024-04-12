@@ -8,7 +8,20 @@ namespace App.Handlers
   {
     public static byte[] HtmlToPdf(string content)
     {
-      var stream = new MemoryStream();
+     var html= $@"
+            <html>
+              <head>
+                <style>
+                  h1 {{ color: black }}
+                  span {{ color: green }}
+                </style>
+              </head>
+              <body>
+                {content}
+              </body>
+            </html>
+          ";
+            var stream = new MemoryStream();
       var writer = new PdfWriter(stream);
       var document = new PdfDocument(writer);
 
