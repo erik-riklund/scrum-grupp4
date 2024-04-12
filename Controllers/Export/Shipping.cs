@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using App.Entities;
 using App.Models;
 using MongoDB.Entities;
+using App.Handlers;
 
 namespace App.Controllers
 {
@@ -33,6 +34,8 @@ namespace App.Controllers
     {
       try
       {
+        ViewBag.OrderNumber = model.OrderNumber;
+
         if (!ModelState.IsValid)
         {
           foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
@@ -58,6 +61,7 @@ namespace App.Controllers
             return View(model);
           }
 
+
           var shipping = new Shipping
           {
             PackageWeight = model.PackageWeight,
@@ -65,13 +69,16 @@ namespace App.Controllers
             PackageQuantity = model.PackageQuantity,
             PackageSize = model.PackageSize,
             ShippingCompany = model.ShippingCompany,
-            Payment = model.Payment
-          };
+            Payment = model.Payment,
 
+          };
+           var content = ShippingPdfContent.PdfContent(order, customer, shipping);
+          shipping.PDF = PdfHandler.HtmlToPdf(content);
           await shipping.SaveAsync();
           await order.SaveAsync();
-
           await order.Shippings.AddAsync(shipping);
+
+          return RedirectToAction("Index", "Home");
         }
       }
 
@@ -81,6 +88,13 @@ namespace App.Controllers
       }
 
       return View(model);
+    }
+
+    public async Task<FileStreamResult> Test(string id)
+    {
+      var shipping = await Query.FetchOneById<Shipping>(id);
+
+      return PdfHandler.ToStream(shipping.PDF);
     }
   }
 }
