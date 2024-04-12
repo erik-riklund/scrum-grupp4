@@ -1,16 +1,15 @@
+using App.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {
   public partial class OrderController : Controller
   {
-    public IActionResult ConfirmSpecial(string id)
+    public async Task<IActionResult> ConfirmSpecial(string id)
     {
-      // ATT GÖRA:
-      // - hämta ordern och visa bekräftelse
-      // - implementera en view.
+      var confirmedOrder = await Query.FetchOneById<Order>(id);
 
-      return View();
+      return View(confirmedOrder);
     }
   }
 }

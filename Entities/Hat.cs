@@ -4,7 +4,7 @@ namespace App.Entities
 {
   public class Hat : Entity
   {
-    public string ModelID { get; set; } = null!;
+    public Model Model { get; set; } = null!;
 
     public double Price { get; set; }
 

@@ -24,11 +24,13 @@ namespace App.Controllers
     {
       if (ModelState.IsValid)
       {
+        var selectedModel = await Query.FetchOneById<Model>(orderViewModel.ModelID);
+
         var hat = new Hat
         {
           Size = orderViewModel.Size,
           Description = orderViewModel.Description,
-          ModelID = orderViewModel.ModelID
+          Model = selectedModel
         };
 
         await hat.SaveAsync();
@@ -42,14 +44,13 @@ namespace App.Controllers
 
           await order.SaveAsync();
           await order.Hats.AddAsync(hat);
-          await model.Hats.AddAsync(hat);
+          // await model.Hats.AddAsync(hat);
           await customer.Orders.AddAsync(order);
 
-          return RedirectToAction("Confirm","Order", new { id = order.ID });
+          return RedirectToAction("Confirm", "Order", new { id = order.ID });
         }
       }
 
-      // felhantering?
       return View(orderViewModel);
     }
   }
