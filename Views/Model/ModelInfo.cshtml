@@ -43,16 +43,16 @@
 
 <div class="container">
     <div class="content-box">
-        <img src="@Model.HatModel.ImagePath" alt="Picture on specific hat" class="hat-image">
+        <img src="@ViewBag.Model.ImagePath" alt="Picture on specific hat" class="hat-image">
         <div class="text-content">
-            <h2>@Model.HatModel.ModelName</h2>
-            <p>@Model.HatModel.Description</p>
+            <h2>@ViewBag.Model.ModelName</h2>
+            <p>@ViewBag.Model.Description</p>
 
-            @if (@Model.HatModel.Materials != null && @Model.HatModel.Materials.Count() > 0)
+            @if (@ViewBag.Model.Materials != null)
             {
                 <h3>Material</h3>
                 <ul>
-                    @foreach (var material in @Model.HatModel.Materials)
+                    @foreach (var material in @ViewBag.Model.Materials)
                     {
                         <li>@material.Name</li>
                     }
@@ -60,7 +60,7 @@
             }
 
             <form asp-action="AddToCart" asp-controller="Cart" method="post">
-                <input type="hidden" asp-for="HatModel" name="HatModel" value="@Model.HatModel" />
+                <input type="hidden" asp-for="modelID" />
                 <div class="form-group">
                     <label for="Size">Size: </label>
                     <input asp-for="Size" class="form-control" id="Size" />

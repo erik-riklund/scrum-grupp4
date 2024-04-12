@@ -14,8 +14,9 @@ namespace App.Controllers
         {
             if (ModelState.IsValid)
             {
+                var model = await Query.FetchOneById<Model>(hvm.modelID);
                 var pricemodel = new Dictionary<Material, double>();
-                foreach (var material in hvm.HatModel.Materials)
+                foreach (var material in model.Materials)
                 {
                     if (material.Unit.Equals("Meter"))
                     {
@@ -29,7 +30,7 @@ namespace App.Controllers
                 }
                 var pricehandler = new PriceHandler();
                 var price = pricehandler.GetHatPrice(pricemodel);
-                var model = hvm.HatModel;
+                
 
                 var hat = new Hat
                 {
@@ -48,10 +49,11 @@ namespace App.Controllers
                     customer.ShoppingCart = new Cart();
                 }
                 
-                
-                await customer.ShoppingCart.Hats.AddAsync(hat);
-                customer.ShoppingCart.UpdateTotalSum();
-                await customer.ShoppingCart.SaveAsync();
+                var shoppingCart = customer.ShoppingCart;
+                await shoppingCart.SaveAsync();
+                await shoppingCart.Hats.AddAsync(hat);
+                shoppingCart.UpdateTotalSum();
+                await shoppingCart.SaveAsync();
 
 
             }
