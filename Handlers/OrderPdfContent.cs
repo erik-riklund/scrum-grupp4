@@ -25,7 +25,7 @@ namespace App.Handlers
 
             foreach (var hat in order.Hats)
             {
-                if (hat.ModelID == hatmodel.ID)
+                if (hat.Model.ID == hatmodel.ID)
                 {
                     content += "<tr>" +
                         "<td>" + hatmodel.ModelName + "</td>" +

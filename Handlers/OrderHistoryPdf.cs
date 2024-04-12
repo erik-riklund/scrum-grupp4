@@ -24,12 +24,12 @@ namespace App.Handlers
             {
                 foreach (var hat in orders.Hats) 
                 {
-                    var hatModel = await Query.FetchOneById<Entities.Model>(hat.ModelID);
-                    if (hat.ModelID == hatModel.ID)
+                    var hatModel = await Query.FetchOneById<Entities.Model>(hat.Model.ID);
+                    if (hat.Model.ID == hatModel.ID)
                     {
                         content += "<tr>" +
                         "<td>" + orders.OrderDate + "</td>"+
-                        "<td>" + hat.ModelID + "</td>" +
+                        "<td>" + hat.Model.ID + "</td>" +
                         "<td>" + hatModel.ModelName + "</td>" +
                         "<td>" + hat.Price + "</td>" +
                         "<td>" + orders.Status + "</td>" +
