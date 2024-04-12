@@ -1,0 +1,71 @@
+@model MaterialViewModel
+
+<h2 style="text-align: center;">EDIT MATERIAL</h2><br />
+<br />
+<form method="post" asp-action="EditMaterial">
+    <div class="form-group row">
+        <div class="col-sm-2" style="margin-right: 15px;">
+            <label>Material name:</label>
+        </div>
+        <div class="col-sm-6" style="margin-bottom: 10px;">
+            <input asp-for="Name" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group row">
+        <div class="col-sm-2" style="margin-right: 15px;">
+            <label>Description: </label>
+        </div>
+        <div class="col-sm-6" style="margin-bottom: 10px;">
+            <input asp-for="Description" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2" style="margin-right: 15px;">
+            <label>Supplier:</label>
+        </div>
+        <div class="col-sm-6" style="margin-bottom: 10px;">
+            <select asp-for="SupplierID" class="form-control">
+                <option value="" disabled selected>&lt;Choose supplier&gt;</option>
+                @foreach (var item in ViewBag.CurrentSuppliersThatAreAvailableInTheDatabase)
+                {
+                    <option value="@item.ID">@item.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2" style="margin-right: 15px;">
+            <label>Price:</label>
+        </div>
+        <div class="col-sm-6" style="margin-bottom: 10px;">
+            <input asp-for="Price" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2" style="margin-right: 15px;">
+            <label>Unit:</label>
+        </div>
+        <div class="col-sm-6" style="margin-bottom: 10px;">
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="meterRadio" value="Meter" asp-for="Unit">
+                <label class="form-check-label" for="meterRadio">Meter</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="quantityRadio" value="Quantity" asp-for="Unit">
+                <label class="form-check-label" for="quantityRadio">Quantity</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-2" style="margin-right: 15px;">
+            <label>Amount:</label>
+        </div>
+        <div class="col-sm-6" style="margin-bottom: 10px;">
+            <input asp-for="CurrentAmount" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <input type="hidden" name="materialId" value="@ViewBag.MaterialID" />
+    <button type="submit" class="btn btn-primary" asp-controller="Material" asp-action="SaveEdit">Save changes</button>
+</form>

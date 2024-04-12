@@ -1,16 +1,16 @@
+using App.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {
-  public partial class OrderController : Controller
-  {
-    public IActionResult Confirm(string id)
+    public partial class OrderController : Controller
     {
-      // ATT GÖRA:
-      // - hämta ordern och visa bekräftelse
-      // - implementera en view.
+        [HttpGet]
+        public async Task<IActionResult> Confirm(string id)
+        {
+            var confirmedOrder = await Query.FetchOneById<Order>(id);
 
-      return View();
+            return View(confirmedOrder);
+        }
     }
-  }
 }
