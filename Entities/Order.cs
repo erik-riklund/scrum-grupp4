@@ -6,6 +6,8 @@ namespace App.Entities
   {
     public string CustomerID { get; set; } = null!;
 
+    public DateTime OrderDate { get; set; }
+
     public DateTime EstimatedDeliveryDate { get; set; }
 
     public DateTime DeliveryDate { get; set; }

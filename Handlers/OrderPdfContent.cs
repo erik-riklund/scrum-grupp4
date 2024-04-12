@@ -20,7 +20,7 @@ namespace App.Handlers
                 "<h2>Hattlandet</h2></div>" +
                 "<div><h1>Order information</h1>" +
                 "<table border='1'>" +
-                "<tr><th>Model Name</th><th>Description</th><th>Price</th><th>Size</th><th>Quantity</th></tr>"; // Skapar tabellhuvudet
+                "<tr><th>Model Name</th><th>Description</th><th>Price</th><th>Size</th><th>Quantity</th></tr>";
 
 
             foreach (var hat in order.Hats)
