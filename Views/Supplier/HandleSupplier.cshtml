@@ -29,32 +29,26 @@
                                 <ul>
                                     @foreach (var material in currentSupplier.Materials)
                                     {
-                                        <li>@material.Name</li>
+                                        <li style="list-style: none;">@material.Name</li>
                                     }
                                 </ul>
                             </td>
                             <td>@currentSupplier.Email</td>
                             <td>@currentSupplier.TelephoneNumber</td>
-                            <td>@currentSupplier.Address.StreetAddress, @currentSupplier.Address.City</td>
+                            <td>@currentSupplier.Address.StreetAddress, @currentSupplier.Address.City, @currentSupplier.Address.Country</td>
                             <td>
-                                <form method="post" asp-action="EditModel">
-                                    <input type="hidden" name="ModelId" value="@currentSupplier.ID" />
+                                <form method="post" asp-action="EditSupplier">
+                                    <input type="hidden" name="SupplierId" value="@currentSupplier.ID" />
                                     <button type="submit" class="btn btn-primary btn-sm">Edit</button>
                                 </form>
                             </td>
                             <td>
-                                <form method="post" asp-action="DeleteModel">
-                                    <input type="hidden" name="ModelId" value="@currentSupplier.ID" />
+                                <form method="post" asp-action="DeleteSupplier">
+                                    <input type="hidden" name="SupplierId" value="@currentSupplier.ID" />
                                     <button type="submit" class="btn btn-primary btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>
-                            <td>
-                                <form method="post" asp-action="DeleteModel">
-                                    <input type="hidden" name="ModelId" value="@currentSupplier.ID" />
-                                    <button type="submit" class="btn btn-primary btn-success btn-sm">Order</button>
-                                </form>
-                            </td>
-                        </tr>
+                              </tr>
                     }
                 </tbody>
             </table>
