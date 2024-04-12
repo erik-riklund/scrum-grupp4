@@ -1,132 +1,48 @@
 ﻿@model OrderMaterialViewModel
 
-@* <form asp-action="" method="post">
-    <h2 style="text-align: center;">ORDER MATERIAL HERE: </h2>
-    <br />
-
-    <div>
-        <label for="materialSelect" class="form-label mt-4">Choose material:</label>
-        <select id="materialSelect" class="form-control">
-            @foreach (var material in ViewBag.CurrentMaterials)
-            {
-                <option value="MaterialID">@material.Name</option>
-            }
-        </select>
-    </div>
-
-    <div>
-        <label for="supplierField" class="form-label mt-4">Supplier:</label>
-        <input type="text" id="supplierField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="supplierField" class="form-label mt-4">Address:</label>
-        <input type="text" id="supplierField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="supplierField" class="form-label mt-4">TelephoneNumber:</label>
-        <input type="text" id="supplierField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="supplierField" class="form-label mt-4">Email:</label>
-        <input type="text" id="supplierField" class="form-control" readonly>
-    </div>
-
-    <br />
-    <div class="form-group">
-        <label asp-for="MaterialLenght">Enter amount and unit: </label>
-        <textarea asp-for="MaterialLenght" class="form-control"></textarea>
-        <span asp-validation-for="MaterialLenght" class="text-danger"></span>
-    </div>
-
-</form>
-
-@section Scripts {
-    <script>
-        var materialSelect = document.getElementById("materialSelect");
-        var supplierField = document.getElementById("supplierField");
-
-        materialSelect.addEventListener("change", function () {
-            
-            var materialId = materialSelect.value;
-
-            
-            var form = new FormData();
-            form.append("materialId", materialId);
-
-            fetch("/Order/GetSupplier", {
-                method: "POST",
-                body: form
-            })
-                .then(response => response.text())
-                .then(data => {
-                    
-                    supplierField.value = data;
-                })
-                .catch(error => console.error("Error fetching supplier:", error));
-        });
-    </script>
-}
- *@
-
-
 <form asp-action="" method="post">
-    <h2 style="text-align: center;">ORDER MATERIAL HERE: </h2>
+    <h2 style="text-align: center;">ORDER MATERIAL HERE</h2>
     <br />
-
     <div>
-        <label for="materialSelect" class="form-label mt-4">Choose material:</label>
-        <select id="materialSelect" class="form-control">
-            @foreach (var material in ViewBag.CurrentMaterials)
-            {
-                <option value="MaterialID">@material.Name</option>
-            }
-        </select>
+        <label for="supplierField" class="form-label mt-4">Material:</label>
+        <input asp-for="@Model.Material.Name" type="text" id="materialName" class="form-control" readonly>
     </div>
-
+    <div>
+        <label for="supplierField" class="form-label mt-4">Description:</label>
+        <input asp-for="@Model.Material.Description" type="text" id="materialDescription" class="form-control" readonly>
+    </div>
     <div>
         <label for="supplierField" class="form-label mt-4">Supplier:</label>
-        <input asp-for="SupplierName" type="text" id="supplierField" class="form-control" readonly>
+        <input asp-for="@Model.Supplier.Name" type="text" id="supplierField" class="form-control" readonly>
     </div>
     <div>
-        <label for="addressField" class="form-label mt-4">Address:</label>
-        <input type="text" id="addressField" class="form-control" readonly>
-    </div>
-    <div>
-        <label for="telephoneField" class="form-label mt-4">TelephoneNumber:</label>
-        <input type="text" id="telephoneField" class="form-control" readonly>
+        <label for="telephoneField" class="form-label mt-4">Telephone number:</label>
+        <input asp-for="@Model.Supplier.TelephoneNumber" type="text" id="telephoneField" class="form-control" readonly>
     </div>
     <div>
         <label for="emailField" class="form-label mt-4">Email:</label>
-        <input type="text" id="emailField" class="form-control" readonly>
+        <input asp-for="@Model.Supplier.Email" type="text" id="emailField" class="form-control" readonly>
+    </div>
+        <div>
+        <label for="addressField" class="form-label mt-4">Address:</label>
+        <input asp-for="@Model.Supplier.Address.StreetAddress" type="text" id="addressField" class="form-control" readonly>
+    </div>
+    </div>
+        <div>
+        <label for="zipCode" class="form-label mt-4">Zip code:</label>
+        <input asp-for="@Model.Supplier.Address.ZipCode" type="text" id="zipCodeField" class="form-control" readonly>
+    </div>
+    </div>
+        <div>
+        <label for="cityField" class="form-label mt-4">City:</label>
+        <input asp-for="@Model.Supplier.Address.City" type="text" id="cityField" class="form-control" readonly>
+    </div>
+    </div>
+        <div>
+        <label for="addressField" class="form-label mt-4">Country:</label>
+        <input asp-for="@Model.Supplier.Address.Country" type="text" id="countryField" class="form-control" readonly>
     </div>
 
     <br />
-    <div class="form-group">
-        <label asp-for="MaterialLength">Enter amount and unit: </label>
-        <textarea asp-for="MaterialLength" class="form-control"></textarea>
-        <span asp-validation-for="MaterialLength" class="text-danger"></span>
-    </div>
+<button type="submit" class="btn btn-success btn-primary" asp-controller="Material" asp-action="PlaceOrder">Place order</button>
 </form>
-
-<Script>
-    materialSelect.addEventListener("change", function () {
-        var materialId = materialSelect.value;
-
-        fetch("/Order/GetSupplier", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ materialID: materialId })
-        })
-            .then(response => response.json())
-            .then(data => {
-                supplierField.value = data.supplierName;
-                addressField.value = data.address;
-                telephoneField.value = data.telephoneNumber;
-                emailField.value = data.email;
-            })
-            .catch(error => console.error("Error fetching supplier:", error));
-    });
-</Script>
-
