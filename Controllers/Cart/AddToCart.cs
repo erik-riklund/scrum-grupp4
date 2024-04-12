@@ -46,11 +46,16 @@ namespace App.Controllers
                 var customer = await session.GetUserAsync();
                 if (customer.ShoppingCart == null)
                 {
-                    customer.ShoppingCart = new Cart();
+                    customer.ShoppingCart = new Cart { UserID=customer.ID };
+                    await customer.SaveAsync();
+                    await customer.ShoppingCart.SaveAsync();
+                    
                 }
                 
-                var shoppingCart = customer.ShoppingCart;
-                await shoppingCart.SaveAsync();
+                var shoppingCarts = await Query.FetchAll<Cart>();
+                var shoppingCart= shoppingCarts.Where(c => c.UserID == customer.ID).FirstOrDefault();
+
+                //await shoppingCart.SaveAsync();
                 await shoppingCart.Hats.AddAsync(hat);
                 shoppingCart.UpdateTotalSum();
                 await shoppingCart.SaveAsync();
