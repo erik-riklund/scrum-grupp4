@@ -37,8 +37,8 @@
                             <td>@currentSupplier.TelephoneNumber</td>
                             <td>@currentSupplier.Address.StreetAddress, @currentSupplier.Address.City, @currentSupplier.Address.Country</td>
                             <td>
-                                <form method="post" asp-action="EditModel">
-                                    <input type="hidden" name="ModelId" value="@currentSupplier.ID" />
+                                <form method="post" asp-action="EditSupplier">
+                                    <input type="hidden" name="SupplierId" value="@currentSupplier.ID" />
                                     <button type="submit" class="btn btn-primary btn-sm">Edit</button>
                                 </form>
                             </td>

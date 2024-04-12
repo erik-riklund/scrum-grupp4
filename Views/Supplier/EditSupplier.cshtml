@@ -1,0 +1,74 @@
+﻿@model SupplierViewModel
+
+
+<form method="post" asp-action="SaveEdit">
+    <div class="container">
+        <div class="row">
+            <h2>SELECTED MODEL</h2>
+            <br />
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Change supplier name: </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input asp-for="SupplierName" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Change e-mail: </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input asp-for="Email" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Change telephone number: </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input asp-for="TelephoneNumber" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Change street address: </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input asp-for="StreetAddress" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Change zip code: </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input asp-for="ZipCode" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Change city: </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input asp-for="City" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Change country: </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input asp-for="Country" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <input type="hidden" name="SupplierId" value="@ViewBag.SupplierId" />
+        <button type="submit" class="btn btn-primary btn-success">
+            Save changes
+        </button>
+    </div>
+</form>
