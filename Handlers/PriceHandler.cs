@@ -20,7 +20,11 @@ namespace App.Handlers
                     price += material.Price*materialsAmount[material];
                 }
             }
-            return price;
+            double fastAvgift = 2500;
+            price += fastAvgift;
+            double accuratePrice = Convert.ToDouble(Math.Round(price));
+
+            return accuratePrice;
         }
     }
 }

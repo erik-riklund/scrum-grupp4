@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.cart-image {
+    width: 25px;
+    height: auto;
+    margin-right: 5px;
+}
+
+
+

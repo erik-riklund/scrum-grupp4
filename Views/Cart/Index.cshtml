@@ -1,0 +1,25 @@
+﻿@model CartViewModel
+
+<h1>Shopping Cart</h1>
+
+<link rel="stylesheet" href="~/css/CartOverview.css">
+
+<form method="post" action="@Url.Action("ConfirmCart", "Cart")">
+    @foreach (var item in Model.hats)
+    {
+        <div class="cart-item">
+            <img class="cart-picture" src="@item.Model.ImagePath" alt="Hat Image">
+            <div class="cart-details">
+                <div class="model-name">Model Name: @item.Model.ModelName</div>
+                <div class="size">Size: @item.Size</div>
+                <div class="description">Description: @item.Description</div>
+                <div class="price">Price: @item.Price</div>
+            </div>
+        </div>
+    }
+
+    <div class="confirm-button">
+        <button type="submit" class="confirm-order-button">Confirm Order</button>
+    </div>
+</form>
+

@@ -9,7 +9,8 @@ namespace App.Controllers
         public async Task<IActionResult> ModelInfo(String modelID) 
         {
             var model = await Query.FetchOneById<Model>(modelID);
-            var hvm = new HatViewModel { HatModel = model };
+            var hvm = new HatViewModel { modelID=modelID } ;
+            ViewBag.Model = model;
             return View(hvm);
         }
     }
