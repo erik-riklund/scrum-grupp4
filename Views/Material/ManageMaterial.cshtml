@@ -34,18 +34,18 @@
                                         <td>@material.Unit</td>
                                         <td>@material.CurrentAmount</td>
                                         <td>
-                                            <form method="post" asp-action="EditMaterial">
-                                                <input type="hidden" name="MaterialId" value="@material.ID" />
-                                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
-                                            </form>
-                                        </td>
-                                        <td>
                                             <form method="post" asp-action="DeleteMaterial">
                                                 <input type="hidden" name="MaterialId" value="@material.ID" />
                                                 <button type="submit" class="btn btn-primary btn-danger btn-sm">Delete</button>
                                             </form>
                                         </td>
                                         <td>
+                                            <form method="post" asp-action="EditMaterial">
+                                                <input type="hidden" name="MaterialId" value="@material.ID" />
+                                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                                            </form>
+                                        </td>
+                                         <td>
                                             <form method="post" asp-action="OrderMaterial">
                                                 <input type="hidden" name="MaterialId" value="@material.ID" />
                                                 <button type="submit" class="btn btn-primary btn-success btn-sm">Order</button>
