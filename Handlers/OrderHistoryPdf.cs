@@ -17,7 +17,7 @@ namespace App.Handlers
                 "<h2>Hattlandet</h2></div>" +
                 "<div><h1>Order information</h1>" +
                 "<table border='1'>" +
-                "<tr><th>OrderDate</th><th>ModelId</th><th>Modelname</th><th>Price</th><th>Orderstatus</th><th>Quantity</th></tr>";
+                "<tr><th>OrderDate</th><th>ModelId</th><th>Productcode</th><th>Modelname</th><th>Price</th><th>Orderstatus</th><th>Quantity</th></tr>";
 
             List<double> sumPrice = new List<double>();
             foreach (var orders in order)
@@ -30,6 +30,7 @@ namespace App.Handlers
                         content += "<tr>" +
                         "<td>" + orders.OrderDate + "</td>"+
                         "<td>" + hat.Model.ID + "</td>" +
+                        "<td>" + hat.Model.ProductCode + "</td>" +
                         "<td>" + hatModel.ModelName + "</td>" +
                         "<td>" + hat.Price + "</td>" +
                         "<td>" + orders.Status + "</td>" +
