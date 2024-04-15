@@ -9,9 +9,10 @@ namespace App.Controllers
 {
     public partial class CartController : Controller
     {
-        [HttpPost]
+        [HttpPost, Guardian]
         public async Task<IActionResult> AddToCart(HatViewModel hvm)
         {
+            
             if (ModelState.IsValid)
             {
                 var model = await Query.FetchOneById<Model>(hvm.modelID);
