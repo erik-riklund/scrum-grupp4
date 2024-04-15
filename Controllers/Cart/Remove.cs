@@ -9,7 +9,7 @@ namespace App.Controllers
 {
     public partial class CartController : Controller
     {
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Remove(String hatId)
         {
             var hat = await Query.FetchOneById<Hat>(hatId);
@@ -29,8 +29,8 @@ namespace App.Controllers
                 return NotFound(); 
             }
 
-            shoppingCart.Hats.RemoveAsync(hat);
-            hat.DeleteAsync();
+            await shoppingCart.Hats.RemoveAsync(hat);
+            await hat.DeleteAsync();
 
             shoppingCart.UpdateTotalSum();
 
