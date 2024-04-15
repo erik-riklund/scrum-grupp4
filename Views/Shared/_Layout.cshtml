@@ -1,53 +1,130 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - Otto's hats</title>
   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-  <link rel="stylesheet" href="~/Hattmakaren_grupp4.styles.css" asp-append-version="true" />
-  <link rel="stylesheet" href="~/css/LogIn.css">
-  <link rel="stylesheet" href="~/css/Register.css">
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Otto's hats</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Model" asp-action="HandleModels">Manage models</a>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-  @*   <footer class="border-top footer text-muted">
-        @* <div class="container">
-            &copy; 2024 - Hattmakaren_grupp4 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div> 
-    </footer> *@
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<body>
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+      <div class="container-fluid">
+        <img src="/Images/man.png" alt="Bildbeskrivning" style="width: 50px; height: 50px; margin-right: 10px;">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Otto's Fashionable Hats</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+          @* <ul class="navbar-nav flex-grow-1">
+          <li class="nav-item">
+          <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="OrderForm">Order Form</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="SpecialOrderForm">Special
+          Order Form</a>
+          </li>
+          </ul> *@
+
+          @if (user.IsAdmin())
+          {
+            <ul class="navbar-nav flex-grow-1">
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Model" asp-action="HandleModels">Models</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Material" asp-action="ManageMaterial">Material</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Supplier" asp-action="HandleSupplier">Suppliers</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Administration</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
+              </li>
+            </ul>
+          }
+          else
+          {
+            <ul class="navbar-nav flex-grow-1">
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="OrderForm">Order Form</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="SpecialOrderForm">Special
+                  Order Form</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+              @if (!user.IsLoggedIn())
+              {
+                <li class="nav-item">
+                  <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                </li>
+              }
+              else
+              {
+                <li class="nav-item">
+                  <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">
+                                        <btn class="cartbutton"><img src="~/Images/shoppingcart.png" alt="Shopping Cart" class="cart-image"></btn>
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+
+          @* @if (user.IsAdmin())
+          {
+          <li class="nav-item">
+          <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">Administration</a>
+          </li>
+          }
+          @if (!user.IsLoggedIn())
+          {
+          <li class="nav-item">
+          <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+          </li>
+          }
+          else
+          {
+          <li class="nav-item">
+          <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
+          </li>
+          }
+          @if (!user.IsLoggedIn())
+          {
+          <li class="nav-item">
+          <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+          </li>
+          } *@
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="container">
+    <main role="main" class="pb-3">
+      @RenderBody()
+    </main>
+  </div>
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

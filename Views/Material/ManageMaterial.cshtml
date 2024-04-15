@@ -1,0 +1,135 @@
+@model MaterialViewModel
+
+<h2 style="text-align: center;">MANAGE MATERIAL</h2><br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Current material</h2>
+            <form method="post" asp-action="EditMaterial">
+                <div class="form-group">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Material name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Supplier</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col">Current amount</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var supplier in ViewBag.CurrentSuppliers)
+                            {
+                                foreach (var material in supplier.Materials)
+                                {
+                                    <tr>
+                                        <td>@material.Name</td>
+                                        <td>@material.Description</td>
+                                        <td>@supplier.Name</td>
+                                        <td>@material.Price</td>
+                                        <td>@material.Unit</td>
+                                        <td>@material.CurrentAmount</td>
+                                        <td>
+                                            <form method="post" asp-action="DeleteMaterial">
+                                                <input type="hidden" name="MaterialId" value="@material.ID" />
+                                                <button type="submit" class="btn btn-primary btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form method="post" asp-action="EditMaterial">
+                                                <input type="hidden" name="MaterialId" value="@material.ID" />
+                                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                                            </form>
+                                        </td>
+                                         <td>
+                                            <form method="post" asp-action="OrderMaterial">
+                                                <input type="hidden" name="MaterialId" value="@material.ID" />
+                                                <button type="submit" class="btn btn-primary btn-success btn-sm">Order</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-5">
+            <h2>Add new material</h2>
+            <form method="post" asp-action="AddMaterial" enctype="multipart/form-data">
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Material name:</label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Description: </label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="Description" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Supplier:</label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <select asp-for="SupplierID" class="form-control">
+                            <option value="" disabled selected>&lt;Choose supplier&gt;</option>
+                            @foreach (var item in ViewBag.CurrentSuppliers)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Price:</label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="Price" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Unit:</label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" id="meterRadio" value="Meter" asp-for="Unit">
+                            <label class="form-check-label" for="meterRadio">Meter</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" id="quantityRadio" value="Quantity"
+                                asp-for="Unit">
+                            <label class="form-check-label" for="quantityRadio">Quantity</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Amount:</label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="CurrentAmount" class="form-control" />
+                    </div>
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary" asp-controller="Material" asp-action="AddNewMaterial">Add
+                    new
+                    material</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model CartViewModel
+
+<h1>Shopping Cart</h1>
+
+<link rel="stylesheet" href="~/css/CartOverview.css">
+@if (Model.hats != null)
+{
+    <form method="post" action="@Url.Action("ConfirmCart", "Cart")">
+        @foreach (var item in Model.hats)
+        {
+            <div class="cart-item">
+                <img class="cart-picture" src="@item.Model.ImagePath" alt="Hat Image">
+                <div class="cart-details">
+                    <div class="model-name">Model Name: @item.Model.ModelName</div>
+                    <div class="size">Size: @item.Size</div>
+                    <div class="description">Description: @item.Description</div>
+                    <div class="price">Price: @item.Price</div>
+                </div>
+                <div class="cart-buttons">
+                    <a data-hatid="@item.ID" class="remove-link">Remove Product</a>
+                    <button type="button" class="edit-button">Edit</button>
+                </div>
+            </div>
+        }
+
+        <div class="confirm-button">
+            <button type="submit" class="confirm-order-button">Confirm Order</button>
+        </div>
+    </form>
+}
+else
+{
+    <h3>You have no sobreros in your cart amigo!</h3>
+}
+@section Scripts {
+    <script>
+        // Skriptet för att hantera klick på "Remove Product" länk
+        $('.remove-link').click(function () {
+            var hatId = $(this).data('hatid'); // Hämta hatId från data-attribut
+            $.post('@Url.Action("Remove", "Cart")', { hatId: hatId })
+                .done(function (data) {
+                    // Ladda om sidan efter borttagning eller uppdatera varukorgsvisningen
+                    location.reload();
+                })
+                .fail(function () {
+                    // Hantera eventuella fel vid behov
+                    console.log('Failed to remove product');
+                });
+        });
+    </script>
+}

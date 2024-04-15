@@ -1,0 +1,96 @@
+﻿
+@model SupplierViewModel
+
+<h2 style="text-align: center;">MANAGE SUPPLIERS</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Current suppliers</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Supplier name</th>
+                        <th scope="col">Material</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone number</th>
+                        <th scope="col">Address</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var currentSupplier in ViewBag.CurrentSuppliers)
+                    {
+                        <tr>
+                            <td>@currentSupplier.Name</td>
+                            <td>
+                                <ul>
+                                    @foreach (var material in currentSupplier.Materials)
+                                    {
+                                        <li style="list-style: none;">@material.Name</li>
+                                    }
+                                </ul>
+                            </td>
+                            <td>@currentSupplier.Email</td>
+                            <td>@currentSupplier.TelephoneNumber</td>
+                            <td>@currentSupplier.Address.StreetAddress, @currentSupplier.Address.City, @currentSupplier.Address.Country</td>
+                            <td>
+                                <form method="post" asp-action="EditSupplier">
+                                    <input type="hidden" name="SupplierId" value="@currentSupplier.ID" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" asp-action="DeleteSupplier">
+                                    <input type="hidden" name="SupplierId" value="@currentSupplier.ID" />
+                                    <button type="submit" class="btn btn-primary btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                              </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5">
+            <h2>Add new supplier</h2>
+            <form method="post" asp-action="AddNewSupplier" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Supplier name:</label>
+                    <input asp-for="SupplierName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>E-mail:</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Phone number:</label>
+                    <input asp-for="TelephoneNumber" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Street address:</label>
+                    <input asp-for="StreetAddress" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Zip code:</label>
+                    <input asp-for="ZipCode" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>City:</label>
+                    <input asp-for="City" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Country:</label>
+                    <input asp-for="Country" class="form-control" />
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary" asp-controller="Supplier" asp-action="AddNewSupplier">
+                    Add new
+                    supplier
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

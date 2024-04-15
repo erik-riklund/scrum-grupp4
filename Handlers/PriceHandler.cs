@@ -1,8 +1,8 @@
 ﻿using App.Entities;
 
-namespace App.Controllers
+namespace App.Handlers
 {
-    public class Price
+    public class PriceHandler
     {
 
         public double GetHatPrice(Dictionary<Material, double> materialsAmount)
@@ -20,7 +20,11 @@ namespace App.Controllers
                     price += material.Price*materialsAmount[material];
                 }
             }
-            return price;
+            double fastAvgift = 2500;
+            price += fastAvgift;
+            double accuratePrice = Convert.ToDouble(Math.Round(price));
+
+            return accuratePrice;
         }
     }
 }

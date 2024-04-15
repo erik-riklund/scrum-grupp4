@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using App.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MongoDB.Driver.Linq;
@@ -7,11 +8,11 @@ using System.Security.Claims;
 namespace App
 {
   [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-  public class Guardian : Attribute, IAsyncAuthorizationFilter
+  public class Guardian : Attribute, IAuthorizationFilter
   {
     public string Roles { get; set; } = null!;
 
-    public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
+    public void OnAuthorization(AuthorizationFilterContext context)
     {
       if (context.HttpContext is var request)
       {
@@ -19,18 +20,20 @@ namespace App
         {
           if (claims.FindFirst("ID")?.Value is string ID)
           {
-            if (string.IsNullOrEmpty(Roles)) return; // no role check
-
-            if (await Query.FetchOneById<User>(ID) is User user)
+            if (context.HttpContext?.User.Identity?.IsAuthenticated == true)
             {
-              var requiredRoles = Roles.Split(',', StringSplitOptions.TrimEntries).ToList();
-              if (user.Roles.Where(role => requiredRoles.Contains(role.Name)).Any()) return;
+              if (string.IsNullOrEmpty(Roles)) return; // no role check
+
+              if (context.HttpContext?.User.Claims.Any(claim => claim.Type == "ROLE" && claim.Value == "Admin") == true)
+              {
+                return; // admin privileges found!
+              }
             }
           }
         }
       }
 
-      string returnTo = context.HttpContext.Request.Path.ToString();
+      string returnTo = context.HttpContext?.Request.Path.ToString() ?? "/";
       string encodedReturnTo = Uri.EscapeDataString(returnTo);
 
       context.Result = new RedirectResult($"/Account/Login?returnUrl={encodedReturnTo}");

@@ -1,12 +1,11 @@
 ﻿@model SpecialOrderViewModel
 
 <form asp-action="SpecialOrderForm" method="post" enctype="multipart/form-data">
-    <h1>Customize your hat here :</h1>
+    <h2 style="text-align: center;">CUSTOMIZE YOUR HAT HERE</h2>
     <br />
 
     <div class="form-group">
-        <label asp-for="Size">Size: </label>
-        <p>Please enter how big head you have here in cm</p>
+        <label asp-for="Size">Please enter how big head you have here in cm:</label>
         <textarea asp-for="Size" class="form-control"></textarea>
         <span asp-validation-for="Size" class="text-danger"></span>
     </div>
