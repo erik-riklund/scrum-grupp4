@@ -1,0 +1,115 @@
+﻿@model OrderHistoryViewModel
+
+<h2 style="text-align: center;">MANAGE ORDERHISTORY</h2>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Orderhistory</h2>
+            <form method="post" asp-action="orderHistory">
+                <div>
+                    <label for="dateFrom">Choose date from:</label>
+                    <input asp-for="DateFrom" type="date" id="dateFrom" name="dateFrom">
+                </div>
+                <div>
+                    <label for="dateTo">Choose date To:</label>
+                    <input asp-for="DateTo" type="date" id="dateTo" name="dateTo">
+                </div>
+                <button type="submit">Choose</button>
+            </form>
+                <div class="form-group">
+                <form method="post" asp-action="AllOrderHistoryPdf">
+                    @if(Model.DateFrom !=null && Model.DateTo != null)
+                    {
+                        <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value=@ViewBag.OrderDateFrom />
+                        <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value=@ViewBag.OrderDateTo/>
+                    }
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Orderid</th>
+                                <th scope="col">Orderdate</th>
+                                <th scope="col">Modelid</th>
+                                <th scope="col">Modelname</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Customerid</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Print order</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @{
+                            var totalAmount = 0.0;
+                        }
+                         @if(ViewBag.CurrentOrder !=null)
+                        {
+                            @foreach (var order in ViewBag.CurrentOrder)
+                            {
+                                foreach (var hats in order.Hats)
+                                {
+                                    <tr>
+                                        <td>@order.ID</td>
+                                        <td>@order.OrderDate</td>
+                                        @if (hats.Model == null)
+                                        {
+                                            <td>No model Id found</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@hats.Model.ID</td>
+                                            <td>@hats.Model.ModelName</td>
+                                            <td>@hats.Price</td>
+                                            <td>@order.Status</td>
+                                            <td>@order.CustomerID</td>
+
+                                                @foreach (var customer in ViewBag.CurrentCustomer)
+                                                {                                                    
+                                                    @if (customer.ID.Equals(order.CustomerID))
+                                                    {
+                                                        <td>@customer.FirstName @customer.LastName</td>
+
+                                                    }
+                                                 }
+
+
+                                                <td>
+                                                    <form method="post" asp-action="PrintOneOrderHistory">
+                                                        <input type="hidden" name="orderId" value="@order.ID" />
+                                                        <button type="submit" class="btn btn-primary btn-sm">Get PDF</button>
+                                                    </form>
+                                                </td>
+                                               
+
+
+                                        }
+                                      
+                                    </tr>
+                                }
+                            }
+                            <tr>
+                                @foreach (var order in ViewBag.CurrentOrder)
+                                {
+                                    foreach (var hats in order.Hats)
+                                    {
+                                        totalAmount += hats.Price;
+                                    }
+                                }
+                                <td colspan="4"></td>
+                                <td>Total amount:</td>
+                                <td>@totalAmount SEK</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <h3>Choose a date you want to se orderhistory from</h3>
+                        }
+
+                        </tbody>
+                    </table>
+                    <button type="submit">Create PDF</button>
+                </form>
+                </div>
+    </div>
+</div>

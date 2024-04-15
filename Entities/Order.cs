@@ -6,6 +6,8 @@ namespace App.Entities
   {
     public string CustomerID { get; set; } = null!;
 
+    public DateTime OrderDate { get; set; }
+
     public DateTime EstimatedDeliveryDate { get; set; }
 
     public DateTime DeliveryDate { get; set; }
@@ -16,7 +18,9 @@ namespace App.Entities
 
     public double OrderSum { get; set; }
 
-    [OwnerSide]
+    public byte[] PDF { get; set; } = null!;
+
+        [OwnerSide]
     public Many<Hat, Order> Hats { get; set; } = null!;
 
     [OwnerSide]
