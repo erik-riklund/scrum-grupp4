@@ -16,7 +16,7 @@ namespace App.Controllers
       return View(new SpecialOrderViewModel());
     }
 
-    [HttpPost]
+    [HttpPost, Guardian]
     public async Task<IActionResult> SpecialOrderForm(SpecialOrderViewModel sov, List<string> selectedMaterials)
     {
       if (ModelState.IsValid)
