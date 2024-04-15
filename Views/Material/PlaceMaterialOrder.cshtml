@@ -1,0 +1,32 @@
+<h4>Your order has been successfully placed!</h4>
+
+<div>
+    <h5>Order details:</h5>
+    <ul>
+        <li><strong>Material:</strong> @ViewBag.Material.Name</li>
+        <li><strong>Amount:</strong> @ViewBag.Amount</li>
+    </ul>
+</div>
+
+<p>
+    Thank you for placing your order with us. We have received your request for @ViewBag.Amount @ViewBag.Material.Unit
+    of @ViewBag.Material.Name.
+    An email confirmation has been sent to @ViewBag.Supplier.Email with your order details for processing.
+</p>
+
+<p>
+    Our team will now begin processing your order. The estimated delivery time is approximately two weeks.
+    Please feel free to contact us if you have any questions or need further assistance regarding your order.
+</p>
+
+<p>
+    Thank you for choosing us. We appreciate your business!
+</p>
+
+<p>
+    Best regards,
+    <br />
+    @ViewBag.Supplier.Name
+    <br />
+    Any questions? Call us on: @ViewBag.Supplier.TelephoneNumber
+</p>

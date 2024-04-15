@@ -25,5 +25,19 @@ namespace App.Controllers
 
             return View(omvm);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> PlaceMaterialOrder(string materialID, string supplierID, double amountOrdered)
+        {
+            var material = await Query.FetchOneById<Material>(materialID);
+            var supplier = await Query.FetchOneById<Supplier>(supplierID);
+            double amount = amountOrdered;
+
+            ViewBag.Material = material;
+            ViewBag.Supplier = supplier;
+            ViewBag.Amount = amount;
+
+            return View();  
+        }
     }
 }

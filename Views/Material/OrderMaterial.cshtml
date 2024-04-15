@@ -5,7 +5,8 @@
 <div class="row">
     <div class="col-md-6">
         <form asp-action="" method="post">
-
+            <input asp-for="@Model.Material.ID" type="hidden" value="@Model.Material.ID" name="materialID">
+            <input asp-for="@Model.Supplier.ID" type="hidden" value="@Model.Supplier.ID" name="supplierID">
             <div>
                 <label for="supplierField" class="form-label mt-4">Material:</label>
                 <input asp-for="@Model.Material.Name" type="text" id="materialName" class="form-control" readonly>
@@ -17,12 +18,13 @@
             </div>
             <div>
                 <label for="unitField" class="form-label mt-4">Unit:</label>
-                <input asp-for="@Model.Material.Unit" type="text" id="materialUnit" class="form-control"
-                    readonly>
+                <input asp-for="@Model.Material.Unit" type="text" id="materialUnit" class="form-control" readonly>
             </div>
+            <label for="amountField" class="form-label mt-4">Enter amount:</label>
+            <input type="text" id="amountField" class="form-control" name="amountOrdered">
             <br />
             <button type="submit" class="btn btn-success btn-primary" asp-controller="Material"
-                asp-action="PlaceOrder">Place
+                asp-action="PlaceMaterialOrder">Place
                 order</button>
         </form>
     </div>
