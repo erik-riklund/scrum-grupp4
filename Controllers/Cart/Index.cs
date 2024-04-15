@@ -12,16 +12,23 @@ namespace App.Controllers
             var user = await session.GetUserAsync();
             var shoppingCarts = await Query.FetchAll<Cart>();
             var shoppingCart = shoppingCarts.Where(c => c.UserID == user.ID).FirstOrDefault();
+            
             var lista = new CartViewModel();
-            if(shoppingCart != null)
+            if (shoppingCart != null)
             {
-                
+
                 //foreach(var hat in shoppingCart.Hats)
                 //{
-                    
-                    //var cartViewModel = new CartViewModel { hat = hat, model = hat.Model };
-                    lista.hats = shoppingCart.Hats.ToList();
+
+                //var cartViewModel = new CartViewModel { hat = hat, model = hat.Model };
+                lista.hats = shoppingCart.Hats.ToList();
                 //}
+            }
+            else
+            {
+                user.ShoppingCart = new Cart { UserID = user.ID };
+                await user.SaveAsync();
+                await user.ShoppingCart.SaveAsync();
             }
             lista.cart = shoppingCart;
 
