@@ -42,6 +42,12 @@
               <li class="nav-item">
                 <a class="nav-link text-dark" asp-controller="Supplier" asp-action="HandleSupplier">Suppliers</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Order" asp-action="ListOrders">Orders</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Account" asp-action="RegisterAdmin">Register admin</a>
+              </li>
             </ul>
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
@@ -80,7 +86,8 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">
-                                        <btn class="cartbutton"><img src="~/Images/shoppingcart.png" alt="Shopping Cart" class="cart-image"></btn>
+                    <btn class="cartbutton"><img src="~/Images/shoppingcart.png" alt="Shopping Cart" class="cart-image">
+                    </btn>
                   </a>
                 </li>
               }
