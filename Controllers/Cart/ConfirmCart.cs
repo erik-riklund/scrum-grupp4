@@ -28,6 +28,7 @@ namespace App.Controllers
             
             order.CustomerID = customer.ID;
             DateTime today = DateTime.Today;
+            order.OrderDate = today;
             DateTime futureDate = today.AddDays(14);
             order.EstimatedDeliveryDate = futureDate;
             
@@ -45,6 +46,7 @@ namespace App.Controllers
                 return RedirectToAction("ConfirmSpecial", "Order", new { id = order.ID });
             }
             order.Status = "Confirmed";
+            order.IsApproved = true;
             await order.SaveAsync();
             return RedirectToAction("Confirm", "Order", new {id=order.ID});
         }
