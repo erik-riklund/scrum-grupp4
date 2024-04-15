@@ -1,4 +1,4 @@
-﻿@model IEnumerable<App.Entities.Order>
+﻿@model ApproveOrderViewModel;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,7 @@
                     <th>Order Sum</th>
                     <th>Action</th>
                 </tr>
-                @foreach (var order in Model.Where(o => !o.IsApproved))
+                @foreach (var order in Model.unapprovedOrders)
                 {
                     <tr>
                         <td>@order.Status</td>
@@ -48,7 +48,7 @@
         <div class="order-list">
             <h2>Approved Orders</h2>
             <ul>
-                @foreach (var order in Model.Where(o => o.IsApproved))
+                @foreach (var order in Model.approvedOrders)
                 {
                     <li>@order.Status - @order.OrderSum</li>
                 }
