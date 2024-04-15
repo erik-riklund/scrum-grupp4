@@ -1,4 +1,5 @@
 ﻿using App.Entities;
+using App.Controllers;
 
 namespace App.Handlers
 {
@@ -44,7 +45,7 @@ namespace App.Handlers
             return content;
         }
 
-        public async static Task<string> OneHistoryPdfContent(Order order, User customer)
+        public async static Task<string> OneHistoryPdfContent(Order order, User customer, string imageUrl)
         {
             string content = "<div><h1>Order from:</h1>" +
                 "<h2> Customerid: " + customer.ID+"</h2>"+
@@ -62,18 +63,19 @@ namespace App.Handlers
                 "<div><h1>Order information</h1>" +
                 "<h2>Orderid: "+order.ID+ "</h2>" +
                 "<table border='1'>" +
-                "<tr><th>Model Name</th><th>Description</th><th>Productcode</th><th>Price</th><th>Size</th><th>Quantity</th></tr>";
+                "<tr><th>Model Name</th><th>Description</th><th>Productcode</th><th>Price</th><th>Size</th><th>Image</th></tr>";
 
 
             foreach (var hat in order.Hats)
             {
-              
-                    content += "<tr>" +
+
+                content += "<tr>" +
                         "<td>" + hat.Model.ModelName + "</td>" +
                         "<td>" + hat.Description + "</td>" +
                         "<td>" + hat.Model.ProductCode+ "</td>"+
                         "<td>" + hat.Price + "</td>" +
                         "<td>" + hat.Size + "</td>" +
+                "<td><img src=\"" + imageUrl + "\" alt=\"Hat Image\"></td>" +
                         "<td>1</td>" +
                         "</tr>";
                

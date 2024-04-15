@@ -2,17 +2,26 @@
 using App.Handlers;
 using App.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using System.Diagnostics;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace App.Controllers.order
 {
     public partial class OrderController : Controller
     {
+        private readonly IUrlHelperFactory _urlHelperFactory;
+
+        public OrderController(IUrlHelperFactory urlHelperFactory)
+        {
+            _urlHelperFactory = urlHelperFactory;
+        }
         [HttpGet]
         public async Task<IActionResult> OrderHistory()
         {
@@ -97,9 +106,14 @@ namespace App.Controllers.order
                 var customer = await Query.FetchOne<Entities.User>(user => user.ID.Equals(getOrder.CustomerID));
                 //var hatModelId = getOrder.Hats.First().Model.ID;
                 //var hatModel = await Query.FetchOne<Entities.Model>(model => model.ID == hatModelId);
+                var hatModel = await Query.FetchOne<App.Entities.Model>(model => model.ID.Equals(getOrder.Hats.FirstOrDefault().Model.ID));
+                //var hatModel = await Query.FetchOneById<App.Entities.Model>("661ceb2a034ccebe68c32a62");
 
-               
-                    var content = await OrderPdfContent.OneHistoryPdfContent(getOrder, customer);
+                var imageUrl = hatModel.ImagePath;
+                //var imageUrl = Url.Action("GetOrderHistoryImage", "Order", new { orderId = getOrder.ID });
+                var content = await OrderPdfContent.OneHistoryPdfContent(getOrder, customer, imageUrl);
+
+                //var content = await OrderPdfContent.OneHistoryPdfContent(getOrder,customer);
                     var stream = new MemoryStream(PdfHandler.HtmlToPdf(content));
                     return new FileStreamResult(stream, "application/pdf");
 
@@ -113,5 +127,39 @@ namespace App.Controllers.order
            
             
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> GetOrderHistoryImage(string orderId)
+        //{
+        //    try
+        //    {
+        //        var getOrder = await Query.FetchOne<Entities.Order>(order => order.ID.Equals(orderId));
+
+        //        var imageHandler = new ImageHandler();
+
+        //        var model = await Query.FetchOne<App.Entities.Model>(model => model.ID.Equals(getOrder.Hats.First().Model.ID));
+        //        var imagePath = model.ImagePath;
+
+        //        var fullImagePath = Path.Combine(Directory.GetCurrentDirectory(), imagePath);
+
+        //        byte[] imageData;
+        //        using (var imageStream = new FileStream(fullImagePath, FileMode.Open))
+        //        {
+        //            using (var memoryStream = new MemoryStream())
+        //            {
+        //                await imageStream.CopyToAsync(memoryStream);
+        //                imageData = memoryStream.ToArray();
+        //            }
+        //        }
+
+        //        return PhysicalFile(fullImagePath, "image/jpeg");
+        //    }
+        //    catch
+        //    {
+        //        ModelState.AddModelError(string.Empty, "An error occurred while fetching the order history");
+        //        return View();
+        //    }
+        //}
+
     }
 }
