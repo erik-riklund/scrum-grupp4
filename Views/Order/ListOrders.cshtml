@@ -17,6 +17,8 @@
             <h2>Unapproved Orders</h2>
             <table>
                 <tr>
+                    
+                    <th>Typ</th>
                     <th>Status</th>
                     <th>Order Sum</th>
                     <th>Action</th>
@@ -24,6 +26,7 @@
                 @foreach (var order in Model.unapprovedOrders)
                 {
                     <tr>
+                        <td>Stråhatt</td>
                         <td>@order.Status</td>
                         <td>@order.OrderSum</td>
                         <td>
@@ -32,6 +35,10 @@
                                 <form asp-controller="Order" asp-action="ApproveOrder" method="post">
                                     <input type="hidden" name="orderId" value="@order.ID" />
                                     <button type="submit" class="approve-button">Approve</button>
+                                </form>
+                                <form asp-controller="Order" asp-action="ApproveOrder" method="post">
+                                    <input type="hidden" name="orderId" value="@order.ID" />
+                                    <button type="submit" class="approve-button">Decline</button>
                                 </form>
                             }
                             else

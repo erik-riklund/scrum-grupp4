@@ -67,8 +67,42 @@ namespace App.Controllers
             };
 
             // Återvänd till samma vy med den uppdaterade datan
-            return View("IncomingOrder", viewModel);
+            return View("ListOrders", viewModel);
         }
+        [HttpPost]
+        public async Task<IActionResult> DeclineOrder(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Ta bort ordern från databasen
+            await order.DeleteAsync();
+
+            // Hämta alla ogodkända ordrar
+            var unapprovedOrders = await DB.Queryable<App.Entities.Order>()
+                                            .Where(o => !o.IsApproved)
+                                            .ToListAsync();
+
+            // Hämta alla godkända ordrar
+            var approvedOrders = await DB.Queryable<App.Entities.Order>()
+                                            .Where(o => o.IsApproved)
+                                            .ToListAsync();
+
+            // Skapa en instans av ApproveOrderViewModel och skicka med listorna till vyn
+            var viewModel = new ApproveOrderViewModel
+            {
+                unapprovedOrders = unapprovedOrders,
+                approvedOrders = approvedOrders
+            };
+
+            // Återvänd till samma vy med den uppdaterade datan
+            return View("ListOrders", viewModel);
+        }
+
     }
 }
 
