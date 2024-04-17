@@ -1,66 +1,35 @@
-﻿@model ApproveOrderViewModel;
+﻿@model List<Order>;
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Page Title</title>
-    <link rel="stylesheet" href="/css/IncomingOrder.css">
-</head>
-<body>
-    <h1>All Orders</h1>
+<div>
+    @foreach(var Order in Model.Where(o=>!o.IsApproved))
+    {
+        <div>
+            @Order.OrderDate
+            <p>Antal hattar @Order.Hats.Count();</p>
+            <p>Ordersumma: @Order.OrderSum sek</p>
+            <a asp-action="ApproveOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Approve</a>
 
-    <div class="order-container">
-        <!-- Lista för ogodkända ordrar -->
-        <div class="order-list">
-            <h2>Unapproved Orders</h2>
-            <table>
-                <tr>
-                    
-                    <th>Typ</th>
-                    <th>Status</th>
-                    <th>Order Sum</th>
-                    <th>Action</th>
-                </tr>
-                @foreach (var order in Model.unapprovedOrders)
-                {
-                    <tr>
-                        <td>Stråhatt</td>
-                        <td>@order.Status</td>
-                        <td>@order.OrderSum</td>
-                        <td>
-                            @if (!order.IsApproved)
-                            {
-                                <form asp-controller="Order" asp-action="ApproveOrder" method="post">
-                                    <input type="hidden" name="orderId" value="@order.ID" />
-                                    <button type="submit" class="approve-button">Approve</button>
-                                </form>
-                                <form asp-controller="Order" asp-action="ApproveOrder" method="post">
-                                    <input type="hidden" name="orderId" value="@order.ID" />
-                                    <button type="submit" class="approve-button">Decline</button>
-                                </form>
-                            }
-                            else
-                            {
-                                <span class="approved">Approved</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </table>
         </div>
+    }
+</div>
+<div class="container text-center">
+    <div class="row align-items-center">
+        <div class="col">
+            @foreach(var Order in Model.Where(o=>o.IsApproved))
+            {
+                <div> 
+                    @Order.OrderDate
+                    <p>Antal hattar @Order.Hats.Count();</p>
+                    <p>Ordersumma: @Order.OrderSum sek</p>
 
-        <!-- Lista för godkända ordrar -->
-        <div class="order-list">
-            <h2>Approved Orders</h2>
-            <ul>
-                @foreach (var order in Model.approvedOrders)
-                {
-                    <li>@order.Status - @order.OrderSum</li>
-                }
-            </ul>
+                </div>
+            }
+        </div>
+        <div class="col">
+            One of three columns
+        </div>
+        <div class="col">
+            One of three columns
         </div>
     </div>
-</body>
-</html>
+</div>
