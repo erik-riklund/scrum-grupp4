@@ -30,6 +30,13 @@
     height: 150px;
 }
 
+.SeeOrder {
+    text-decoration: none;
+    background-color:cornflowerblue;
+    color: white;
+    border-radius: 5%;
+}
+
 .order-site {
     width: 70vw;
 }

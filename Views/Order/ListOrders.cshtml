@@ -8,11 +8,14 @@
     @foreach(var Order in Model.Where(o=>o.Status.Equals("Pending") && !o.IsApproved))
     {
         <div class="order">
-            @Order.OrderDate.ToString("yyyy-MM-dd")
+                 @Order.OrderDate.ToString("yyyy-MM-dd")
             <p>Hats @Order.Hats.Count(); st</p>
             <p>Ordersum: @Order.OrderSum sek</p>
+                <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                <br />
                 <a asp-action="ApproveOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Approve</a>
                 <a asp-action="DeclineOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Decline</a>
+                
 
         </div>
     }
@@ -29,6 +32,8 @@
                     @Order.OrderDate.ToString("yyyy-MM-dd")
                     <p>Hats @Order.Hats.Count(); st</p>
                     <p>Ordersum: @Order.OrderSum sek</p>
+                        <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                        <br />
                     <a asp-action="InProgress" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Mark as in progress</a>
 
                 </div>
@@ -44,6 +49,8 @@
                     @Order.OrderDate.ToString("yyyy-MM-dd")
                     <p>Hats: @Order.Hats.Count(); st</p>
                     <p>Ordersum: @Order.OrderSum sek</p>
+                        <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                        <br />
                         <a asp-action="ReadyForDelivery" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Ready for delivery</a>
 
                 </div>
@@ -59,7 +66,9 @@
                     @Order.OrderDate.ToString("yyyy-MM-dd")
                     <p>Hats: @Order.Hats.Count(); st</p>
                     <p>Ordersum: @Order.OrderSum sek</p>
-
+                        <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                        <br />
+                        <a asp-action="Shipped" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Shipped</a>
                 </div>
             }
         </div>
@@ -75,6 +84,8 @@
             @Order.OrderDate.ToString("yyyy-MM-dd")
             <p>Hats @Order.Hats.Count();</p>
             <p>Ordersum: @Order.OrderSum sek</p>
+                <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                
           
 
         </div>

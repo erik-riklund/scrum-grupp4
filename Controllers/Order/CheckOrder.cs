@@ -107,7 +107,40 @@ namespace App.Controllers
 
             return View("ListOrders", allOrders.ToList());
         }
+        [HttpGet]
+        public async Task<IActionResult> Shipped(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
 
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+
+            order.Status = "Shipped";
+            await order.SaveAsync();
+
+
+            var allOrders = await Query.FetchAll<Entities.Order>();
+
+
+
+            return View("ListOrders", allOrders.ToList());
+        }
+        [HttpGet]
+        public async Task<IActionResult> HandleOrder(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+            var allOrders = await Query.FetchAll<Entities.Order>();
+
+			return View("HandleOrder", allOrders.ToList());
+        }
     }
 }
 
