@@ -1,54 +1,14 @@
-﻿/* Styles for the order container */
-.order-container {
+﻿.orderbox {
+    background-color:aliceblue;
     display: flex;
+    flex-wrap: wrap;
+    border: 2px;
+    border-color:cornflowerblue;
+    margin: 1em;
 }
 
-/* Styles for the order list */
-.order-list {
-    margin-right: 20px;
-}
+.order {
+    background-color: antiquewhite;
+    margin: 1em;
 
-/* Styles for the tables in both order lists */
-.order-list table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px; /* Add margin between tables */
-}
-
-/* Styles for table headers */
-.order-list th {
-    background-color: #f2f2f2;
-    border: 1px solid #dddddd;
-    padding: 8px;
-    text-align: left;
-}
-
-/* Styles for table data */
-.order-list td {
-    border: 1px solid #dddddd;
-    padding: 8px;
-}
-
-/* Styles for the approve button */
-.approve-button, .decline-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.approve-button {
-    background-color: #4caf50;
-    color: white;
-}
-
-.decline-button {
-    background-color: #ff4444;
-    color: white;
-}
-
-/* Styles for the approved status */
-.approved {
-    color: green;
-    font-weight: bold;
 }

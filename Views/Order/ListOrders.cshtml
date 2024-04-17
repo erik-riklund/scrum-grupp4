@@ -1,35 +1,66 @@
 ﻿@model List<Order>;
-
-<div>
-    @foreach(var Order in Model.Where(o=>!o.IsApproved))
+<link rel="stylesheet" href="~/css/IncomingOrder.css">
+<div class="orderbox">
+    @foreach(var Order in Model.Where(o=>o.Status.Equals("Pending") && !o.IsApproved))
     {
-        <div>
-            @Order.OrderDate
-            <p>Antal hattar @Order.Hats.Count();</p>
-            <p>Ordersumma: @Order.OrderSum sek</p>
+        <div class="order">
+            @Order.OrderDate.ToString("yyyy-MM-dd")
+            <p>Hats @Order.Hats.Count(); st</p>
+            <p>Ordersum: @Order.OrderSum sek</p>
             <a asp-action="ApproveOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Approve</a>
+            <a asp-action="DeclineOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Decline</a>
 
         </div>
     }
 </div>
 <div class="container text-center">
     <div class="row align-items-center">
-        <div class="col">
-            @foreach(var Order in Model.Where(o=>o.IsApproved))
+        <div class="col orderbox">
+            @foreach(var Order in Model.Where(o=>o.Status.Equals("Confirmed")))
             {
-                <div> 
-                    @Order.OrderDate
-                    <p>Antal hattar @Order.Hats.Count();</p>
-                    <p>Ordersumma: @Order.OrderSum sek</p>
+                <div class="order">
+                    @Order.OrderDate.ToString("yyyy-MM-dd")
+                    <p>Hats @Order.Hats.Count(); st</p>
+                    <p>Ordersum: @Order.OrderSum sek</p>
+                    <a asp-action="InProgress" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Mark as in progress</a>
 
                 </div>
             }
         </div>
-        <div class="col">
-            One of three columns
+        <div class="col orderbox">
+           @foreach(var Order in Model.Where(o=>o.Status.Equals("InProgress")))
+            {
+                <div class="order">
+                    @Order.OrderDate.ToString("yyyy-MM-dd")
+                    <p>Hats: @Order.Hats.Count(); st</p>
+                    <p>Ordersum: @Order.OrderSum sek</p>
+                    <a asp-action="ReadyForDelivery" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Ready for delivery</a>
+
+                </div>
+            }
         </div>
-        <div class="col">
-            One of three columns
+        <div class="col orderbox">
+            @foreach (var Order in Model.Where(o => o.Status.Equals("ReadyForDelivery")))
+            {
+                <div class="order">
+                    @Order.OrderDate.ToString("yyyy-MM-dd")
+                    <p>Hats: @Order.Hats.Count(); st</p>
+                    <p>Ordersum: @Order.OrderSum sek</p>
+
+                </div>
+            }
         </div>
     </div>
+</div>
+<div class="orderbox">
+    @foreach (var Order in Model.Where(o => o.Status.Equals("Declined")))
+    {
+        <div class="order">
+            @Order.OrderDate.ToString("yyyy-MM-dd")
+            <p>Hats @Order.Hats.Count();</p>
+            <p>Ordersum: @Order.OrderSum sek</p>
+          
+
+        </div>
+    }
 </div>
