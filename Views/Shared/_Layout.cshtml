@@ -48,6 +48,7 @@
               <li class="nav-item">
                 <a class="nav-link text-dark" asp-controller="Order" asp-action="OrderHistory">Order history</a>
               </li>
+             
             </ul>
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
@@ -80,7 +81,10 @@
                 </li>
               }
               else
-              {
+                            {
+               <li class="nav-item">
+               <a class="nav-link text-dark" asp-controller="Account" asp-action="CustomerProfil">Customer Profile</a>
+               </li>
                 <li class="nav-item">
                   <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
                 </li>
