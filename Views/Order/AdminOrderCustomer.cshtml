@@ -1,0 +1,23 @@
+@model List<Model>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["OurModels"] - Here you can see latest in fashion</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/OurModels.css" asp-append-version="true" />
+</head>
+<h2 style="text-align: center;">ALL AVAILABLE MODELS</h2>
+<div class="OurModels">
+    @foreach(var models in Model)
+    {
+    <div class="hats">
+        <img src="@models.ImagePath" alt="Image of hat">
+        <div class="info">
+            <h2 class="ModelName">@models.ModelName</h2>
+            <a asp-action="HatOrderForCustomer" asp-controller="Order" asp-route-modelID="@models.ID" class="SeeProduct">See product</a>
+        </div>
+
+    </div>
+    }
+</div>

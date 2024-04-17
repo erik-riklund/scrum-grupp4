@@ -1,0 +1,40 @@
+@model HatViewModel
+
+<link rel="stylesheet" href="~/css/ModelInfo.css">
+
+<div class="container">
+    <div class="content-box">
+        <img src="@ViewBag.Model.ImagePath" alt="Picture on specific hat" class="hat-image">
+        <div class="text-content">
+            <h2>@ViewBag.Model.ModelName</h2>
+            <p>@ViewBag.Model.Description</p>
+
+            @if (@ViewBag.Model.Materials != null)
+            {
+                <h3>Material</h3>
+                <ul>
+                    @foreach (var material in @ViewBag.Model.Materials)
+                    {
+                        <li>@material.Name</li>
+                    }
+                </ul>
+            }
+            <form asp-action="AdminCustomerOrderInfo" asp-controller="Order" method="get">
+                <input type="hidden" asp-for="modelID" />
+                <div class="form-group">
+                    <label for="Size">Size: </label>
+                    <input asp-for="Size" class="form-control" id="Size" />
+                </div>
+                <div class="form-group">
+                    <label for="Description">Description: </label>
+                    <input asp-for="Description" class="form-control" id="Description" />
+                    <p><i>Please enter information that is critical for the hat making</i></p>
+                </div>
+                <div class="form-group">
+                    <h4>Price from: @ViewBag.Price SEK</h4>
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Enter customer info</button>
+            </form>
+        </div>
+    </div>
+</div>
