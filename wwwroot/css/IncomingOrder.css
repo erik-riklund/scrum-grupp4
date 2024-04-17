@@ -2,13 +2,39 @@
     background-color:aliceblue;
     display: flex;
     flex-wrap: wrap;
-    border: 2px;
+    border: solid 2px;
     border-color:cornflowerblue;
-    margin: 1em;
+    margin-right: .5em;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    min-height: 200px;
+    
+}
+.order-info {
+    width: 100%;
+    max-height: 4em;
+    background-color: white;
+    text-align: center;
+    padding: .5em;
+}
+.col {
+    min-height: 500px;
+    padding: 0;
+    height: 100%;
 }
 
 .order {
-    background-color: antiquewhite;
+    background-color: #fff9cf;
     margin: 1em;
+    min-width: 150px;
+    height: 150px;
+}
 
+.order-site {
+    width: 70vw;
+}
+.links {
+    text-decoration: none;
+    background-color: cadetblue;
+    color: white;
 }
