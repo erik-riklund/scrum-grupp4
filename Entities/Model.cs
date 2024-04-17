@@ -12,7 +12,9 @@ namespace App.Entities
 
     public string ProductCode { get; set; } = null!;
 
-    [OwnerSide]
+    public int Amount { get; set; }
+
+        [OwnerSide]
     public Many<Material, Model> Materials { get; set; } = null!;
 
     // [OwnerSide]

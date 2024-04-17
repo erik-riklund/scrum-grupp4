@@ -41,7 +41,7 @@
                                             @foreach (var material in currentModel.Materials)
                                             {
                                                 <li style="list-style: none;">@material.Name</li>
-
+                                               
                                             }
                                         </ul>
                                     </td>
@@ -122,16 +122,39 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-2" style="margin-right: 15px;">
-                        <label>Material(s): </label>
-                    </div>
-                    <div class="col-sm-4" style="margin-bottom: 10px;">
+                   
+                    <label>Material(s): </label>
+                    
+                    <div class="col-sm-8">
                         @foreach (var material in ViewBag.CurrentMaterials)
                         {
-                            <input type="checkbox" id="material-@material.ID" name="SelectedMaterials"
-                                value="@material.ID" />
-                            @material.Name
-                            <br />
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <input type="checkbox" id="material-@material.ID" name="SelectedMaterials" value="@material.ID" />
+                                    <label for="material-@material.ID">@material.Name</label>
+
+                          
+
+                                </div>
+                                <div class="col-sm-6">
+                                   
+                                    @if (material.Unit == "Meter")
+                                    {
+                                    <label><strong>Meter</strong></label>
+                                    }
+                                    
+                                    else
+                                    {
+                                    <label><strong>Quantity</strong></label>
+                                    }
+                                    <input asp-for="MaterialUsed" type="number" inputmode="decimal" class="form-control" step="0.1" min="0" />
+
+
+@*                                     <input type="number" asp-for="MaterialUsed" inputmode="decimal" class="form-control" step="0.1" min="0" name="MaterialId[@material.ID]" />
+ *@                                    
+
+                                </div>
+                            </div>
                         }
                     </div>
                 </div>
@@ -142,6 +165,14 @@
             <div class="col-sm-4" style="margin-bottom: 10px;">
               <input type="file" name="imageFile" class="form-control-file" />
             </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Amount: </label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="Amount" class="form-control" type="number" min="1" />
+                    </div>
                 </div>
                 <br />
                 <button type="submit" class="btn btn-primary" asp-controller="Model" asp-action="AddNewModel">Add new
