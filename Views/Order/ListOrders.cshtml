@@ -11,8 +11,8 @@
             @Order.OrderDate.ToString("yyyy-MM-dd")
             <p>Hats @Order.Hats.Count(); st</p>
             <p>Ordersum: @Order.OrderSum sek</p>
-            <a asp-action="ApproveOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Approve</a>
-            <a asp-action="DeclineOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Decline</a>
+                <a asp-action="ApproveOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Approve</a>
+                <a asp-action="DeclineOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Decline</a>
 
         </div>
     }
@@ -29,7 +29,7 @@
                     @Order.OrderDate.ToString("yyyy-MM-dd")
                     <p>Hats @Order.Hats.Count(); st</p>
                     <p>Ordersum: @Order.OrderSum sek</p>
-                    <a asp-action="InProgress" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Mark as in progress</a>
+                    <a asp-action="InProgress" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Mark as in progress</a>
 
                 </div>
             }
@@ -44,7 +44,7 @@
                     @Order.OrderDate.ToString("yyyy-MM-dd")
                     <p>Hats: @Order.Hats.Count(); st</p>
                     <p>Ordersum: @Order.OrderSum sek</p>
-                    <a asp-action="ReadyForDelivery" asp-controller="Order" asp-route-orderId="@Order.ID" class="edit-button">Ready for delivery</a>
+                        <a asp-action="ReadyForDelivery" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Ready for delivery</a>
 
                 </div>
             }
