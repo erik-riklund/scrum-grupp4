@@ -17,8 +17,11 @@
                     <div class="price">Price: @item.Price</div>
                 </div>
                 <div class="cart-buttons">
-                    <a data-hatid="@item.ID" class="remove-link">Remove Product</a>
-                    <button type="button" class="edit-button">Edit</button>
+                    @* <a data-hatid="@item.ID" class="remove-link">Remove Product</a> *@
+                    
+                    <a asp-action="Edit" asp-controller="Cart" asp-route-hatId="@item.ID" class="edit-button">Edit</a>
+                    <a asp-action="Remove" asp-controller="Cart" asp-route-hatId="@item.ID" class="edit-button">Remove</a>
+                    
                 </div>
             </div>
         }
@@ -47,5 +50,6 @@ else
                     console.log('Failed to remove product');
                 });
         });
+
     </script>
 }

@@ -7,5 +7,6 @@ namespace App.Models
     {
         public Material Material { get; set; }
         public Supplier Supplier { get; set; }
+        public double Amount { get; set; }
     }
 }
