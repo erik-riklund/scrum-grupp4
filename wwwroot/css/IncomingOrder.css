@@ -46,3 +46,7 @@
     color: white;
     border-radius: 5%;
 }
+.hatpicture{
+    max-width: 40px;
+    max-height: 40px;
+}
