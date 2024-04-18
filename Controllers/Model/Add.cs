@@ -20,7 +20,6 @@ namespace App.Controllers
                     ModelName = modelViewModel.ModelName,
                     Description = modelViewModel.Description,
                     ProductCode = modelViewModel.ProductCode,
-                  
                 };
 
                 if (SelectedMaterials != null && SelectedMaterials.Count > 0)
@@ -34,32 +33,37 @@ namespace App.Controllers
                         if (material != null)
                         {
                             chosenMaterials.Add(material);
+
+                            // Hämta mängden från Request.Form baserat på material-ID och lägg till i MaterialUsed-dictionaryn
+                            if (Request.Form.TryGetValue("MaterialUsed[" + materialId + "]", out var amountString))
+                            {
+                                if (double.TryParse(amountString, out double amount))
+                                {
+                                    modelViewModel.MaterialUsed[materialId] = amount;
+
+                                    material.CurrentAmount -= amount;
+
+
+                                }
+                            }
+
+                            
                         }
                     }
-
-                    await model.SaveAsync();
-
-
-                    foreach (var material in chosenMaterials)
+                   
+                    var keysToRemove = modelViewModel.MaterialUsed.Where(x => x.Value == 0).Select(x => x.Key).ToList();
+                    foreach (var key in keysToRemove)
                     {
-                     
-                            // Kontrollera om MaterialUsed innehåller några poster och hitta matchning med material.ID
-                            if (modelViewModel.MaterialUsed != null && modelViewModel.MaterialUsed.ContainsKey(material.ID))
-                            {
-                                // Hämta mängden från MaterialUsed-dictionaryn endast om materialet är markerat
-                                var amountUsed = modelViewModel.MaterialUsed[material.ID];
-                                // Använd material-ID och användarinmatad mängd på önskat sätt, t.ex. spara i databasen
-                            }
-                        
-                        //if (modelViewModel.MaterialUsed.ContainsKey(material.ID)) 
-                        //{
-                        //    // Hämta mängden från MaterialUsed-dictionaryn endast om materialet är markerat
-                        //    var amountUsed = modelViewModel.MaterialUsed.Values;
-                        //    // Använd material-ID och användarinmatad mängd på önskat sätt, t.ex. spara i databasen
-                        //}
+                        modelViewModel.MaterialUsed.Remove(key);
                     }
+
+
                 }
 
+                // Sparar modellen
+                await model.SaveAsync();
+
+                // Sparar bilden om den finns
                 if (imageFile != null)
                 {
                     var imageHandler = new ImageHandler();
@@ -69,17 +73,20 @@ namespace App.Controllers
                     model.ImagePath = path;
                 }
 
+                // Uppdaterar modellen med bildsökväg och sparar igen
                 await model.SaveAsync();
 
+                // Redirect till HandleModels-actionen i Model-controllern
                 return RedirectToAction("HandleModels", "Model");
             }
             else
             {
+                // Skapar ett JavaScript-skript för att visa ett felmeddelande om modellnamnet inte är angivet
                 string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
 
+                // Returnerar ett ContentResult med JavaScript-skriptet
                 return Content(script, "text/html");
             }
         }
-
     }
 }

@@ -124,7 +124,6 @@
                 <div class="form-group row">
                    
                     <label>Material(s): </label>
-                    
                     <div class="col-sm-8">
                         @foreach (var material in ViewBag.CurrentMaterials)
                         {
@@ -132,29 +131,20 @@
                                 <div class="col-sm-6">
                                     <input type="checkbox" id="material-@material.ID" name="SelectedMaterials" value="@material.ID" />
                                     <label for="material-@material.ID">@material.Name</label>
-
-                          
-
                                 </div>
                                 <div class="col-sm-6">
-                                   
                                     @if (material.Unit == "Meter")
                                     {
-                                    <label><strong>Meter</strong></label>
+                                        <label><strong>Meter</strong></label>
                                     }
-                                    
                                     else
                                     {
-                                    <label><strong>Quantity</strong></label>
+                                        <label><strong>Quantity</strong></label>
                                     }
-                                    <input asp-for="MaterialUsed" type="number" inputmode="decimal" class="form-control" step="0.1" min="0" />
-
-
-@*                                     <input type="number" asp-for="MaterialUsed" inputmode="decimal" class="form-control" step="0.1" min="0" name="MaterialId[@material.ID]" />
- *@                                    
-
+                                    <input type="number" name="MaterialUsed[@material.ID]" inputmode="decimal" class="form-control" step="any" min="0" />
                                 </div>
                             </div>
+                   
                         }
                     </div>
                 </div>
