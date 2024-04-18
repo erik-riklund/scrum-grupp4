@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using MongoDB.Entities;
 using App.Handlers;
 using static MongoDB.Driver.WriteConcern;
+using System.Globalization;
 
 namespace App.Controllers
 {
@@ -36,23 +37,19 @@ namespace App.Controllers
                         {
                             chosenMaterials.Add(material);
 
-                           
-                           if (Request.Form.TryGetValue("MaterialUsed[" + materialId + "]", out var amountString))
+
+                            if (Request.Form.TryGetValue("MaterialUsed[" + materialId + "]", out var amountString))
                             {
-                                if (double.TryParse(amountString, out double amount))
+                                var stringValue = amountString.ToString(); // Convert StringValues to string
+                                var formattedValue = stringValue.Replace(",", "."); // Replace comma with dot
+                                if (double.TryParse(formattedValue, NumberStyles.Any, CultureInfo.InvariantCulture, out double amount))
                                 {
                                     modelViewModel.MaterialUsed[materialId] = amount;
-
-                                 
-
-
                                 }
                             }
-                                                       
-                     
-                        }
 
-                     
+
+                        }
 
                     }
 
@@ -64,7 +61,6 @@ namespace App.Controllers
                     }
 
                     
-
                     var keysToRemove = modelViewModel.MaterialUsed.Where(x => x.Value == 0).Select(x => x.Key).ToList();
                     foreach (var key in keysToRemove)
                     {
@@ -104,7 +100,7 @@ namespace App.Controllers
                 }
 
 
-                                if (imageFile != null)
+                 if (imageFile != null)
                 {
                     var imageHandler = new ImageHandler();
                     var path = imageHandler.GetPath(imageFile, model.ID);
