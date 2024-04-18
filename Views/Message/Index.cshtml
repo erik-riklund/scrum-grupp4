@@ -19,7 +19,8 @@
         <thead class="thead-light">
           <tr>
             <th>Title</th>
-            <th>Messages</th>
+            <th>Recipient</th>
+            <th class="text-center">Messages</th>
           </tr>
         </thead>
         <tbody>
@@ -28,7 +29,7 @@
             var unreadMessages = topic.Messages.Where(message => message.Sender.ID != userId && !message.IsRead).Count();
 
             <tr>
-              <td style="width: 70%">
+              <td style="width: 50%">
                 <a asp-action="Topic" asp-controller="Message" asp-route-id="@topic.ID">
                   @if (unreadMessages > 0) 
                   {
@@ -40,7 +41,16 @@
                   }
                 </a>
               </td>
-              <td>@topic.Messages.ToList().Count</td>
+              <td style="width: 35%">
+                @(
+                  topic.Sender.ID == userId ?
+                  $"{topic.Recipient.FirstName} {topic.Recipient.LastName}" :
+                  $"{topic.Sender.FirstName} {topic.Sender.LastName}"
+                )
+              </td>
+              <td class="text-center">
+                @topic.Messages.ToList().Count
+              </td>
             </tr>
           }
         </tbody>
