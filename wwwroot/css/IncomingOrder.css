@@ -57,3 +57,10 @@
     color: white;
     border-radius: 5%;
 }
+
+.Edit {
+    text-decoration: none;
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 5%;
+}

@@ -103,5 +103,14 @@ namespace App.Controllers
 
             return View("HandleOrder", viewModel);
         }
-    }
+        [HttpGet]
+        public async Task<IActionResult> EditOrderHat(string orderId, string hatId)
+        {
+            var order = await Query.FetchOneById<App.Entities.Order>(orderId);
+            var hat = await Query.FetchOneById<App.Entities.Hat>(hatId);
+
+            return View();
+        }
+
+        }
 }

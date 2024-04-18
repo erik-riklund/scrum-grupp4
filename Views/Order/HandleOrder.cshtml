@@ -47,7 +47,9 @@
                             <td>@hat.Model.ModelName</td>
                             <td>@hat.Size</td>
                             <td>@hat.Price</td>
-                            <td><a asp-action="RemoveFromOrder" asp-controller="Order" asp-route-orderId="@Model.OrderId" asp-route-hatId="@hat.ID" class="Remove">Remove hat</a><br />Hej</td>
+                            <td><a asp-action="RemoveFromOrder" asp-controller="Order" asp-route-orderId="@Model.OrderId" asp-route-hatId="@hat.ID" class="Remove">Remove</a><br />
+                                <a asp-action="EditOrderHat" asp-controller="Order" asp-route-orderId="@Model.OrderId" asp-route-hatId="@hat.ID" class="Edit">Edit</a>
+                            </td>
                         </tr>
                     }
                     
