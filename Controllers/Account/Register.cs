@@ -5,6 +5,7 @@ using MD5Hash;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Entities;
 using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace App.Controllers
 {
@@ -30,11 +31,22 @@ namespace App.Controllers
       }
       try
       {
-        var address = new Address { StreetAddress = model.StreetAddress, City = model.City, ZipCode = model.ZipCode, Country = model.Country };
-        var user = new User { FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.Phonenumber, Email = model.Email, Address = address, Password = model.Password.GetMD5() };
-        await user.SaveAsync();
+                var emailCheck = await Query.FetchOne<User>(user => user.Email.Equals(model.Email));
+                if (emailCheck ==null)
+                {
+                    var address = new Address { StreetAddress = model.StreetAddress, City = model.City, ZipCode = model.ZipCode, Country = model.Country };
+                    var user = new User { FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.Phonenumber, Email = model.Email, Address = address, Password = model.Password.GetMD5() };
+                    await user.SaveAsync();
 
-      }
+                }
+                else 
+                {
+                    ModelState.AddModelError(string.Empty, "The email already exist choose a new email");
+                    return View(model);
+                }
+
+
+            }
       catch (Exception ex)
       {
         Debug.WriteLine(ex);

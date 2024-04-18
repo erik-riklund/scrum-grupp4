@@ -1,0 +1,31 @@
+@model MessageTopicViewModel
+
+<p><a asp-action="Index" asp-controller="Message">&lt; Return to the inbox</a></p>
+
+<div class="container">
+  <h3>@Model.Title</h3>
+
+  <div class="mt-3">
+    <table class="table table-striped">
+      @foreach (var message in Model.Messages)
+      {
+        <tr>
+          <td>
+            <div id="@message.ID" style="font-size: 90%">
+              Posted @message.Posted.ToString("yyyy-MM-dd HH:mm") by @message.Sender.FirstName
+              @message.Sender.LastName
+            </div>
+            <div class="mt-3">
+              <pre
+                style="font-family: var(--bs-font-sans-serif); font-size: 1rem; white-space: pre-wrap; word-wrap: break-word;">@message.Content</pre>
+            </div>
+          </td>
+        </tr>
+      }
+    </table>
+  </div>
+
+  <p>
+    <a asp-action="Reply" asp-controller="Message" asp-route-id="@Model.Topic">Write a reply</a>
+  </p>
+</div>
