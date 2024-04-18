@@ -1,0 +1,29 @@
+@model MessageReplyViewModel
+
+<div class="container">
+  <h3>Replying to topic</h3>
+  
+  <div class="mt-4">
+    <form method="post">
+      <input type="hidden" asp-for="@Model.Topic">
+      
+      <div class="form-group">
+        <label for="title" class="form-label">Title:</label>
+        <input type="text" asp-for="Title" class="form-control" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="recipient" class="form-label">Recipient:</label>
+        <input type="text" asp-for="Recipient" class="form-control" readonly>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="message">Message:</label>
+        <textarea asp-for="Message" id="message" class="form-control" rows="10"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block mt-3">Send reply</button>
+    </form>
+  </div>
+</div>
