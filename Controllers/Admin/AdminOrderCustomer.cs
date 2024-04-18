@@ -12,7 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace App.Controllers
 {
-    public partial class OrderController : Controller
+    public partial class AdminController : Controller
     {
         [HttpGet]
         public async Task<IActionResult> AdminOrderCustomer()
@@ -120,6 +120,30 @@ namespace App.Controllers
             ViewBag.TotalSum = newOrder.OrderSum;
 
             return View(newOrder);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AdminSpecialOrderCustomer()
+        {
+            var cursor = await DB.Find<Material>().ExecuteCursorAsync();
+            ViewBag.Material = await cursor.ToListAsync();
+            
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdminSpecialCustomerInfo(SpecialOrderViewModel specialOrderViewModel)
+        {
+            ViewBag.Description = specialOrderViewModel.Description;
+            ViewBag.Size = specialOrderViewModel.Size;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task <IActionResult> PlaceSpecialOrderForCustomer(OrderCustomerViewModel orderCustomerViewModel)
+        {
+            return View();
         }
     }
 }
