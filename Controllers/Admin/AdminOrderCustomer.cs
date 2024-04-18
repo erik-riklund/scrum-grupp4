@@ -143,7 +143,56 @@ namespace App.Controllers
         [HttpPost]
         public async Task <IActionResult> PlaceSpecialOrderForCustomer(OrderCustomerViewModel orderCustomerViewModel)
         {
-            return View();
+            var newAddress = new Address
+            {
+                StreetAddress = orderCustomerViewModel.StreetAddress,
+                ZipCode = orderCustomerViewModel.ZipCode,
+                City = orderCustomerViewModel.City,
+                Country = orderCustomerViewModel.Country
+            };
+
+            await newAddress.SaveAsync();
+
+            var newUser = new User
+            {
+                FirstName = orderCustomerViewModel.FirstName,
+                LastName = orderCustomerViewModel.LastName,
+                Email = orderCustomerViewModel.Email,
+                PhoneNumber = orderCustomerViewModel.PhoneNumber,
+                Address = newAddress
+            };
+
+            await newUser.SaveAsync();
+
+            var newOrder = new App.Entities.Order
+            {
+                CustomerID = newUser.ID,
+                OrderDate = DateTime.Now,
+                IsApproved = true,
+                Status = "Confirmed",
+                OrderSum = orderCustomerViewModel.Price
+            };
+
+            var selectedModel = await Query.FetchOneById<Model>(orderCustomerViewModel.ModelID);
+
+            var hat = new Hat
+            {
+                Model = selectedModel,
+                Price = orderCustomerViewModel.Price,
+                Size = orderCustomerViewModel.Size,
+                Description = ""
+            };
+
+            await hat.SaveAsync();
+            await newOrder.SaveAsync();
+            await newOrder.Hats.AddAsync(hat);
+
+            ViewBag.TotalSum = newOrder.OrderSum;
+
+            return View(newOrder);
+
+
+           
         }
     }
 }
