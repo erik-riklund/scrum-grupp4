@@ -17,6 +17,7 @@
                                 <th scope="col">Description</th>
                                 <th scope="col">Product code</th>
                                 <th scope="col">Materials</th>
+                                <th scope="col">In stock</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                             </tr>
@@ -45,6 +46,7 @@
                                             }
                                         </ul>
                                     </td>
+                                    <td>@currentModel.Amount</td>
                                     <td>
                                         <form method="post" asp-action="EditModel">
                                             <input type="hidden" name="ModelId" value="@currentModel.ID" />
