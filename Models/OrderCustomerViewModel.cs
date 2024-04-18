@@ -27,5 +27,7 @@ namespace App.Models
         public double Price { get; set; }
 
         public double Size { get; set; }
+        
+        public string Description { get; set; } = null!;
     }
 }

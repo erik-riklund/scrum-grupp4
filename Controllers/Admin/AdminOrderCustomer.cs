@@ -127,7 +127,7 @@ namespace App.Controllers
         {
             var cursor = await DB.Find<Material>().ExecuteCursorAsync();
             ViewBag.Material = await cursor.ToListAsync();
-            
+
             return View();
         }
 
@@ -141,7 +141,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> PlaceSpecialOrderForCustomer(OrderCustomerViewModel orderCustomerViewModel)
+        public async Task<IActionResult> PlaceSpecialOrderForCustomer(OrderCustomerViewModel orderCustomerViewModel, List<string> selectedMaterials)
         {
             var newAddress = new Address
             {
@@ -173,14 +173,34 @@ namespace App.Controllers
                 OrderSum = orderCustomerViewModel.Price
             };
 
-            var selectedModel = await Query.FetchOneById<Model>(orderCustomerViewModel.ModelID);
+            var model = new Model
+            {
+                ModelName = "Specialhat",
+                Description = orderCustomerViewModel.Description,
+            };
+
+            await model.SaveAsync();
+
+            if (selectedMaterials != null && selectedMaterials.Count > 0)
+            {
+                foreach (var materialID in selectedMaterials)
+                {
+                    var material = await Query.FetchOneById<Material>(materialID);
+
+                    if (material != null)
+                    {
+                        await model.Materials.AddAsync(material);
+                        await material.Models.AddAsync(model);
+                    }
+                }
+            }
 
             var hat = new Hat
             {
-                Model = selectedModel,
+                Model = model,
                 Price = orderCustomerViewModel.Price,
                 Size = orderCustomerViewModel.Size,
-                Description = ""
+                Description = model.Description
             };
 
             await hat.SaveAsync();
@@ -190,9 +210,6 @@ namespace App.Controllers
             ViewBag.TotalSum = newOrder.OrderSum;
 
             return View(newOrder);
-
-
-           
         }
     }
 }
