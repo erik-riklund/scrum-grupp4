@@ -1,0 +1,79 @@
+﻿
+@model EditCustomerViewModel
+
+<h2 style="text-align: center;">EDIT CUSTOMER</h2>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <h2>Edit Customer</h2>
+            <form method="post" asp-action="EditCustomer" enctype="multipart/form-data">
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>First name:</label>
+                    </div>
+                    <div>
+                        <input asp-for="CustomerId" type="hidden" value="@ViewBag.Customer.ID"/>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="FirstName" class="form-control" value="@ViewBag.Customer.FirstName" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Last name: </label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="LastName" class="form-control" value="@ViewBag.Customer.LastName" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Phonenumber: </label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="PhoneNumber" class="form-control" value="@ViewBag.Customer.PhoneNumber" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Street address </label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="StreetAddress" class="form-control" value="@ViewBag.Customer.Address.StreetAddress" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Zip code: </label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="ZipCode" class="form-control" value="@ViewBag.Customer.Address.ZipCode" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>City: </label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="City" class="form-control" value="@ViewBag.Customer.Address.City" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2" style="margin-right: 15px;">
+                        <label>Country: </label>
+                    </div>
+                    <div class="col-sm-6" style="margin-bottom: 10px;">
+                        <input asp-for="Country" class="form-control" value="@ViewBag.Customer.Address.Country" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" asp-controller="Account" asp-action="SaveCustomer">
+                    Save changes
+                </button>
+            </form>
+        </div>
+      
+
+    </div>
+</div>

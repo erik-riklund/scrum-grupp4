@@ -49,6 +49,8 @@
                 <a class="nav-link text-dark" asp-controller="Order" asp-action="OrderHistory">Order history</a>
               </li>
               <li class="nav-item">
+               <a class="nav-link text-dark" asp-controller="Account" asp-action="EditCustomer">Edit customer</a>
+              </li> 
                 <a class="nav-link text-dark" asp-controller="Admin" asp-action="AdminOrderCustomer">Order for customer</a>
               </li>
               <li class="nav-item">
@@ -86,7 +88,10 @@
                 </li>
               }
               else
-              {
+               {
+               <li class="nav-item">
+               <a class="nav-link text-dark" asp-controller="Account" asp-action="CustomerProfil">Customer Profile</a>
+               </li>
                 <li class="nav-item">
                   <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">Log out</a>
                 </li>
