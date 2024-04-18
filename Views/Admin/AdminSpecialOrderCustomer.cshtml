@@ -1,0 +1,34 @@
+@model SpecialOrderViewModel
+
+<form asp-action="AdminSpecialCustomerInfo" method="post">
+    <h2 style="text-align: center;">CUSTOMIZE YOUR HAT HERE</h2>
+    <br />
+
+    <div class="form-group">
+        <label asp-for="Size">Please enter how big head you have here in cm:</label>
+        <textarea asp-for="Size" class="form-control"></textarea>
+        <span asp-validation-for="Size" class="text-danger"></span>
+    </div>
+    <br />
+
+    <div class="form-group">
+        <label asp-for="Description">Description: </label>
+
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <br />
+    <div class="form-group">
+        <p>Select material: </p>
+        @foreach (var material in ViewBag.Material)
+        {
+            <input type="checkbox" class="form-check-input" value="@material.ID" id="material-@material.ID"
+                name="selectedMaterials">
+            @material.Name
+        }
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary" asp-controller="admin" asp-action="AdminSpecialCustomerInfo">Enter customer info</button>
+    <br />
+</form>
