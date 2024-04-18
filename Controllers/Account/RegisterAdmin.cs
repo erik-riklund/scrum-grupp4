@@ -36,12 +36,20 @@ namespace App.Controllers
           adminRole = new Role { Name = "Admin" };
           await adminRole.SaveAsync();
         }
+                var emailCheck = await Query.FetchOne<User>(user => user.Email.Equals(model.Email));
+                if (emailCheck != null)
+                {
+                    ModelState.AddModelError(string.Empty, "The email already exist choose a new email");
+                    return View(model);
 
-        var user = new User { FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.Phonenumber, Email = model.Email, Password = model.Password.GetMD5() };
-        await user.SaveAsync();
-
-        await user.Roles.AddAsync(adminRole);
-      }
+                }
+                else 
+                {
+                    var user = new User { FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.Phonenumber, Email = model.Email, Password = model.Password.GetMD5() };
+                    await user.SaveAsync();
+                    await user.Roles.AddAsync(adminRole);
+                }
+            }
       catch (Exception ex)
       {
         Debug.WriteLine(ex);
