@@ -34,6 +34,7 @@ namespace App.Controllers
                         {
                             chosenMaterials.Add(material);
 
+                           
                             // Hämta mängden från Request.Form baserat på material-ID och lägg till i MaterialUsed-dictionaryn
                             if (Request.Form.TryGetValue("MaterialUsed[" + materialId + "]", out var amountString))
                             {
@@ -46,22 +47,36 @@ namespace App.Controllers
 
                                 }
                             }
-
-                            
+                                                       
+                     
                         }
+
+                     
+
                     }
-                   
+
+                    await model.SaveAsync();
+
+                    foreach (var material in chosenMaterials)
+                    {
+                        await model.Materials.AddAsync(material);
+                    }
+
+                    
+
                     var keysToRemove = modelViewModel.MaterialUsed.Where(x => x.Value == 0).Select(x => x.Key).ToList();
                     foreach (var key in keysToRemove)
                     {
                         modelViewModel.MaterialUsed.Remove(key);
                     }
 
-
+                    
                 }
+                             
+
 
                 // Sparar modellen
-                await model.SaveAsync();
+                
 
                 // Sparar bilden om den finns
                 if (imageFile != null)
