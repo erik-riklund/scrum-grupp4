@@ -25,6 +25,7 @@
                         <th scope="col">Model</th>
                         <th scope="col">Size</th>
                         <th scope="col">Price</th>
+                        <th scope="col"> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,6 +47,7 @@
                             <td>@hat.Model.ModelName</td>
                             <td>@hat.Size</td>
                             <td>@hat.Price</td>
+                            <td><a asp-action="RemoveFromOrder" asp-controller="Order" asp-route-orderId="@Model.OrderId" asp-route-hatId="@hat.ID" class="Remove">Remove hat</a><br />Hej</td>
                         </tr>
                     }
                     
@@ -89,7 +91,18 @@
             </table>
         </div>
         <br />
-
+        <div>
+            <h3>Current status</h3>
+            <select class="form-select" aria-label="Default select example" asp-for="@Model.Status">
+                <option value ="Confirmed">Confirmed</option>
+                <option value="Declined">Declined</option>
+                <option value="Pending">Pending</option>
+                <option value="ReadyForDelivery">Ready for delivery</option>
+                <option value="Shipped">Shipped</option>
+                <option value="InProgress">In progress</option>
+            </select>
+        </div>
+        <input type="hidden" asp-for="@Model.OrderId" />
         </fieldset>
         <button type="submit" class="btn btn-primary">Submit</button>
         </fieldset>

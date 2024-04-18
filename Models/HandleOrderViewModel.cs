@@ -10,7 +10,6 @@ namespace App.Models
 
         public DateTime EstimatedDelivery { get; set; }
         public DateTime OrderDate { get; set; }
-        public DateTime DeliveryDate { get; set; }
         public UserViewModel customer { get; set; }
         public string Status { get; set; }
         

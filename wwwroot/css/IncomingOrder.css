@@ -50,3 +50,10 @@
     max-width: 40px;
     max-height: 40px;
 }
+
+.Remove {
+    text-decoration: none;
+    background-color: darkred;
+    color: white;
+    border-radius: 5%;
+}
