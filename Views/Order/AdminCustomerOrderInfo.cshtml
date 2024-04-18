@@ -7,35 +7,35 @@
         <div class="col-md-6">
             <div>
                 <label for="firstNameField" class="form-label mt-4">First name:</label>
-                <input asp-for="@Model.User.FirstName" type="text" class="form-control">
+                <input asp-for="@Model.FirstName" type="text" class="form-control">
             </div>
             <div>
                 <label for="lastNameField" class="form-label mt-4">Last name:</label>
-                <input asp-for="@Model.User.LastName" type="text" class="form-control">
+                <input asp-for="@Model.LastName" type="text" class="form-control">
             </div>
             <div>
                 <label for="emailField" class="form-label mt-4">Email:</label>
-                <input asp-for="@Model.User.Email" type="text" class="form-control">
+                <input asp-for="@Model.Email" type="text" class="form-control">
             </div>
             <div>
                 <label for="phoneNumberField" class="form-label mt-4">Telephone number:</label>
-                <input asp-for="@Model.User.PhoneNumber" type="text" class="form-control">
+                <input asp-for="@Model.PhoneNumber" type="text" class="form-control">
             </div>
             <div>
                 <label for="streetAddressField" class="form-label mt-4">Street address:</label>
-                <input asp-for="@Model.User.Address.StreetAddress" type="text" class="form-control">
+                <input asp-for="@Model.StreetAddress" type="text" class="form-control">
             </div>
             <div>
                 <label for="zipCodeField" class="form-label mt-4">Zip code:</label>
-                <input asp-for="@Model.User.Address.ZipCode" type="text" class="form-control">
+                <input asp-for="@Model.ZipCode" type="text" class="form-control">
             </div>
             <div>
                 <label for="cityField" class="form-label mt-4">City:</label>
-                <input asp-for="@Model.User.Address.City" type="text" class="form-control">
+                <input asp-for="@Model.City" type="text" class="form-control">
             </div>
             <div>
                 <label for="countryField" class="form-label mt-4">Country:</label>
-                <input asp-for="@Model.User.Address.Country" type="text" class="form-control">
+                <input asp-for="@Model.Country" type="text" class="form-control">
             </div>
         </div>
         <div class="col-md-6">
@@ -54,9 +54,9 @@
             </div>
         </div>
     </div>
-    <input type="hidden" for="@ViewBag.SelectedModel.ID" name="modelID">
-    <input type="hidden" for="@ViewBag.Size" name="size">
-    <input type="hidden" for="ViewBag.Price" name="price">
+    <input type="hidden" asp-for="@Model.ModelID" value="@ViewBag.SelectedModel.ID">
+    <input type="hidden" asp-for="@Model.Size" value="@ViewBag.Size">
+    <input type="hidden" asp-for="@Model.Price" value="@ViewBag.Price">
     <button type="submit" class="btn btn-success btn-primary mt-4" asp-controller="Order"
         asp-action="PlaceOrderForCustomer">Place
         order</button>

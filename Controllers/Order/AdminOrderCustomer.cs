@@ -70,24 +70,24 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PlaceOrderForCustomer(OrderCustomerViewModel orderCustomerViewModel, string modelID, double size, double price)
+        public async Task<IActionResult> PlaceOrderForCustomer(OrderCustomerViewModel orderCustomerViewModel)
         {
             var newAddress = new Address
             {
-                StreetAddress = orderCustomerViewModel.User.Address.StreetAddress,
-                ZipCode = orderCustomerViewModel.User.Address.ZipCode,
-                City = orderCustomerViewModel.User.Address.City,
-                Country = orderCustomerViewModel.User.Address.Country
+                StreetAddress = orderCustomerViewModel.StreetAddress,
+                ZipCode = orderCustomerViewModel.ZipCode,
+                City = orderCustomerViewModel.City,
+                Country = orderCustomerViewModel.Country
             };
 
             await newAddress.SaveAsync();
 
             var newUser = new User
             {
-                FirstName = orderCustomerViewModel.User.FirstName,
-                LastName = orderCustomerViewModel.User.LastName,
-                Email = orderCustomerViewModel.User.Email,
-                PhoneNumber = orderCustomerViewModel.User.PhoneNumber,
+                FirstName = orderCustomerViewModel.FirstName,
+                LastName = orderCustomerViewModel.LastName,
+                Email = orderCustomerViewModel.Email,
+                PhoneNumber = orderCustomerViewModel.PhoneNumber,
                 Address = newAddress
             };
 
@@ -100,13 +100,26 @@ namespace App.Controllers
                 EstimatedDeliveryDate = DateTime.Now.AddDays(14),
                 IsApproved = true,
                 Status = "Confirmed",
-                OrderSum = price
+                OrderSum = orderCustomerViewModel.Price
             };
 
+            var selectedModel = await Query.FetchOneById<Model>(orderCustomerViewModel.ModelID);
+
+            var hat = new Hat
+            {
+                Model = selectedModel,
+                Price = orderCustomerViewModel.Price,
+                Size = orderCustomerViewModel.Size,
+                Description = ""
+            };
+
+            await hat.SaveAsync();
             await newOrder.SaveAsync();
+            await newOrder.Hats.AddAsync(hat);
+
+            ViewBag.TotalSum = newOrder.OrderSum;
 
             return View(newOrder);
         }
-
     }
 }
