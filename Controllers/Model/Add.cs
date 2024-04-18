@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using App.Handlers;
+using static MongoDB.Driver.WriteConcern;
 
 namespace App.Controllers
 {
@@ -35,14 +36,13 @@ namespace App.Controllers
                             chosenMaterials.Add(material);
 
                            
-                            // Hämta mängden från Request.Form baserat på material-ID och lägg till i MaterialUsed-dictionaryn
-                            if (Request.Form.TryGetValue("MaterialUsed[" + materialId + "]", out var amountString))
+                           if (Request.Form.TryGetValue("MaterialUsed[" + materialId + "]", out var amountString))
                             {
                                 if (double.TryParse(amountString, out double amount))
                                 {
                                     modelViewModel.MaterialUsed[materialId] = amount;
 
-                                    material.CurrentAmount -= amount;
+                                 
 
 
                                 }
@@ -70,16 +70,29 @@ namespace App.Controllers
                         modelViewModel.MaterialUsed.Remove(key);
                     }
 
-                    
+                    foreach (var materialEntry in modelViewModel.MaterialUsed) 
+                    {
+
+                        var materialId = materialEntry.Key;
+                        var amount = materialEntry.Value;
+
+                        var material = await Query.FetchOneById<Material>(materialId);
+
+                        if (material != null)
+                        {
+                           
+                            material.CurrentAmount -= amount;
+
+                           
+                            await material.SaveAsync();
+                        }
+
+                    }
+
                 }
-                             
 
 
-                // Sparar modellen
-                
-
-                // Sparar bilden om den finns
-                if (imageFile != null)
+                                if (imageFile != null)
                 {
                     var imageHandler = new ImageHandler();
                     var path = imageHandler.GetPath(imageFile, model.ID);
@@ -88,18 +101,17 @@ namespace App.Controllers
                     model.ImagePath = path;
                 }
 
-                // Uppdaterar modellen med bildsökväg och sparar igen
                 await model.SaveAsync();
 
-                // Redirect till HandleModels-actionen i Model-controllern
+            
                 return RedirectToAction("HandleModels", "Model");
             }
             else
             {
-                // Skapar ett JavaScript-skript för att visa ett felmeddelande om modellnamnet inte är angivet
+             
                 string script = "<script>alert('You must enter a model name!'); window.location.href='/Model/HandleModels';</script>";
 
-                // Returnerar ett ContentResult med JavaScript-skriptet
+              
                 return Content(script, "text/html");
             }
         }
