@@ -32,7 +32,7 @@
                                         <td>@supplier.Name</td>
                                         <td>@material.Price</td>
                                         <td>@material.Unit</td>
-                                        <td>@material.CurrentAmount</td>
+                                        <td>@material.CurrentAmount.ToString("N2")</td>
                                         <td>
                                             <form method="post" asp-action="DeleteMaterial">
                                                 <input type="hidden" name="MaterialId" value="@material.ID" />
