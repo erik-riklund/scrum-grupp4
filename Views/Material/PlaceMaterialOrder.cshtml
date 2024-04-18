@@ -30,3 +30,10 @@
     <br />
     Any questions? Call us on: @ViewBag.Supplier.TelephoneNumber
 </p>
+<form method="post" asp-action="OrderedPdfMaterial">
+    <input type="hidden" name="amount" value="@ViewBag.Amount" />
+    <input type="hidden" name="materialID" value="@ViewBag.Material.ID" />
+    <input type="hidden" name="supplierID" value="@ViewBag.Material.SupplierID" />
+    <button type="submit" class="btn btn-primary btn-sm">Get PDF</button>
+</form>
+

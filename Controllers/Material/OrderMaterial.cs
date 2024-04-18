@@ -6,6 +6,9 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Driver.Linq;
+using App.Handlers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static MongoDB.Driver.WriteConcern;
 
 namespace App.Controllers
 {
@@ -36,8 +39,17 @@ namespace App.Controllers
             ViewBag.Material = material;
             ViewBag.Supplier = supplier;
             ViewBag.Amount = amount;
-
-            return View();  
+            
+            return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> OrderedPdfMaterial(string supplierID, string materialID, Double amount)
+        {
+            DateTime orderDate = DateTime.Now;
+            var content = await OrderMaterialPdfContent.PdfContent(supplierID, materialID, amount, orderDate);
+            var stream = new MemoryStream(PdfHandler.HtmlToPdf(content));
+            return new FileStreamResult(stream, "application/pdf");
+        }
+        
     }
 }
