@@ -32,6 +32,11 @@ namespace App.Controllers
     {
       if (!ModelState.IsValid)
       {
+        var self = (await session.GetUserAsync())?.ID;
+        var users = ((IEnumerable<User>)await Query.FetchMany<User>(user => !user.ID.Equals(self))).ToList();
+
+        ViewBag.Users = users.Select(user => new SelectListItem { Value = user.ID, Text = $"{user.FirstName} {user.LastName}" });
+
         return View(model);
       }
       else

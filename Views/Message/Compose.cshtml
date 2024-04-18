@@ -13,13 +13,13 @@
       <div class="form-group mt-3">
         <label for="topic">Title:</label>
         <input type="text" asp-for="Topic" id="topic" class="form-control">
-        <div asp-validation-for="Topic" class="text-danger"></div>
+        <span asp-validation-for="Topic" class="text-danger"></span>
       </div>
 
       <div class="form-group mt-3">
         <label for="message">Message:</label>
         <textarea asp-for="Message" id="message" class="form-control" rows="10"></textarea>
-        <div asp-validation-for="Message" class="text-danger"></div>
+        <span asp-validation-for="Message" class="text-danger"></span>
       </div>
 
       <button type="submit" class="btn btn-primary btn-block mt-3">Create topic</button>
