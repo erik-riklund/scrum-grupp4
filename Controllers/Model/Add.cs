@@ -21,6 +21,7 @@ namespace App.Controllers
                     ModelName = modelViewModel.ModelName,
                     Description = modelViewModel.Description,
                     ProductCode = modelViewModel.ProductCode,
+                    Amount = modelViewModel.Amount,
                 };
 
                 if (SelectedMaterials != null && SelectedMaterials.Count > 0)
@@ -80,10 +81,21 @@ namespace App.Controllers
 
                         if (material != null)
                         {
-                           
-                            material.CurrentAmount -= amount;
+                            var totalAmount = amount * modelViewModel.Amount;
 
-                           
+                            if (material.CurrentAmount > totalAmount)
+                            {
+
+                                material.CurrentAmount -= totalAmount;
+
+                            }
+
+                            else 
+                            {
+
+                                string script = "<script>alert('There is not enough material in stock!'); window.location.href='/Model/HandleModels';</script>";
+                                return Content(script, "text/html");
+                            }
                             await material.SaveAsync();
                         }
 
