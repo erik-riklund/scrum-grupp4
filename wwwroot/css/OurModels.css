@@ -48,3 +48,27 @@
         background-color: black;
         color: white;
     }
+
+@media (max-width: 768px) {
+    .OurModels {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 10px; 
+        align-items: center; 
+        padding: 10px; 
+    }
+
+    .SeeProduct {
+    height: 10px;
+    width: 100px;
+    
+
+    }
+}
+
+
+
+
+
+
+}

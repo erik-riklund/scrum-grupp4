@@ -1,0 +1,40 @@
+﻿html {
+.form-group
+}
+
+body {
+
+
+    @media (max-width: 780px) { /* Justera detta värde baserat på ditt specifika behov */
+        .table thead {
+            display: none; /* Göm tabellhuvudet på små skärmar */
+        }
+
+        .table, .table tbody, .table tr, .table td {
+            display: block;
+            width: 100%;
+        }
+
+            .table tr {
+                margin-bottom: 10px; /* Lägg till lite mellanrum mellan raderna */
+            }
+
+            .table td {
+                text-align: right; /* Texten högerjusteras */
+                position: relative;
+                padding-left: 50%; /* Ge utrymme för etiketter på vänster sida */
+            }
+
+                .table td::before {
+                    content: attr(data-label); /* Skapa en etikett från data-label attributet */
+                    position: absolute;
+                    left: 0;
+                    width: 50%;
+                    padding-right: 10px; /* Lägg till lite mellanrum mellan etikett och text */
+                    text-align: left;
+                    font-weight: bold; /* Gör texten fetstil */
+                }
+    }
+
+    
+}

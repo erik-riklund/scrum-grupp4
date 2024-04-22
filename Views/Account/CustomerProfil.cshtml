@@ -1,4 +1,4 @@
-﻿
+﻿<link rel="stylesheet" href="~/css/CustomerProfile.css"> 
 
 <h2 style="text-align: center;">MANAGE ORDERHISTORY</h2>
 <br />
@@ -38,7 +38,7 @@
                                 foreach (var hats in order.Hats)
                                 {
                                     <tr>
-                                        <td>@order.ID</td>
+                                        @* <td>@order.ID</td>
                                         <td>@order.OrderDate</td>
                                         @if (hats.Model == null)
                                         {
@@ -49,7 +49,15 @@
                                             <td>@hats.Model.ID</td>
                                             <td>@hats.Model.ModelName</td>
                                             <td>@hats.Price</td>
-                                            <td>@order.Status</td>
+                                            <td>@order.Status</td> *@
+
+                                        <td data-label="Orderid">@order.ID</td>
+                                        <td data-label="Orderdate">@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                                        <td data-label="Modelid">@hats.Model.ID</td>
+                                        <td data-label="Modelname">@hats.Model.ModelName</td>
+                                        <td data-label="Price">$@hats?.Price.ToString("N2")</td>
+                                        <td data-label="Status">@order.Status</td>
+                                        <td data-label="Print order">
 
                                             <td>
                                                 <form method="post" asp-action="PrintOrder">
@@ -57,12 +65,7 @@
                                                         <button type="submit" class="btn btn-primary btn-sm">Get PDF</button>
                                                     </form>
                                                 </td>
-
-
-
-                                        }
-
-                                    </tr>
+                                        </tr>
                                 
                             }
                         }
