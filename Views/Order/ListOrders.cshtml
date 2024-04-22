@@ -85,6 +85,8 @@
             <p>Hats @Order.Hats.Count();</p>
             <p>Ordersum: @Order.OrderSum sek</p>
                 <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                <br />
+                <a asp-action="Delete" asp-controller="Order" asp-route-orderId="@Order.ID" class="Remove">Delete order</a>
                 
           
 

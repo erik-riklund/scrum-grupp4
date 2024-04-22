@@ -86,6 +86,7 @@ namespace App.Controllers
                 EstimatedDelivery = order.EstimatedDeliveryDate,
                 Hats = order.Hats.ToList(),
                 orderSum = order.OrderSum,
+                
 
             };
             var customer = await Query.FetchOneById<User>(order.CustomerID);
@@ -109,42 +110,51 @@ namespace App.Controllers
             
             var hat = await Query.FetchOneById<App.Entities.Hat>(hatId);
 
-            var materials = new List<AddMaterialViewModel>();
-            var allMaterial = await Query.FetchAll<App.Entities.Material>();
-            if (allMaterial != null)
-            {
-                foreach (var material in allMaterial.ToList())
-                {
-                    if (material != null)
-                    {
-                        var toAdd = new AddMaterialViewModel
-                        {
-                            materialId = material.ID,
-                            materialName = material.Name
-                        };
-                        if (hat.Model.Materials.Contains(material))
-                        {
-                            toAdd.inHat = true;
-                        }
-                        materials.Add(toAdd);
-                    }
-                    
-                }
-                
-            }
             var viewModel = new EditOrderHatViewModel
             {
-                Materials = materials,
+                
                 OrderId = orderId,
                 Size = hat.Size,
                 HatId = hatId,
-                HatDescription = hat.Description
+                HatDescription = hat.Description,
+                imagePath = hat.Model.ImagePath,
+                Price = hat.Price
 
             };
+            if (hat.Model.Materials != null)
+            {
+                
+                viewModel.Materials = hat.Model.Materials.ToList();
 
+            }
+            
 
+             
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditOrderHat(EditOrderHatViewModel eoh)
+        {
+            var hat = await Query.FetchOneById<App.Entities.Hat>(eoh.HatId);
+            hat.Price = eoh.Price;
+            
+            var model = await Query.FetchOneById<App.Entities.Model>(hat.Model.ID);
+            model.ProductCode = eoh.ProductCode;
+            await model.SaveAsync();
+            await hat.SaveAsync();
+            var order = await Query.FetchOneById<App.Entities.Order>(eoh.OrderId);
+            double sum = 0;
+            foreach (var item in order.Hats)
+            {
+                sum += item.Price;
+            }
+            order.OrderSum = sum;
+            await order.SaveAsync();
+
+
+            return RedirectToAction("HandleOrder", new { orderId = eoh.OrderId });
         }
 
         }

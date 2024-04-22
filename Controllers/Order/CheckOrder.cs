@@ -128,7 +128,27 @@ namespace App.Controllers
 
             return View("ListOrders", allOrders.ToList());
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            await order.DeleteAsync();
+
+
+            var allOrders = await Query.FetchAll<Entities.Order>();
+
+
+
+            return View("ListOrders", allOrders.ToList());
+        }
+
     }
 }
 

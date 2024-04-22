@@ -1,28 +1,32 @@
 ﻿@model EditOrderHatViewModel
-@* <form method="post>" *@
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col"></th>
-            <th scope="col">Material</th>
-            <th scope="col"></th>
-            <th scope="col">Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var material in Model.Materials)
-        {
-            <tr>
-                <th scope="row"><input type="checkbox" asp-for="@material.inHat" /></th>
-                <td>@material.materialName</td>
-                <td><input type="hidden" asp-for="@material.materialId"/></td>
-                <td><input type="text" asp-for="@material.amount" /></td>
-            </tr>
-        }
-        
-        
-    </tbody>
-</table>
-<button type="submit">Klicka här</button>
-@* </form> *@
 
+<img src="@Model.imagePath" style="max-width: 400px; max-height: 400px;" />
+<p>@Model.HatDescription</p>
+<form method="post">
+    <input type="hidden" asp-for="@Model.OrderId" />
+    <input type="hidden" asp-for="@Model.HatId" />
+    Wanted Material:
+    @foreach(var material in Model.Materials)
+    {
+        <p>@material.Name</p>
+    }
+    Set Price:
+    <input asp-for="Price" />
+    Select Productcode:
+    <select asp-for="ProductCode" class="form-control">
+        <option value="6500 00 00 00">1. HEADGEAR AND PARTS OF HEADGEAR</option>
+        <option value="6504 00 00 00">
+            2. Hats and other headgear, plaited or assembled
+            from strips or strips of all kinds
+        </option>
+        <option value="6505 00 00 00">
+            3. Hats and other headgear, of knitted fabric or made
+            from lace, felt
+        </option>
+        <option value="6506 00 00 00">4. Other headgear, including unlined and ungarnished</option>
+        <option value="6507 00 00 00">5. Chinstraps for headgear</option>
+        <option value="6812 00 00 00">6. ,headgear, footwear and</option>
+        <option value="6812 00 00 00">7. Clothing and accessories for clothing as well as footwear and headgear</option>
+    </select>
+    <button type="submit">Klicka här</button>
+</form>
