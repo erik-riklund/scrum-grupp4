@@ -66,65 +66,48 @@ namespace App.Controllers
 
           hat.Model = model;
           await hat.SaveAsync();
-          var customer = await session.GetUserAsync();
 
-          if (customer != null)
+          if (await session.GetUserAsync() is User customer)
           {
-            if (customer.ShoppingCart == null)
+            if (model != null)
             {
-              customer.ShoppingCart = new Cart { UserID = customer.ID };
-              await customer.SaveAsync();
-              await customer.ShoppingCart.SaveAsync();
-            }
-
-            var shoppingCarts = await Query.FetchAll<Cart>();
-            var shoppingCart = shoppingCarts.Where(c => c.UserID == customer.ID).FirstOrDefault();
-
-            if (shoppingCart != null)
-            {
-              await shoppingCart.Hats.AddAsync(hat);
-              shoppingCart.UpdateTotalSum();
-              await shoppingCart.SaveAsync();
-
-              if (model != null)
+              var order = new Entities.Order
               {
-                var order = new Entities.Order
+                CustomerID = customer.ID,
+                IsApproved = false,
+                Status = "Pending"
+              };
+
+              if (await Query.FetchOneById<User>("661631d6fdc5b0a63f5d5241") is User otto)
+              {
+                string title = sov.Description.Length > 30 ? string.Concat(sov.Description.AsSpan(0, 30), "...") : sov.Description;
+
+                var topic = new Topic
                 {
-                  CustomerID = customer.ID,
-                  IsApproved = false,
-                  Status = "Pending"
+                  Sender = customer,
+                  Recipient = otto,
+                  Title = $"Special order: {title}"
                 };
 
-                if (await Query.FetchOneById<User>("661631d6fdc5b0a63f5d5241") is User otto)
+                var message = new Message
                 {
-                  string title = sov.Description.Length > 30 ? string.Concat(sov.Description.AsSpan(0, 30), "...") : sov.Description;
+                  Sender = customer,
+                  Content = sov.Description
+                };
 
-                  var topic = new Topic
-                  {
-                    Sender = customer,
-                    Recipient = otto,
-                    Title = $"Special order: {title}"
-                  };
+                await order.SaveAsync();
+                await order.Hats.AddAsync(hat);
+                await customer.Orders.AddAsync(order);
 
-                  var message = new Message
-                  {
-                    Sender = customer,
-                    Content = sov.Description
-                  };
+                await message.SaveAsync();
+                await topic.SaveAsync();
+                await topic.Messages.AddAsync(message);
 
-                  await order.SaveAsync();
-                  await order.Hats.AddAsync(hat);
-                  await customer.Orders.AddAsync(order);
-
-                  await message.SaveAsync();
-                  await topic.SaveAsync();
-                  await topic.Messages.AddAsync(message);
-
-                  return RedirectToAction("ConfirmSpecial", "Order", new { id = order.ID });
-                }
+                return RedirectToAction("ConfirmSpecial", "Order", new { id = order.ID });
               }
             }
           }
+
         }
 
         catch (Exception)

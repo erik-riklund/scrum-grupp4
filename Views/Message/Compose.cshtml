@@ -1,7 +1,9 @@
 @model MessageComposeViewModel
 
 <div class="container">
-  <h2>Compose a new topic</h2>
+  <form asp-action="Index" asp-controller="Message" method="get">
+    <p><button type="submit" class="btn btn-primary">Return to the inbox</button></p>
+  </form>
 
   <div class="my-5">
     <form method="post">
