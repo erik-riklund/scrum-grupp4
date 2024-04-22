@@ -1,16 +1,14 @@
 ﻿using App.Entities;
-using App.Controllers;
+using System.Security.Cryptography;
 
 namespace App.Handlers
 {
-    public class OrderPdfContent
+    public class InvoiceContentPdfcs
     {
-  
-
-        public async static Task<string> OneHistoryPdfContent(Order order, User customer, string imageUrl)
+        public async static Task<string> OneHistoryPdfContent(Order order, User customer)
         {
-            string content = "<div><h1>Order from:</h1>" +
-                "<h2> Customerid: " + customer.ID+"</h2>"+
+            string content = "<div><h1>Invoice</h1>" +
+                "<h2> Customerid: " + customer.ID + "</h2>" +
                 "<h2>" + customer.FirstName + " " + customer.LastName + "</h2>" +
                 "<h2>" + customer.Address.StreetAddress + "</h2>" +
                 "<h2>" + customer.Email + "</h2>" +
@@ -22,8 +20,9 @@ namespace App.Handlers
                 "<h2>Hattmakaregatan 1</h2>" +
                 "<h2>70001 Hattstaden</h2>" +
                 "<h2>Hattlandet</h2></div>" +
-                "<div><h1>Order information</h1>" +
-                "<h2>Orderid: "+order.ID+ "</h2>" +
+                "<div><h2>Order information</h2>" +
+                "<h3>Orderid: " + order.ID + "</h3>" +
+                "<h3>"+ order.OrderDate+ "</h3>"+
                 "<table border='1'>" +
                 "<tr><th>Model Name</th><th>Description</th><th>Productcode</th><th>Price</th><th>Size</th><th>Image</th></tr>";
 
@@ -34,24 +33,23 @@ namespace App.Handlers
                 content += "<tr>" +
                         "<td>" + hat.Model.ModelName + "</td>" +
                         "<td>" + hat.Description + "</td>" +
-                        "<td>" + hat.Model.ProductCode+ "</td>"+
+                        "<td>" + hat.Model.ProductCode + "</td>" +
                         "<td>" + hat.Price + "</td>" +
                         "<td>" + hat.Size + "</td>" +
-                "<td><img src=\"" + imageUrl + "\" alt=\"Hat Image\"></td>" +
                         "<td>1</td>" +
                         "</tr>";
-               
+
             }
 
             content += "</table>" +
-                "<h2>Total Quantity: " + order.Hats.Count() + "</h2>" +
-                "<h2>Total Price: " + order.Hats.Sum(p => p.Price) + "</h2>";
+                "<h3>Total Quantity: " + order.Hats.Count() + "</h3>" +
+                "<h3>Total Price: " + order.Hats.Sum(p => p.Price) + "</h3>"+
+                "<h3>OCR: " + order.ID + "</h2>"+
+                "<h3>Bank account: 7771-2921 Name:Otto's Fashionable Hats </h3>"+
+                "<h3>Pay in 30 days from order date</h3>";
+            ;
 
             return content;
         }
-
-
-
-
     }
 }

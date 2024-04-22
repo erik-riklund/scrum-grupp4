@@ -15,7 +15,23 @@
                     <label for="dateTo">Choose date To:</label>
                     <input asp-for="DateTo" type="date" id="dateTo" name="dateTo">
                 </div>
-                <button type="submit">Choose</button>
+                <input asp-for="ChooseDate" type="hidden" id="ChooseDate" name="ChooseDate" value="false" />
+
+                <button type="submit" onclick="setChooseDateTrue()">Choose</button>
+            </form>
+            <form method="post" asp-action="orderHistory">
+            <input asp-for="PaymentStatus" type="hidden" id="PaymentStatus" name="PaymentStatus" value=true />
+            <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value=/>
+            <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value=/>
+                <button type="submit">List all paiyed order</button>
+
+            </form>
+            <form method="post" asp-action="orderHistory">
+                <input asp-for="PaymentStatus" type="hidden" id="PaymentStatus" name="PaymentStatus" value=false />
+                <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value= />
+                <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value= />
+                <button type="submit">List all unpaiyed order</button>
+
             </form>
                 <div class="form-group">
                 <form method="post" asp-action="AllOrderHistoryPdf">
@@ -37,6 +53,8 @@
                                 <th scope="col">Customerid</th>
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">Print order</th>
+                                <th scope="col">Change paymentstatus</th>
+                                <th scope="col">Print Invoice</th>
 
                             </tr>
                         </thead>
@@ -82,6 +100,18 @@
                                                         <button type="submit" class="btn btn-primary btn-sm">Get PDF</button>
                                                     </form>
                                                 </td>
+                                                <td>
+                                                    <form method="post" asp-action="ChangePaymentStatus">
+                                                        <input type="hidden" name="orderId" value="@order.ID" />
+                                                        <button type="submit" class="btn btn-primary btn-sm">Change payment status</button>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <form method="post" asp-action="PrintInvoice">
+                                                        <input type="hidden" name="orderId" value="@order.ID" />
+                                                        <button type="submit" class="btn btn-primary btn-sm">Print Invoice</button>
+                                                    </form>
+                                                </td>
                                                
 
 
@@ -115,3 +145,9 @@
                 </div>
     </div>
 </div>
+
+    <script>
+        function setChooseDateTrue() {
+            document.getElementById('ChooseDate').value = 'true';
+        }
+    </script>

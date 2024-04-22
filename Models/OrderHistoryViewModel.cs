@@ -6,5 +6,9 @@
 
         public DateTime DateFrom { get; set; }
 
+        public bool PaymentStatus { get; set; }
+
+        public bool ChooseDate { get; set; }
+
     }
 }

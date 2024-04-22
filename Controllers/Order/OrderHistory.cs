@@ -10,18 +10,14 @@ using System.Diagnostics;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Cmp;
 
 
 namespace App.Controllers.order
 {
     public partial class OrderController : Controller
     {
-        private readonly IUrlHelperFactory _urlHelperFactory;
-
-        public OrderController(IUrlHelperFactory urlHelperFactory)
-        {
-            _urlHelperFactory = urlHelperFactory;
-        }
+        
         [HttpGet]
         public async Task<IActionResult> OrderHistory()
         {
@@ -39,8 +35,16 @@ namespace App.Controllers.order
         public async Task<IActionResult> OrderHistory (OrderHistoryViewModel model)
         {
             try
-            {
-                var getOrder = await Query.FetchMany<Entities.Order>(order => order.OrderDate >= model.DateFrom && order.OrderDate <= model.DateTo);
+            {   var getOrder = await Query.FetchMany<Entities.Order>(order => order.OrderDate >= model.DateFrom && order.OrderDate <= model.DateTo);
+
+                if (model.PaymentStatus)
+                {
+                    getOrder = await Query.FetchMany<Entities.Order>(order => order.PayStatus ==true);
+                }
+                else if (!model.PaymentStatus && !model.ChooseDate)
+                { 
+                    getOrder = await Query.FetchMany<Entities.Order>(order => order.PayStatus == false);
+                }
                 var getCustomer = await Query.FetchMany<Entities.User>(user => user.ID !=null);
                 List<Entities.Order> orderList = new List<Entities.Order>();
                 List<Entities.User> userList = new List<Entities.User>();
@@ -127,39 +131,52 @@ namespace App.Controllers.order
            
             
         }
+        [HttpPost]
+        public async Task<IActionResult> ChangePaymentStatus (string orderId) 
+        {
+            try 
+            {
+                var getOrder = await Query.FetchOneById<Entities.Order>(orderId);
+                if(getOrder.PayStatus && getOrder.PayStatus !=null)
+                {
+                    getOrder.PayStatus = false;
+                }
+                else 
+                {
+                    getOrder.PayStatus=true;
+                }
+                getOrder.SaveAsync();
 
-        //[HttpPost]
-        //public async Task<IActionResult> GetOrderHistoryImage(string orderId)
-        //{
-        //    try
-        //    {
-        //        var getOrder = await Query.FetchOne<Entities.Order>(order => order.ID.Equals(orderId));
+                return RedirectToAction("OrderHistory", "Order");
+            }
+            catch 
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while fetching the order history");
+                return RedirectToAction("OrderHistory", "Order");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> PrintInvoice (string orderId)
+        {
+            try
+            {
+                var getOrder = await Query.FetchOneById<Entities.Order>(orderId);
+                var customerId = getOrder.CustomerID;
+                var customer = await Query.FetchOneById<Entities.User>(customerId);
 
-        //        var imageHandler = new ImageHandler();
+                var content = await InvoiceContentPdfcs.OneHistoryPdfContent(getOrder, customer);
 
-        //        var model = await Query.FetchOne<App.Entities.Model>(model => model.ID.Equals(getOrder.Hats.First().Model.ID));
-        //        var imagePath = model.ImagePath;
+                var stream = new MemoryStream(PdfHandler.HtmlToPdf(content));
+                return new FileStreamResult(stream, "application/pdf");
 
-        //        var fullImagePath = Path.Combine(Directory.GetCurrentDirectory(), imagePath);
+            }
+            catch
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while fetching the order");
+                return RedirectToAction("OrderHistory", "Order");
+            }
 
-        //        byte[] imageData;
-        //        using (var imageStream = new FileStream(fullImagePath, FileMode.Open))
-        //        {
-        //            using (var memoryStream = new MemoryStream())
-        //            {
-        //                await imageStream.CopyToAsync(memoryStream);
-        //                imageData = memoryStream.ToArray();
-        //            }
-        //        }
-
-        //        return PhysicalFile(fullImagePath, "image/jpeg");
-        //    }
-        //    catch
-        //    {
-        //        ModelState.AddModelError(string.Empty, "An error occurred while fetching the order history");
-        //        return View();
-        //    }
-        //}
+        }
 
     }
 }
