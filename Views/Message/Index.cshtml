@@ -4,11 +4,10 @@
   var userId = (await user.GetUserAsync())?.ID;
 }
 
-<h2>Topics</h2>
 
-<p>
-  <a asp-controller="Message" asp-action="Compose">Create a new topic</a>
-</p>
+<form asp-action="Compose" asp-controller="Message" method="get">
+  <p><button type="submit" class="btn btn-primary">Create a new topic</button></p>
+</form>
 
 <div class="container">
   @if (ViewBag.Error == null)
@@ -31,7 +30,7 @@
             <tr>
               <td style="width: 50%">
                 <a asp-action="Topic" asp-controller="Message" asp-route-id="@topic.ID">
-                  @if (unreadMessages > 0) 
+                  @if (unreadMessages > 0)
                   {
                     <span style="font-weight: 600">@topic.Title (@unreadMessages)</span>
                   }
@@ -43,10 +42,10 @@
               </td>
               <td style="width: 35%">
                 @(
-                  topic.Sender.ID == userId ?
-                  $"{topic.Recipient.FirstName} {topic.Recipient.LastName}" :
-                  $"{topic.Sender.FirstName} {topic.Sender.LastName}"
-                )
+                    topic.Sender.ID == userId ?
+                    $"{topic.Recipient.FirstName} {topic.Recipient.LastName}" :
+                    $"{topic.Sender.FirstName} {topic.Sender.LastName}"
+                    )
               </td>
               <td class="text-center">
                 @topic.Messages.ToList().Count

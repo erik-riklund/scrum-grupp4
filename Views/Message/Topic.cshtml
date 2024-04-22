@@ -1,7 +1,5 @@
 @model MessageTopicViewModel
 
-<p><a asp-action="Index" asp-controller="Message">&lt; Return to the inbox</a></p>
-
 <div class="container">
   <h3>@Model.Title</h3>
 
@@ -25,7 +23,14 @@
     </table>
   </div>
 
-  <p>
-    <a asp-action="Reply" asp-controller="Message" asp-route-id="@Model.Topic">Write a reply</a>
-  </p>
+  <div class="mt-4">
+    <form asp-action="Index" asp-controller="Message" method="get">
+      <button type="submit" class="btn btn-primary" style="float:left">Return to the inbox</button>
+    </form>
+    <div style="float:left">&nbsp;</div>
+    <form asp-action="Reply" asp-controller="Message" method="get">
+      <input type="hidden" name="id" value="@Model.Topic">
+      <button type="submit" class="btn btn-primary" style="float:left">Write a reply</button>
+    </form>
+  </div>
 </div>

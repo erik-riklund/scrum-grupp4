@@ -1,12 +1,15 @@
 @model MessageReplyViewModel
 
 <div class="container">
-  <h3>Replying to topic</h3>
-  
+  <form asp-action="Topic" asp-controller="Message" method="get">
+    <input type="hidden" name="id" value="@Model.Topic">
+    <p><button type="submit" class="btn btn-primary">Return to the topic</button></p>
+  </form>
+
   <div class="mt-4">
     <form method="post">
       <input type="hidden" asp-for="@Model.Topic">
-      
+
       <div class="form-group">
         <label for="title" class="form-label">Title:</label>
         <input type="text" asp-for="Title" class="form-control" readonly>
