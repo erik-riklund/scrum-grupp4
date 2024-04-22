@@ -7,6 +7,8 @@ using MongoDB.Entities;
 using MongoDB.Driver.Linq;
 using System.Linq;
 using System.Reflection;
+using iText.Layout.Borders;
+
 
 namespace App.Controllers
 { 
@@ -15,27 +17,13 @@ namespace App.Controllers
         [HttpGet]
         public async Task<IActionResult> ListOrders()
         {
-            // Hämta alla ogodkända ordrar
-            var unapprovedOrders = await DB.Queryable<App.Entities.Order>()
-                                            .Where(o => !o.IsApproved)
-                                            .ToListAsync();
+          var allOrders = await Query.FetchAll<Entities.Order>();
 
-            // Hämta alla godkända ordrar
-            var approvedOrders = await DB.Queryable<App.Entities.Order>()
-                                            .Where(o => o.IsApproved)
-                                            .ToListAsync();
 
-            // Skapa en instans av ApproveOrderViewModel och skicka med listorna till vyn
-            var viewModel = new ApproveOrderViewModel
-            {
-                unapprovedOrders = unapprovedOrders,
-                approvedOrders = approvedOrders
-            };
-
-            return View(viewModel);
+            return View(allOrders.ToList());
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> ApproveOrder(string orderId)
         {
             var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
@@ -45,30 +33,122 @@ namespace App.Controllers
                 return NotFound();
             }
 
-            // Markera ordern som godkänd
             order.IsApproved = true;
+            order.Status = "Confirmed";
             await order.SaveAsync();
 
-            // Hämta alla ogodkända ordrar
-            var unapprovedOrders = await DB.Queryable<App.Entities.Order>()
-                                            .Where(o => !o.IsApproved)
-                                            .ToListAsync();
+            var allOrders = await Query.FetchAll<Entities.Order>();
 
-            // Hämta alla godkända ordrar
-            var approvedOrders = await DB.Queryable<App.Entities.Order>()
-                                            .Where(o => o.IsApproved)
-                                            .ToListAsync();
 
-            // Skapa en instans av ApproveOrderViewModel och skicka med listorna till vyn
-            var viewModel = new ApproveOrderViewModel
-            {
-                unapprovedOrders = unapprovedOrders,
-                approvedOrders = approvedOrders
-            };
-
-            // Återvänd till samma vy med den uppdaterade datan
-            return View("IncomingOrder", viewModel);
+            
+            return View("ListOrders", allOrders.ToList());
         }
+        [HttpGet]
+        public async Task<IActionResult> DeclineOrder(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+           
+            order.Status = "Declined";
+            await order.SaveAsync();
+
+
+            var allOrders = await Query.FetchAll<Entities.Order>();
+
+
+
+            return View("ListOrders", allOrders.ToList());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> InProgress(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+
+            order.Status = "InProgress";
+            await order.SaveAsync();
+
+
+            var allOrders = await Query.FetchAll<Entities.Order>();
+
+
+
+            return View("ListOrders", allOrders.ToList());
+        }
+        [HttpGet]
+        public async Task<IActionResult> ReadyForDelivery(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+
+            order.Status = "ReadyForDelivery";
+            await order.SaveAsync();
+
+
+            var allOrders = await Query.FetchAll<Entities.Order>();
+
+
+
+            return View("ListOrders", allOrders.ToList());
+        }
+        [HttpGet]
+        public async Task<IActionResult> Shipped(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+
+            order.Status = "Shipped";
+            await order.SaveAsync();
+
+
+            var allOrders = await Query.FetchAll<Entities.Order>();
+
+
+
+            return View("ListOrders", allOrders.ToList());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string orderId)
+        {
+            var order = await DB.Find<App.Entities.Order>().OneAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            await order.DeleteAsync();
+
+
+            var allOrders = await Query.FetchAll<Entities.Order>();
+
+
+
+            return View("ListOrders", allOrders.ToList());
+        }
+
     }
 }
 

@@ -1,0 +1,127 @@
+﻿@model HandleOrderViewModel
+<link rel="stylesheet" href="~/css/IncomingOrder.css">
+
+<h1>Handle order</h1>
+
+<div>
+    <form asp-action="HandleOrder" method="post">
+        
+        <div class="form-group">
+            <h3>Customer:</h3>
+            <p>Name: @Model.customer.FirstName @Model.customer.LastName</p>
+            <p>Adress: @Model.customer.StreetAdress @Model.customer.ZipCode @Model.customer.City</p>
+            <p>Country: @Model.customer.Country</p>
+            <p>Email: @Model.customer.Email</p>
+
+        </div>
+        <br />
+
+        <div class="form-group">
+            <h3>Hats:</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Model</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Price</th>
+                        <th scope="col"> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var hat in Model.Hats)
+                    {
+                        <tr>
+                            <th scope="row">
+                                @if(@hat.Model.ImagePath!=null)
+                                {
+                                    <img src="@hat.Model.ImagePath" alt="BildModell" class="hatpicture" style="max-width: 60px; max-height: 60px;" />
+                                }
+                                else
+                                {
+                                    <img src="~/Images/GenericHat.png" alt="BildModell" class="hatpicture" style="max-width: 60px; max-height: 60px;" />
+                                }
+
+
+                            </th>
+                            <td>@hat.Model.ModelName</td>
+                            <td>@hat.Size</td>
+                            <td>@hat.Price</td>
+                            <td><a asp-action="RemoveFromOrder" asp-controller="Order" asp-route-orderId="@Model.OrderId" asp-route-hatId="@hat.ID" class="Remove">Remove</a><br />
+                                @if(@hat.Model.ModelName.Equals("Specialhat"))
+                                {
+                                    <a asp-action="EditOrderHat" asp-controller="Order" asp-route-orderId="@Model.OrderId" asp-route-hatId="@hat.ID" class="Edit">Edit</a>
+                                }
+                                
+                            </td>
+                        </tr>
+                    }
+                    
+                    <tr>
+                        <th scope="row"></th>
+                        <td></td>
+                        <td>OrderSum:</td>
+                        <td>@Model.orderSum<td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Order Date</th>
+                        <th scope="col">Estimated DeliveryDate</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    
+
+                    <tr>
+                        
+                        <td>
+                            
+                            <input type="date" id="order" name="order" asp-for="@Model.OrderDate">
+
+                        </td>
+                        <td>
+                            <input type="date" id="estimated" name="estimated" asp-for="@Model.EstimatedDelivery">
+                        </td>
+                        
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <div>
+            <h3>Current status</h3>
+            <select class="form-select" aria-label="Default select example" asp-for="@Model.Status">
+                <option value ="Confirmed">Confirmed</option>
+                <option value="Declined">Declined</option>
+                <option value="Pending">Pending</option>
+                <option value="ReadyForDelivery">Ready for delivery</option>
+                <option value="Shipped">Shipped</option>
+                <option value="InProgress">In progress</option>
+            </select>
+        </div>
+        <input type="hidden" asp-for="@Model.OrderId" />
+        </fieldset>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </fieldset>
+
+        <br />
+        <a asp-controller="Order" asp-action="ListOrders" class="SeeOrder2">Return back </a>
+    </form>
+
+
+	
+
+</div>
+
+
+
+

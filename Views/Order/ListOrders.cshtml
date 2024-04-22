@@ -1,59 +1,96 @@
-﻿@model ApproveOrderViewModel;
+﻿@model List<Order>;
+<link rel="stylesheet" href="~/css/IncomingOrder.css">
+<div class="order-site">
+<div class="orderbox">
+    <div class="order-info">
+        <h2>Orderrequests</h2>
+    </div>
+    @foreach(var Order in Model.Where(o=>o.Status.Equals("Pending") && !o.IsApproved))
+    {
+        <div class="order">
+                 @Order.OrderDate.ToString("yyyy-MM-dd")
+            <p>Hats @Order.Hats.Count(); st</p>
+            <p>Ordersum: @Order.OrderSum sek</p>
+                <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                <br />
+                <a asp-action="ApproveOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Approve</a>
+                <a asp-action="DeclineOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Decline</a>
+                
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Page Title</title>
-    <link rel="stylesheet" href="/css/IncomingOrder.css">
-</head>
-<body>
-    <h1>All Orders</h1>
-
-    <div class="order-container">
-        <!-- Lista för ogodkända ordrar -->
-        <div class="order-list">
-            <h2>Unapproved Orders</h2>
-            <table>
-                <tr>
-                    <th>Status</th>
-                    <th>Order Sum</th>
-                    <th>Action</th>
-                </tr>
-                @foreach (var order in Model.unapprovedOrders)
-                {
-                    <tr>
-                        <td>@order.Status</td>
-                        <td>@order.OrderSum</td>
-                        <td>
-                            @if (!order.IsApproved)
-                            {
-                                <form asp-controller="Order" asp-action="ApproveOrder" method="post">
-                                    <input type="hidden" name="orderId" value="@order.ID" />
-                                    <button type="submit" class="approve-button">Approve</button>
-                                </form>
-                            }
-                            else
-                            {
-                                <span class="approved">Approved</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </table>
         </div>
+    }
+</div>
+<div class="container text-center">
+    <div class="row align-items-center">
+        <div class="col orderbox orderInfoBox" >
+                <div class="order-info">
+                    <h2>Confirmed Orders</h2>
+                </div>
+            @foreach(var Order in Model.Where(o=>o.Status.Equals("Confirmed")))
+            {
+                <div class="order">
+                    @Order.OrderDate.ToString("yyyy-MM-dd")
+                    <p>Hats @Order.Hats.Count(); st</p>
+                    <p>Ordersum: @Order.OrderSum sek</p>
+                        <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                        <br />
+                    <a asp-action="InProgress" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Mark as in progress</a>
 
-        <!-- Lista för godkända ordrar -->
-        <div class="order-list">
-            <h2>Approved Orders</h2>
-            <ul>
-                @foreach (var order in Model.approvedOrders)
-                {
-                    <li>@order.Status - @order.OrderSum</li>
-                }
-            </ul>
+                </div>
+            }
+        </div>
+            <div class="col orderbox orderInfoBox">
+                <div class="order-info">
+                    <h2>Orders in Progress</h2>
+                </div>
+           @foreach(var Order in Model.Where(o=>o.Status.Equals("InProgress")))
+            {
+                <div class="order">
+                    @Order.OrderDate.ToString("yyyy-MM-dd")
+                    <p>Hats: @Order.Hats.Count(); st</p>
+                    <p>Ordersum: @Order.OrderSum sek</p>
+                        <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                        <br />
+                        <a asp-action="ReadyForDelivery" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Ready for delivery</a>
+
+                </div>
+            }
+        </div>
+            <div class="col orderbox orderInfoBox">
+                <div class="order-info">
+                    <h2>Ready for Delivery</h2>
+                </div>
+            @foreach (var Order in Model.Where(o => o.Status.Equals("ReadyForDelivery")))
+            {
+                <div class="order">
+                    @Order.OrderDate.ToString("yyyy-MM-dd")
+                    <p>Hats: @Order.Hats.Count(); st</p>
+                    <p>Ordersum: @Order.OrderSum sek</p>
+                        <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                        <br />
+                        <a asp-action="Shipped" asp-controller="Order" asp-route-orderId="@Order.ID" class="links">Shipped</a>
+                </div>
+            }
         </div>
     </div>
-</body>
-</html>
+</div>
+<div class="orderbox">
+        <div class="order-info">
+            <h2>Declined Orders to Handle</h2>
+        </div>
+    @foreach (var Order in Model.Where(o => o.Status.Equals("Declined")))
+    {
+        <div class="order">
+            @Order.OrderDate.ToString("yyyy-MM-dd")
+            <p>Hats @Order.Hats.Count();</p>
+            <p>Ordersum: @Order.OrderSum sek</p>
+                <a asp-action="HandleOrder" asp-controller="Order" asp-route-orderId="@Order.ID" class="SeeOrder">Handle order</a>
+                <br />
+                <a asp-action="Delete" asp-controller="Order" asp-route-orderId="@Order.ID" class="Remove">Delete order</a>
+                
+          
+
+        </div>
+    }
+</div>
+</div>

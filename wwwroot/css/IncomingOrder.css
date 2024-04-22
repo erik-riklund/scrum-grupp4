@@ -1,45 +1,77 @@
-﻿/* Styles for the order container */
-.order-container {
+﻿.orderbox {
+    background-color:aliceblue;
     display: flex;
+    flex-wrap: wrap;
+    border: solid 2px;
+    border-color:cornflowerblue;
+    margin-right: .5em;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    min-height: 200px;
+    
+    
 }
 
-/* Styles for the order list */
-.order-list {
-    margin-right: 20px;
+.orderInfoBox {
+    max-height: 500px;
+    overflow-y: auto;
+    min-height: 500px;
+}
+.order-info {
+    width: 100%;
+    max-height: 4em;
+    background-color: white;
+    text-align: center;
+    padding: .5em;
+}
+.col {
+    min-height: 500px;
+    padding: 0;
+    height: 100%;
 }
 
-    /* Styles for the table in the unapproved orders list */
-    .order-list table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+.order {
+    background-color: #fff9cf;
+    margin: 1em;
+    min-width: 150px;
+    height: 150px;
+}
 
-    /* Styles for table headers */
-    .order-list th {
-        background-color: #f2f2f2;
-        border: 1px solid #dddddd;
-        padding: 8px;
-        text-align: left;
-    }
-
-    /* Styles for table data */
-    .order-list td {
-        border: 1px solid #dddddd;
-        padding: 8px;
-    }
-
-/* Styles for the approve button */
-.approve-button {
-    background-color: #4caf50;
+.SeeOrder {
+    text-decoration: none;
+    background-color:cornflowerblue;
     color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    border-radius: 5%;
+
 }
 
-/* Styles for the approved status */
-.approved {
-    color: green;
-    font-weight: bold;
+
+.order-site {
+    width: 100%;
+    
 }
+.links {
+    text-decoration: none;
+    background-color: cadetblue;
+    color: white;
+    border-radius: 5%;
+}
+.hatpicture{
+    max-width: 40px;
+    max-height: 40px;
+}
+
+.Remove {
+    text-decoration: none;
+    background-color: darkred;
+    color: white;
+    border-radius: 5%;
+}
+
+.Edit {
+    text-decoration: none;
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 5%;
+}
+
