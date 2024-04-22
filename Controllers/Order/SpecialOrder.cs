@@ -21,73 +21,116 @@ namespace App.Controllers
     {
       if (ModelState.IsValid)
       {
-        var hat = new Hat
+        try
         {
-          Size = sov.Size,
-          Description = sov.Description
-        };
-
-        hat.Price = 0;
-        await hat.SaveAsync();
-
-        var model = new Model
-        {
-          ModelName = "Specialhat",
-          Description = sov.Description
-        };
-        await model.SaveAsync();
-
-        if (sov.Picture != null)
-        {
-          var imagehandler = new ImageHandler();
-
-          var path = imagehandler.GetPath(sov.Picture, model.ID);
-          await imagehandler.UploadImage(sov.Picture, path);
-          
-          model.ImagePath = path;
-        }
-
-        await model.SaveAsync();
-        // await model.Hats.AddAsync(hat);
-
-        if (selectedMaterials != null && selectedMaterials.Count > 0)
-        {
-          foreach (var materialID in selectedMaterials)
+          var hat = new Hat
           {
-            var material = await Query.FetchOneById<Material>(materialID);
-            
-            if (material != null)
+            Size = sov.Size,
+            Description = sov.Description,
+            Price = 0
+          };
+          await hat.SaveAsync();
+
+          var model = new Model
+          {
+            ModelName = "Specialhat",
+            Description = sov.Description
+          };
+          await model.SaveAsync();
+
+          if (sov.Picture != null)
+          {
+            var imagehandler = new ImageHandler();
+
+            var path = imagehandler.GetPath(sov.Picture, model.ID);
+            await imagehandler.UploadImage(sov.Picture, path);
+
+            model.ImagePath = path;
+          }
+
+          await model.SaveAsync();
+
+          if (selectedMaterials != null && selectedMaterials.Count > 0)
+          {
+            foreach (var materialID in selectedMaterials)
             {
-              await model.Materials.AddAsync(material);
-              await material.Models.AddAsync(model);
+              var material = await Query.FetchOneById<Material>(materialID);
+
+              if (material != null)
+              {
+                await model.Materials.AddAsync(material);
+                await material.Models.AddAsync(model);
+              }
+            }
+          }
+
+          hat.Model = model;
+          await hat.SaveAsync();
+          var customer = await session.GetUserAsync();
+
+          if (customer != null)
+          {
+            if (customer.ShoppingCart == null)
+            {
+              customer.ShoppingCart = new Cart { UserID = customer.ID };
+              await customer.SaveAsync();
+              await customer.ShoppingCart.SaveAsync();
+            }
+
+            var shoppingCarts = await Query.FetchAll<Cart>();
+            var shoppingCart = shoppingCarts.Where(c => c.UserID == customer.ID).FirstOrDefault();
+
+            if (shoppingCart != null)
+            {
+              await shoppingCart.Hats.AddAsync(hat);
+              shoppingCart.UpdateTotalSum();
+              await shoppingCart.SaveAsync();
+
+              if (model != null)
+              {
+                var order = new Entities.Order
+                {
+                  CustomerID = customer.ID,
+                  IsApproved = false,
+                  Status = "Pending"
+                };
+
+                if (await Query.FetchOneById<User>("661631d6fdc5b0a63f5d5241") is User otto)
+                {
+                  string title = sov.Description.Length > 30 ? string.Concat(sov.Description.AsSpan(0, 30), "...") : sov.Description;
+
+                  var topic = new Topic
+                  {
+                    Sender = customer,
+                    Recipient = otto,
+                    Title = $"Special order: {title}"
+                  };
+
+                  var message = new Message
+                  {
+                    Sender = customer,
+                    Content = sov.Description
+                  };
+
+                  await order.SaveAsync();
+                  await order.Hats.AddAsync(hat);
+                  await customer.Orders.AddAsync(order);
+
+                  await message.SaveAsync();
+                  await topic.SaveAsync();
+                  await topic.Messages.AddAsync(message);
+
+                  return RedirectToAction("ConfirmSpecial", "Order", new { id = order.ID });
+                }
+              }
             }
           }
         }
 
-        hat.Model = model;
-        await hat.SaveAsync();
-        var customer = await session.GetUserAsync();
-                if (customer.ShoppingCart == null)
-                {
-                    customer.ShoppingCart = new Cart { UserID = customer.ID };
-                    await customer.SaveAsync();
-                    await customer.ShoppingCart.SaveAsync();
-
-                }
-
-        var shoppingCarts = await Query.FetchAll<Cart>();
-        var shoppingCart = shoppingCarts.Where(c => c.UserID == customer.ID).FirstOrDefault();
-
-       await shoppingCart.Hats.AddAsync(hat);
-       shoppingCart.UpdateTotalSum();
-       await shoppingCart.SaveAsync();
-
-
-                return RedirectToAction("Index", "Home");
-      }
-      else
-      {
-        // felhantering vid ogiltigt formulär..?
+        catch (Exception)
+        {
+          ModelState.AddModelError("", "There was an error processing the request, please try again.");
+        }
       }
 
       var materials = await Query.FetchAll<Material>();
