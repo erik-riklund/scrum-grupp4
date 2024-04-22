@@ -7,7 +7,7 @@ namespace App.Controllers
   {
     public async Task<IActionResult> ConfirmSpecial(string id)
     {
-      var confirmedOrder = await Query.FetchOneById<Order>(id);
+      var confirmedOrder = await Query.FetchOneById<Entities.Order>(id);
 
       return View(confirmedOrder);
     }
