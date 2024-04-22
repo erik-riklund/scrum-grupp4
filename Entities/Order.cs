@@ -6,7 +6,7 @@ namespace App.Entities
   {
     public string CustomerID { get; set; } = null!;
 
-    public DateTime OrderDate { get; set; }
+    public DateTime OrderDate { get; set; } = DateTime.Now;
 
     public DateTime EstimatedDeliveryDate { get; set; }
 
@@ -20,7 +20,7 @@ namespace App.Entities
 
     public byte[] PDF { get; set; } = null!;
 
-        [OwnerSide]
+    [OwnerSide]
     public Many<Hat, Order> Hats { get; set; } = null!;
 
     [OwnerSide]
