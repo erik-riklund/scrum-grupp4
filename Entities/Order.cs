@@ -20,6 +20,8 @@ namespace App.Entities
 
     public byte[] PDF { get; set; } = null!;
 
+    public bool PayStatus { get; set; }
+
     [OwnerSide]
     public Many<Hat, Order> Hats { get; set; } = null!;
 

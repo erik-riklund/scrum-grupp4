@@ -8,7 +8,7 @@ namespace App.Controllers
         [HttpGet]
         public async Task<IActionResult> Confirm(string id)
         {
-            var confirmedOrder = await Query.FetchOneById<Order>(id);
+            var confirmedOrder = await Query.FetchOneById<Entities.Order>(id);
 
             return View(confirmedOrder);
         }
