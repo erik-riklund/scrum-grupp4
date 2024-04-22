@@ -1,0 +1,28 @@
+﻿@model EditOrderHatViewModel
+@* <form method="post>" *@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Material</th>
+            <th scope="col"></th>
+            <th scope="col">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var material in Model.Materials)
+        {
+            <tr>
+                <th scope="row"><input type="checkbox" asp-for="@material.inHat" /></th>
+                <td>@material.materialName</td>
+                <td><input type="hidden" asp-for="@material.materialId"/></td>
+                <td><input type="text" asp-for="@material.amount" /></td>
+            </tr>
+        }
+        
+        
+    </tbody>
+</table>
+<button type="submit">Klicka här</button>
+@* </form> *@
+

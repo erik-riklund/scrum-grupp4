@@ -106,10 +106,45 @@ namespace App.Controllers
         [HttpGet]
         public async Task<IActionResult> EditOrderHat(string orderId, string hatId)
         {
-            var order = await Query.FetchOneById<App.Entities.Order>(orderId);
+            
             var hat = await Query.FetchOneById<App.Entities.Hat>(hatId);
 
-            return View();
+            var materials = new List<AddMaterialViewModel>();
+            var allMaterial = await Query.FetchAll<App.Entities.Material>();
+            if (allMaterial != null)
+            {
+                foreach (var material in allMaterial.ToList())
+                {
+                    if (material != null)
+                    {
+                        var toAdd = new AddMaterialViewModel
+                        {
+                            materialId = material.ID,
+                            materialName = material.Name
+                        };
+                        if (hat.Model.Materials.Contains(material))
+                        {
+                            toAdd.inHat = true;
+                        }
+                        materials.Add(toAdd);
+                    }
+                    
+                }
+                
+            }
+            var viewModel = new EditOrderHatViewModel
+            {
+                Materials = materials,
+                OrderId = orderId,
+                Size = hat.Size,
+                HatId = hatId,
+                HatDescription = hat.Description
+
+            };
+
+
+
+            return View(viewModel);
         }
 
         }
