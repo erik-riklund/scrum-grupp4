@@ -14,14 +14,24 @@ namespace App.Controllers
     {
       var model = new MessageComposeViewModel();
 
-      var self = (await session.GetUserAsync())?.ID;
-      var users = ((IEnumerable<User>)await Query.FetchMany<User>(user => !user.ID.Equals(self))).ToList();
-
-      ViewBag.Users = users.Select(user => new SelectListItem { Value = user.ID, Text = $"{user.FirstName} {user.LastName}" });
-
-      if (reciever != null)
+      if (session.IsAdmin())
       {
-        model.Recipient = users.Where(user => user.ID.Equals(reciever)).FirstOrDefault()?.ID ?? string.Empty;
+        var self = (await session.GetUserAsync())?.ID;
+        var users = ((IEnumerable<User>)await Query.FetchMany<User>(user => !user.ID.Equals(self))).ToList();
+
+        ViewBag.Users = users.Select(user => new SelectListItem { Value = user.ID, Text = $"{user.FirstName} {user.LastName}" });
+
+        if (reciever != null)
+        {
+          model.Recipient = users.Where(user => user.ID.Equals(reciever)).FirstOrDefault()?.ID ?? string.Empty;
+        }
+      }
+      else
+      {
+        model.Recipient = "661631d6fdc5b0a63f5d5241";
+        ViewBag.Users = new List<SelectListItem> { new() {
+          Value = model.Recipient, Text = "Otto Hattmakare"
+        }};
       }
 
       return View(model);

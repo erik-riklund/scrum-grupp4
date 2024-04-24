@@ -2,13 +2,13 @@
 {
     public class UserViewModel
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string id { get; set; }
-        public string Email { get; set; }  
-        public string StreetAdress { get; set; }
-        public string ZipCode { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
+        public string FirstName { get; set; } = null!;
+        public string LastName { get; set; } = null!;
+        public string id { get; set; } = null!;
+        public string Email { get; set; }   = null!;
+        public string StreetAdress { get; set; } = null!;
+        public string ZipCode { get; set; } = null!;
+        public string City { get; set; } = null!;
+        public string Country { get; set; } = null!;
     }
 }

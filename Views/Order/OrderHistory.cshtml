@@ -23,14 +23,14 @@
             <input asp-for="PaymentStatus" type="hidden" id="PaymentStatus" name="PaymentStatus" value=true />
             <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value=/>
             <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value=/>
-                <button type="submit">List all paiyed order</button>
+                <button type="submit">List all paid orders</button>
 
             </form>
             <form method="post" asp-action="orderHistory">
                 <input asp-for="PaymentStatus" type="hidden" id="PaymentStatus" name="PaymentStatus" value=false />
                 <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value= />
                 <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value= />
-                <button type="submit">List all unpaiyed order</button>
+                <button type="submit">List all unpaid orders</button>
 
             </form>
                 <div class="form-group">
