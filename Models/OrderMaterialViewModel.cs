@@ -5,8 +5,8 @@ namespace App.Models
 {
     public class OrderMaterialViewModel
     {
-        public Material Material { get; set; }
-        public Supplier Supplier { get; set; }
+        public Material Material { get; set; } = null!;
+        public Supplier Supplier { get; set; } = null!;
         public double Amount { get; set; }
     }
 }

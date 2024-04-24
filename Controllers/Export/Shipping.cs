@@ -72,7 +72,7 @@ namespace App.Controllers
             Payment = model.Payment,
 
           };
-           var content = ShippingPdfContent.PdfContent(order, customer, shipping);
+          var content = ShippingPdfContent.PdfContent(order, customer, shipping);
           shipping.PDF = PdfHandler.HtmlToPdf(content);
           await shipping.SaveAsync();
           await order.SaveAsync();
@@ -82,19 +82,12 @@ namespace App.Controllers
         }
       }
 
-      catch (Exception)
+      catch (Exception x)
       {
-        // felhantering..?
+        Console.WriteLine(x.Message);
       }
 
       return View(model);
-    }
-
-    public async Task<FileStreamResult> Test(string id)
-    {
-      var shipping = await Query.FetchOneById<Shipping>(id);
-
-      return PdfHandler.ToStream(shipping.PDF);
     }
   }
 }

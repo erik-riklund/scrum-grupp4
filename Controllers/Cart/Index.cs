@@ -5,34 +5,37 @@ using MongoDB.Entities;
 
 namespace App.Controllers
 {
-    public partial class CartController : Controller
+  public partial class CartController : Controller
+  {
+    [HttpGet]
+    public async Task<IActionResult> Index()
     {
-        public async Task<IActionResult> Index()
+      var lista = new CartViewModel();
+
+      try
+      {
+        var user = await session.GetUserAsync();
+
+        if (user != null)
         {
-            var user = await session.GetUserAsync();
-            var shoppingCarts = await Query.FetchAll<Cart>();
-            var shoppingCart = shoppingCarts.Where(c => c.UserID == user.ID).FirstOrDefault();
-            
-            var lista = new CartViewModel();
-            if (shoppingCart != null)
-            {
+          var shoppingCart = await Query.FetchOne<Cart>(cart => cart.UserID == user.ID);
 
-                //foreach(var hat in shoppingCart.Hats)
-                //{
+          if (shoppingCart == null)
+          {
+            shoppingCart = new Cart { UserID = user.ID };
+            await shoppingCart.SaveAsync();
+          }
 
-                //var cartViewModel = new CartViewModel { hat = hat, model = hat.Model };
-                lista.hats = shoppingCart.Hats.ToList();
-                //}
-            }
-            else
-            {
-                user.ShoppingCart = new Cart { UserID = user.ID };
-                await user.SaveAsync();
-                await user.ShoppingCart.SaveAsync();
-            }
-            lista.cart = shoppingCart;
-
-            return View(lista); 
+          lista.cart = shoppingCart;
+          lista.hats = shoppingCart.Hats.ToList();
         }
+      }
+      catch (Exception x)
+      {
+        Console.WriteLine(x.Message);
+      }
+
+      return View(lista);
     }
+  }
 }

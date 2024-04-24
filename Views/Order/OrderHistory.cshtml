@@ -3,151 +3,145 @@
 <h2 style="text-align: center;">MANAGE ORDERHISTORY</h2>
 <br />
 <div class="container">
-    <div class="row">
-        <div class="col-md-7">
-            <h2>Orderhistory</h2>
-            <form method="post" asp-action="orderHistory">
-                <div>
-                    <label for="dateFrom">Choose date from:</label>
-                    <input asp-for="DateFrom" type="date" id="dateFrom" name="dateFrom">
-                </div>
-                <div>
-                    <label for="dateTo">Choose date To:</label>
-                    <input asp-for="DateTo" type="date" id="dateTo" name="dateTo">
-                </div>
-                <input asp-for="ChooseDate" type="hidden" id="ChooseDate" name="ChooseDate" value="false" />
+  <div class="row">
+    <div class="col">
+      <h2>Orderhistory</h2>
+      <form method="post" asp-action="orderHistory">
+        <div class="input-group mb-2">
+          <span class="input-group-text">From:</span>
+          <input asp-for="DateFrom" type="date" class="form-control">
+        </div>
+        <div class="input-group mb-2">
+          <span class="input-group-text">To:</span>
+          <input asp-for="DateTo" type="date" class="form-control">
+        </div>
+        <input asp-for="ChooseDate" type="hidden" id="ChooseDate" />
 
-                <button type="submit" onclick="setChooseDateTrue()">Choose</button>
-            </form>
-            <form method="post" asp-action="orderHistory">
-            <input asp-for="PaymentStatus" type="hidden" id="PaymentStatus" name="PaymentStatus" value=true />
-            <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value=/>
-            <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value=/>
-                <button type="submit">List all paiyed order</button>
+        <button type="submit" onclick="setChooseDateTrue()" class="btn btn-primary" style="float:left">Apply date
+          filter</button>
+      </form>
+      <form method="post" asp-action="orderHistory">
+        <input asp-for="PaymentStatus" type="hidden" id="PaymentStatus" name="PaymentStatus" value=true />
+        <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value= />
+        <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value= />
+        <div style="float:left">
+          &nbsp;
+          <button type="submit" class="btn btn-primary">List all paid orders</button>
+        </div>
+      </form>
+      <form method="post" asp-action="orderHistory">
+        <input asp-for="PaymentStatus" type="hidden" id="PaymentStatus" name="PaymentStatus" value=false />
+        <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value= />
+        <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value= />
+        <div style="float:left">
+          &nbsp;
+          <button type="submit" class="btn btn-primary">List all unpaid orders</button>
+        </div>
+      </form>
+      <div style="clear:both; height: 2rem"></div>
+      <div class="form-group">
+        <form method="post" asp-action="AllOrderHistoryPdf">
+          <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value=@ViewBag.OrderDateFrom />
+          <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value=@ViewBag.OrderDateTo />
+          <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                <th scope="col">Ordered</th>
+                <th scope="col">Model</th>
+                <th scope="col">Price</th>
+                <th scope="col">Paid</th>
+                <th scope="col">Status</th>
+                <th scope="col">Customer</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
 
-            </form>
-            <form method="post" asp-action="orderHistory">
-                <input asp-for="PaymentStatus" type="hidden" id="PaymentStatus" name="PaymentStatus" value=false />
-                <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value= />
-                <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value= />
-                <button type="submit">List all unpaiyed order</button>
+              </tr>
+            </thead>
+            <tbody>
+              @{
+                var totalAmount = 0.0;
+              }
+              @if (ViewBag.CurrentOrder != null)
+              {
+                @foreach (var order in ViewBag.CurrentOrder)
+                {
+                  foreach (var hats in order.Hats)
+                  {
+                    <tr>
+                      <td>@order.OrderDate</td>
+                      @if (hats.Model == null)
+                      {
+                        <td>No model Id found</td>
+                      }
+                      else
+                      {
+                        <td>@hats.Model.ModelName</td>
+                        <td>@hats.Price</td>
+                        <td>
+                          @(@order.PayStatus ? "Yes" : "No")
+                        </td>
+                        <td>@order.Status</td>
 
-            </form>
-                <div class="form-group">
-                <form method="post" asp-action="AllOrderHistoryPdf">
-                    @if(Model.DateFrom !=null && Model.DateTo != null)
+                        @foreach (var customer in ViewBag.CurrentCustomer)
+                        {
+                          @if (customer.ID.Equals(order.CustomerID))
+                          {
+                            <td>@customer.FirstName @customer.LastName</td>
+
+                          }
+                        }
+
+                        <td>
+                          <form method="post" asp-action="ChangePaymentStatus">
+                            <input type="hidden" name="orderId" value="@order.ID" />
+                            <button type="submit" class="btn btn-primary btn-sm">Change payment status</button>
+                          </form>
+                        </td>
+                        <td>
+                          <form method="post" asp-action="PrintOneOrderHistory">
+                            <input type="hidden" name="orderId" value="@order.ID" />
+                            <button type="submit" class="btn btn-primary btn-sm">Print order</button>
+                          </form>
+                        </td>
+                        <td>
+                          <form method="post" asp-action="PrintInvoice">
+                            <input type="hidden" name="orderId" value="@order.ID" />
+                            <button type="submit" class="btn btn-primary btn-sm">Print invoice</button>
+                          </form>
+                        </td>
+                      }
+                    </tr>
+                  }
+                }
+                <tr>
+                  @foreach (var order in ViewBag.CurrentOrder)
+                  {
+                    foreach (var hats in order.Hats)
                     {
-                        <input asp-for="DateFrom" type="hidden" id="dateFrom" name="dateFrom" value=@ViewBag.OrderDateFrom />
-                        <input asp-for="DateTo" type="hidden" id="dateFrom" name="dateTo" value=@ViewBag.OrderDateTo/>
+                      totalAmount += hats.Price;
                     }
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Orderid</th>
-                                <th scope="col">Orderdate</th>
-                                <th scope="col">Modelid</th>
-                                <th scope="col">Modelname</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Is Paid</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Customerid</th>
-                                <th scope="col">Customer Name</th>
-                                <th scope="col">Print order</th>
-                                <th scope="col">Change paymentstatus</th>
-                                <th scope="col">Print Invoice</th>
+                  }
+                  <td colspan="4"></td>
+                  <td>Total amount:</td>
+                  <td>@totalAmount SEK</td>
+                </tr>
+              }
+              else
+              {
+                <h3>Choose a date you want to se orderhistory from</h3>
+              }
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @{
-                            var totalAmount = 0.0;
-                        }
-                         @if(ViewBag.CurrentOrder !=null)
-                        {
-                            @foreach (var order in ViewBag.CurrentOrder)
-                            {
-                                foreach (var hats in order.Hats)
-                                {
-                                    <tr>
-                                        <td>@order.ID</td>
-                                        <td>@order.OrderDate</td>
-                                        @if (hats.Model == null)
-                                        {
-                                            <td>No model Id found</td>
-                                        }
-                                        else
-                                        {
-                                            <td>@hats.Model.ID</td>
-                                            <td>@hats.Model.ModelName</td>
-                                            <td>@hats.Price</td>
-                                            <td>@order.PayStatus</td>
-                                            <td>@order.Status</td>
-                                            <td>@order.CustomerID</td>
-
-                                                @foreach (var customer in ViewBag.CurrentCustomer)
-                                                {                                                    
-                                                    @if (customer.ID.Equals(order.CustomerID))
-                                                    {
-                                                        <td>@customer.FirstName @customer.LastName</td>
-
-                                                    }
-                                                 }
-
-
-                                                <td>
-                                                    <form method="post" asp-action="PrintOneOrderHistory">
-                                                        <input type="hidden" name="orderId" value="@order.ID" />
-                                                        <button type="submit" class="btn btn-primary btn-sm">Get PDF</button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="post" asp-action="ChangePaymentStatus">
-                                                        <input type="hidden" name="orderId" value="@order.ID" />
-                                                        <button type="submit" class="btn btn-primary btn-sm">Change payment status</button>
-                                                    </form>
-                                                </td>
-                                                <td>
-                                                    <form method="post" asp-action="PrintInvoice">
-                                                        <input type="hidden" name="orderId" value="@order.ID" />
-                                                        <button type="submit" class="btn btn-primary btn-sm">Print Invoice</button>
-                                                    </form>
-                                                </td>
-                                               
-
-
-                                        }
-                                      
-                                    </tr>
-                                }
-                            }
-                            <tr>
-                                @foreach (var order in ViewBag.CurrentOrder)
-                                {
-                                    foreach (var hats in order.Hats)
-                                    {
-                                        totalAmount += hats.Price;
-                                    }
-                                }
-                                <td colspan="4"></td>
-                                <td>Total amount:</td>
-                                <td>@totalAmount SEK</td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <h3>Choose a date you want to se orderhistory from</h3>
-                        }
-
-                        </tbody>
-                    </table>
-                    <button type="submit">Create PDF</button>
-                </form>
-                </div>
+            </tbody>
+          </table>
+          <button type="submit" class="btn btn-primary">Create PDF</button>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
 
-    <script>
-        function setChooseDateTrue() {
-            document.getElementById('ChooseDate').value = 'true';
-        }
-    </script>
+  <script>
+    function setChooseDateTrue() {
+      document.getElementById('ChooseDate').value = 'true';
+    }
+  </script>
