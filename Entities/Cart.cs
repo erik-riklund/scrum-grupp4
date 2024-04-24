@@ -15,6 +15,7 @@ namespace App.Entities
     {
       this.InitOneToMany(() => Hats);
     }
+    
     public void UpdateTotalSum()
     {
       double sum = 0;

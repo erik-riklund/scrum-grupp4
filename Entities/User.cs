@@ -14,8 +14,6 @@ namespace App.Entities
 
     public string PhoneNumber { get; set; } = null!;
 
-    public Cart ShoppingCart { get; set; } = null!;
-
     public Address Address { get; set; } = null!;
 
     public Many<Role, User> Roles { get; set; } = null!;

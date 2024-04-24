@@ -1,23 +1,13 @@
-﻿using App.Entities;
-using App.Handlers;
+﻿using App.Handlers;
 using App.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using MongoDB.Driver;
 using MongoDB.Entities;
-using System.Diagnostics;
-using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Asn1.Cmp;
-
 
 namespace App.Controllers.order
 {
   public partial class OrderController : Controller
   {
-
     [HttpGet]
     public IActionResult OrderHistory()
     {
@@ -31,7 +21,6 @@ namespace App.Controllers.order
     }
 
     [HttpPost]
-
     public async Task<IActionResult> OrderHistory(OrderHistoryViewModel model)
     {
       try
@@ -61,21 +50,17 @@ namespace App.Controllers.order
         ViewBag.CurrentOrder = orderList;
         ViewBag.OrderDateFrom = model.DateFrom;
         ViewBag.OrderDateTo = model.DateTo;
-        return View(model);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
         ModelState.AddModelError(string.Empty, "An error occurred while fetching the order history");
-
-        return View(model);
       }
 
-
+      return View(model);
     }
 
 
     [HttpPost]
-
     public async Task<IActionResult> AllOrderHistoryPdf(OrderHistoryViewModel model)
     {
       DateTime dateFrom = model.DateFrom;
@@ -108,20 +93,29 @@ namespace App.Controllers.order
       try
       {
         var getOrder = await Query.FetchOne<Entities.Order>(order => order.ID.Equals(orderId));
-        var customer = await Query.FetchOne<Entities.User>(user => user.ID.Equals(getOrder.CustomerID));
-        var hatModel = await Query.FetchOne<App.Entities.Model>(model => model.ID.Equals(getOrder.Hats.FirstOrDefault().Model.ID));
 
-        var imageUrl = hatModel.ImagePath;
-        var content = OrderPdfContent.OneHistoryPdfContent(getOrder, customer, imageUrl);
+        if (getOrder != null)
+        {
+          var customer = await Query.FetchOne<Entities.User>(user => user.ID.Equals(getOrder.CustomerID));
+          var hatModel = await Query.FetchOne<Entities.Model>(model => model.ID.Equals(getOrder.Hats.First().Model.ID));
 
-        var stream = new MemoryStream(PdfHandler.HtmlToPdf(content));
-        return new FileStreamResult(stream, "application/pdf");
+          if (hatModel != null && customer != null)
+          {
+            var imageUrl = hatModel.ImagePath;
+            var content = OrderPdfContent.OneHistoryPdfContent(getOrder, customer, imageUrl);
+
+            var stream = new MemoryStream(PdfHandler.HtmlToPdf(content));
+            return new FileStreamResult(stream, "application/pdf");
+          }
+        }
       }
-      catch
+
+      catch (Exception x)
       {
-        ModelState.AddModelError(string.Empty, "An error occurred while fetching the order history");
-        return View();
+        Console.WriteLine(x.Message);
       }
+
+      return RedirectToAction("OrderHistory", "Order");
     }
 
     [HttpPost]
@@ -130,46 +124,57 @@ namespace App.Controllers.order
       try
       {
         var getOrder = await Query.FetchOneById<Entities.Order>(orderId);
-        if (getOrder.PayStatus && getOrder.PayStatus != null)
-        {
-          getOrder.PayStatus = false;
-        }
-        else
-        {
-          getOrder.PayStatus = true;
-        }
-        getOrder.SaveAsync();
 
-        return RedirectToAction("OrderHistory", "Order");
+        if (getOrder != null)
+        {
+          if (getOrder.PayStatus)
+          {
+            getOrder.PayStatus = false;
+          }
+          else
+          {
+            getOrder.PayStatus = true;
+          }
+
+          await getOrder.SaveAsync();
+        }
       }
-      catch
+
+      catch (Exception x)
       {
-        ModelState.AddModelError(string.Empty, "An error occurred while fetching the order history");
-        return RedirectToAction("OrderHistory", "Order");
+        Console.WriteLine(x.Message);
       }
+
+      return RedirectToAction("OrderHistory", "Order");
     }
+
     [HttpPost]
     public async Task<IActionResult> PrintInvoice(string orderId)
     {
       try
       {
         var getOrder = await Query.FetchOneById<Entities.Order>(orderId);
-        var customerId = getOrder.CustomerID;
-        var customer = await Query.FetchOneById<Entities.User>(customerId);
 
-        var content = InvoiceContentPdfcs.OneHistoryPdfContent(getOrder, customer);
+        if (getOrder != null)
+        {
+          var customerId = getOrder.CustomerID;
+          var customer = await Query.FetchOneById<Entities.User>(customerId);
 
-        var stream = new MemoryStream(PdfHandler.HtmlToPdf(content));
-        return new FileStreamResult(stream, "application/pdf");
-
+          if (customer != null)
+          {
+            var content = InvoiceContentPdfcs.OneHistoryPdfContent(getOrder, customer);
+            var stream = new MemoryStream(PdfHandler.HtmlToPdf(content));
+            return new FileStreamResult(stream, "application/pdf");
+          }
+        }
       }
-      catch
+
+      catch (Exception x)
       {
-        ModelState.AddModelError(string.Empty, "An error occurred while fetching the order");
-        return RedirectToAction("OrderHistory", "Order");
+        Console.WriteLine(x.Message);
       }
 
+      return RedirectToAction("OrderHistory", "Order");
     }
-
   }
 }

@@ -13,37 +13,70 @@ namespace App.Controllers
     [HttpGet]
     public async Task<IActionResult> AdminOrderCustomer()
     {
-      var models = await Query.FetchAll<Model>();
-      List<Model> modelList = models.Where(m => m.ModelName != "Specialhat").ToList();
+      var modelList = new List<Model>();
+
+      try
+      {
+        var models = await Query.FetchMany<Model>(
+          model => model.ModelName != "Specialhat"
+        );
+
+        if (models != null)
+        {
+          foreach (var model in models.Cast<Model>())
+          {
+            modelList.Add(model);
+          }
+        }
+      }
+
+      catch (Exception x)
+      {
+        Console.WriteLine(x.Message);
+      }
+
       return View(modelList);
     }
 
     [HttpGet]
     public async Task<IActionResult> HatOrderForCustomer(string modelID)
     {
-      var model = await Query.FetchOneById<Model>(modelID);
-      var hvm = new HatViewModel { modelID = modelID };
-      ViewBag.Model = model;
-      var pricemodel = new Dictionary<Material, double>();
-
-      if (model != null)
+      if (!string.IsNullOrEmpty(modelID))
       {
-        foreach (var material in model.Materials)
+        try
         {
-          if (material.Unit.Equals("Meter"))
+          var model = await Query.FetchOneById<Model>(modelID);
+          var hvm = new HatViewModel { modelID = modelID };
+          ViewBag.Model = model;
+          var pricemodel = new Dictionary<Material, double>();
+
+          if (model != null)
           {
-            pricemodel[material] = 40;
+            foreach (var material in model.Materials)
+            {
+              if (material.Unit.Equals("Meter"))
+              {
+                pricemodel[material] = 40;
+              }
+              else
+              {
+                pricemodel[material] = 1;
+              }
+            }
           }
-          else
-          {
-            pricemodel[material] = 1;
-          }
+
+          ViewBag.Price = new PriceHandler().GetHatPrice(pricemodel);
+
+          return View(hvm);
+        }
+
+        catch (Exception x)
+        {
+          Console.WriteLine(x.Message);
         }
       }
 
-      ViewBag.Price = new PriceHandler().GetHatPrice(pricemodel);
-
-      return View(hvm);
+      return RedirectToAction("AdminOrderCustomer", "Admin");
     }
 
     [HttpGet]
@@ -54,7 +87,7 @@ namespace App.Controllers
       ViewBag.Size = size;
 
       var priceHandler = new PriceHandler();
-      Dictionary<Material, double> dictionary = new Dictionary<Material, double>();
+      var dictionary = new Dictionary<Material, double>();
 
       if (model != null)
       {
@@ -72,61 +105,133 @@ namespace App.Controllers
     [HttpPost]
     public async Task<IActionResult> PlaceOrderForCustomer(OrderCustomerViewModel orderCustomerViewModel)
     {
-      var newAddress = new Address
+      try
       {
-        StreetAddress = orderCustomerViewModel.StreetAddress,
-        ZipCode = orderCustomerViewModel.ZipCode,
-        City = orderCustomerViewModel.City,
-        Country = orderCustomerViewModel.Country
-      };
+        var selectedModel = await Query.FetchOneById<Model>(orderCustomerViewModel.ModelID);
 
-      await newAddress.SaveAsync();
+        if (selectedModel != null)
+        {
+          var newAddress = new Address
+          {
+            StreetAddress = orderCustomerViewModel.StreetAddress,
+            ZipCode = orderCustomerViewModel.ZipCode,
+            City = orderCustomerViewModel.City,
+            Country = orderCustomerViewModel.Country
+          };
 
-      var newUser = new User
+          await newAddress.SaveAsync();
+
+          var newUser = new User
+          {
+            FirstName = orderCustomerViewModel.FirstName,
+            LastName = orderCustomerViewModel.LastName,
+            Email = orderCustomerViewModel.Email,
+            PhoneNumber = orderCustomerViewModel.PhoneNumber,
+            Address = newAddress
+          };
+
+          await newUser.SaveAsync();
+
+          var newOrder = new Entities.Order
+          {
+            CustomerID = newUser.ID,
+            OrderDate = DateTime.Now,
+            EstimatedDeliveryDate = DateTime.Now.AddDays(14),
+            IsApproved = true,
+            Status = "Confirmed",
+            OrderSum = orderCustomerViewModel.Price
+          };
+
+          var hat = new Hat
+          {
+            Model = selectedModel,
+            Price = orderCustomerViewModel.Price,
+            Size = orderCustomerViewModel.Size,
+            Description = ""
+          };
+
+          await hat.SaveAsync();
+          await newOrder.SaveAsync();
+          await newOrder.Hats.AddAsync(hat);
+
+          ViewBag.TotalSum = newOrder.OrderSum;
+
+          return View(newOrder);
+        }
+      }
+
+      catch (Exception x)
       {
-        FirstName = orderCustomerViewModel.FirstName,
-        LastName = orderCustomerViewModel.LastName,
-        Email = orderCustomerViewModel.Email,
-        PhoneNumber = orderCustomerViewModel.PhoneNumber,
-        Address = newAddress
-      };
+        Console.WriteLine(x.Message);
+      }
 
-      await newUser.SaveAsync();
+      return RedirectToAction("AdminOrderCustomer", "Admin");
 
-      var newOrder = new App.Entities.Order
-      {
-        CustomerID = newUser.ID,
-        OrderDate = DateTime.Now,
-        EstimatedDeliveryDate = DateTime.Now.AddDays(14),
-        IsApproved = true,
-        Status = "Confirmed",
-        OrderSum = orderCustomerViewModel.Price
-      };
+      // var newAddress = new Address
+      // {
+      //   StreetAddress = orderCustomerViewModel.StreetAddress,
+      //   ZipCode = orderCustomerViewModel.ZipCode,
+      //   City = orderCustomerViewModel.City,
+      //   Country = orderCustomerViewModel.Country
+      // };
 
-      var selectedModel = await Query.FetchOneById<Model>(orderCustomerViewModel.ModelID);
+      // await newAddress.SaveAsync();
 
-      var hat = new Hat
-      {
-        Model = selectedModel,
-        Price = orderCustomerViewModel.Price,
-        Size = orderCustomerViewModel.Size,
-        Description = ""
-      };
+      // var newUser = new User
+      // {
+      //   FirstName = orderCustomerViewModel.FirstName,
+      //   LastName = orderCustomerViewModel.LastName,
+      //   Email = orderCustomerViewModel.Email,
+      //   PhoneNumber = orderCustomerViewModel.PhoneNumber,
+      //   Address = newAddress
+      // };
 
-      await hat.SaveAsync();
-      await newOrder.SaveAsync();
-      await newOrder.Hats.AddAsync(hat);
+      // await newUser.SaveAsync();
 
-      ViewBag.TotalSum = newOrder.OrderSum;
+      // var newOrder = new App.Entities.Order
+      // {
+      //   CustomerID = newUser.ID,
+      //   OrderDate = DateTime.Now,
+      //   EstimatedDeliveryDate = DateTime.Now.AddDays(14),
+      //   IsApproved = true,
+      //   Status = "Confirmed",
+      //   OrderSum = orderCustomerViewModel.Price
+      // };
 
-      return View(newOrder);
+      // var selectedModel = await Query.FetchOneById<Model>(orderCustomerViewModel.ModelID);
+
+      // var hat = new Hat
+      // {
+      //   Model = selectedModel,
+      //   Price = orderCustomerViewModel.Price,
+      //   Size = orderCustomerViewModel.Size,
+      //   Description = ""
+      // };
+
+      // await hat.SaveAsync();
+      // await newOrder.SaveAsync();
+      // await newOrder.Hats.AddAsync(hat);
+
+      // ViewBag.TotalSum = newOrder.OrderSum;
+
+      // return View(newOrder);
     }
 
     [HttpGet]
     public async Task<IActionResult> AdminSpecialOrderCustomer()
     {
-      var cursor = await DB.Find<Material>().ExecuteCursorAsync();
-      ViewBag.Material = await cursor.ToListAsync();
+      ViewBag.Material = new List<Material>();
+
+      try
+      {
+        var cursor = await DB.Find<Material>().ExecuteCursorAsync();
+        ViewBag.Material = await cursor.ToListAsync();
+      }
+
+      catch (Exception x)
+      {
+        Console.WriteLine(x.Message);
+      }
 
       return View();
     }
