@@ -126,7 +126,7 @@
                 <div class="form-group row">
                    
                     <label>Material(s): </label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-8" id="scroll-style">
                         @foreach (var material in ViewBag.CurrentMaterials)
                         {
                             <div class="row mb-2">
@@ -175,6 +175,13 @@
     </div>
 </div>
 <style>
+#scroll-style {
+
+    max-height: 20rem;
+    overflow-y: auto;
+
+}
+
 .infoPopup {
     display: none;
     position: fixed;
