@@ -1,18 +1,18 @@
-﻿@{ 
-    ViewData["Title"] = "Log In";
+﻿@{
+  ViewData["Title"] = "Log In";
 }
 @model LoginViewModel
 
 <link rel="stylesheet" href="~/css/LogIn.css">
 
-<img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image">
+@* <img class="background-image" src="~/Pictures/HattarBild.jpg" alt="Background Image"> *@
 <div class="container">
-  <div class="login-box">
+  <div class="login-box card" style="width: 20rem">
     <h2 class="text-center mb-4">Log in</h2>
     <form method="post">
       <div class="form-group">
         <label for="loginEmail">Email address</label>
-        <input asp-for=userName type="text" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Email">
+        <input asp-for=userName type="text" class="form-control" id="loginEmail" placeholder="Email">
       </div>
       <div class="form-group">
         <label for="loginPassword">Password</label>
