@@ -78,7 +78,7 @@ namespace App.Controllers
           Console.WriteLine(x.Message);
         }
       }
-            ViewBag.Message = "Please enter a correct headsize";
+        
         return RedirectToAction("ModelInfo", "Model", new {modelID=hvm.modelID});
       
     }
