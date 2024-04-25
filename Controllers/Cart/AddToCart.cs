@@ -62,7 +62,8 @@ namespace App.Controllers
               cart.UpdateTotalSum();
               await cart.SaveAsync();
             }
-          }
+            return RedirectToAction("OurModels", "Model");
+                    }
         }
 
         catch (Exception x)
@@ -70,8 +71,8 @@ namespace App.Controllers
           Console.WriteLine(x.Message);
         }
       }
-
-      return RedirectToAction("OurModels", "Model");
+        return RedirectToAction("ModelInfo", "Model", new {modelID=hvm.modelID});
+      
     }
   }
 }
