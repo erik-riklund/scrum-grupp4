@@ -8,6 +8,13 @@ namespace App.Controllers
 {
   public partial class CartController : Controller
   {
+
+    [HttpGet]
+    public IActionResult AddToCart()
+    {
+      return RedirectToAction("OurModels", "Model");
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddToCart(HatViewModel hvm)
     {
@@ -62,6 +69,7 @@ namespace App.Controllers
               cart.UpdateTotalSum();
               await cart.SaveAsync();
             }
+            return RedirectToAction("OurModels", "Model");
           }
         }
 
@@ -70,8 +78,8 @@ namespace App.Controllers
           Console.WriteLine(x.Message);
         }
       }
-
-      return RedirectToAction("OurModels", "Model");
+        
+      return RedirectToAction("ModelInfo", "Model", new { modelID = hvm.modelID });
     }
   }
 }

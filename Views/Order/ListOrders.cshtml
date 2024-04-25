@@ -7,7 +7,7 @@
     <div class="order-info">
       <h2>Orderrequests</h2>
     </div>
-    @foreach (var Order in Model.Where(o => o.Status.Equals("Pending") && !o.IsApproved))
+        @foreach (var Order in Model.Where(o => o.Status.Equals("Pending")))
     {
       <div class="order">
         @Order.OrderDate.ToString("yyyy-MM-dd")
