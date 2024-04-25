@@ -8,6 +8,13 @@ namespace App.Controllers
 {
   public partial class CartController : Controller
   {
+
+    [HttpGet]
+    public async Task<IActionResult> AddToCart()
+        {
+            return RedirectToAction("OurModels", "Model");
+        }
+
     [HttpPost]
     public async Task<IActionResult> AddToCart(HatViewModel hvm)
     {
@@ -71,6 +78,7 @@ namespace App.Controllers
           Console.WriteLine(x.Message);
         }
       }
+            ViewBag.Message = "Please enter a correct headsize";
         return RedirectToAction("ModelInfo", "Model", new {modelID=hvm.modelID});
       
     }
