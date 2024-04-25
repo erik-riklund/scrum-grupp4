@@ -10,10 +10,10 @@ namespace App.Controllers
   {
 
     [HttpGet]
-    public async Task<IActionResult> AddToCart()
-        {
-            return RedirectToAction("OurModels", "Model");
-        }
+    public IActionResult AddToCart()
+    {
+      return RedirectToAction("OurModels", "Model");
+    }
 
     [HttpPost]
     public async Task<IActionResult> AddToCart(HatViewModel hvm)
@@ -70,7 +70,7 @@ namespace App.Controllers
               await cart.SaveAsync();
             }
             return RedirectToAction("OurModels", "Model");
-                    }
+          }
         }
 
         catch (Exception x)
@@ -78,9 +78,9 @@ namespace App.Controllers
           Console.WriteLine(x.Message);
         }
       }
-            ViewBag.Message = "Please enter a correct headsize";
-        return RedirectToAction("ModelInfo", "Model", new {modelID=hvm.modelID});
-      
+      ViewBag.Message = "Please enter a correct headsize";
+      return RedirectToAction("ModelInfo", "Model", new { modelID = hvm.modelID });
+
     }
   }
 }
